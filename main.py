@@ -10,7 +10,7 @@ import uvicorn
 
 # Конфігурація
 BOT_TOKEN = "7878078707:AAEnd1_7b5JFw9hsEX71DKWbPiJNyW4xB2k"
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://your-app.railway.app")  # ЗМІНІТЬ НА СВІЙ ДОМЕН
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://telegram-miniapp-cmol.onrender.com")  # ЗМІНІТЬ НА СВІЙ ДОМЕН
 
 app = FastAPI()
 bot = Bot(token=BOT_TOKEN)
