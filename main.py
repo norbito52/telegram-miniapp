@@ -134,6 +134,21 @@ async def miniapp():
             font-weight: 600;
             min-width: 70px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .ton-icon {
+            width: 16px;
+            height: 16px;
+            background: #0088ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
         }
         
         .tabs {
@@ -761,7 +776,10 @@ async def miniapp():
             <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
             <div class="balance-section">
                 <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
-                <div class="balance-display">0.00 TON</div>
+                <div class="balance-display">
+                    <div class="ton-icon">◆</div>
+                    <span>0.00 TON</span>
+                </div>
                 <button class="balance-btn" onclick="addBalance()">+</button>
             </div>
         </div>
@@ -769,7 +787,7 @@ async def miniapp():
     
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
-        <div class="tab" onclick="openGiftModal()">Все подарки</div>
+        <div class="tab" onclick="openGiftModal()">Collections</div>
         <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
     </div>
     
@@ -965,48 +983,15 @@ async def miniapp():
             `;
         }
         
-        // Функции для модального окна выбора подарков
         function openGiftModal() {
-            const modal = document.getElementById('giftModal');
-            const optionsList = document.getElementById('giftOptionsList');
+            // Тепер відкриваємо Collections замість модального вікна
+            currentView = 'catalog';
             
-            // Создаем список всех уникальных подарков
-            const giftGroups = {};
-            allGifts.forEach(gift => {
-                if (!giftGroups[gift.name]) {
-                    giftGroups[gift.name] = {
-                        name: gift.name,
-                        image: gift.image,
-                        new: gift.new
-                    };
-                }
-            });
+            // Обновляем активную вкладку
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[1].classList.add('active');
             
-            const uniqueGifts = Object.values(giftGroups);
-            
-            // Добавляем опцию "Все подарки"
-            const allGiftsOption = {
-                name: 'Все подарки',
-                image: '',
-                new: false,
-                isAll: true
-            };
-            
-            const options = [allGiftsOption, ...uniqueGifts];
-            
-            optionsList.innerHTML = options.map(gift => `
-                <div class="gift-option ${(!selectedFilter && gift.isAll) || selectedFilter === gift.name ? 'selected' : ''}" 
-                     onclick="selectModalOption('${gift.isAll ? '' : gift.name}', this)">
-                    <div class="gift-option-radio"></div>
-                    ${gift.isAll ? '' : `<div class="gift-option-image" style="background-image: url('${gift.image}')"></div>`}
-                    <div class="gift-option-name">${gift.name}</div>
-                </div>
-            `).join('');
-            
-            // Устанавливаем текущий выбор
-            tempSelectedGift = selectedFilter;
-            
-            modal.classList.add('show');
+            showCatalog();
         }
         
         function closeGiftModal() {
@@ -1109,11 +1094,15 @@ async def miniapp():
             renderGifts(filteredGifts);
         }
         
-        // Показать каталог - только фото и названия
+        // Показать каталог - только фото и названия (сортируем по убыванию ID)
         function showCatalog() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
             const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = allGifts.map(gift => `
+            
+            // Сортируем подарки от большего ID к меньшему
+            const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
+            
+            grid.innerHTML = sortedGifts.map(gift => `
                 <div class="gift-card-catalog" onclick="selectGift(${gift.id})">
                     <div class="gift-id">#${gift.id}</div>
                     <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
@@ -1169,6 +1158,9 @@ async def miniapp():
             if (tab === 'market') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 showMarket();
+            } else if (tab === 'catalog') {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                showCatalog();
             } else if (tab === 'my-channel') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
                 showMyChannel();
