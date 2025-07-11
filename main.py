@@ -50,7 +50,6 @@ async def miniapp():
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             padding: 20px;
-            padding-bottom: 80px;
         }
         
         .header {
@@ -436,35 +435,32 @@ async def miniapp():
         }
         
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #1a1a2e;
-            border-top: 1px solid #2a2a3e;
-            display: flex;
-            padding: 15px;
+            display: none;
         }
         
         .nav-item {
             flex: 1;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
+            border-radius: 12px;
+            font-weight: 600;
         }
         
         .nav-item.active {
-            color: #3d5afe;
+            background: #3d5afe;
+            color: white;
         }
         
         .nav-item:not(.active) {
+            background: #2a2a3e;
             color: #8b8b8b;
         }
         
         .nav-text {
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
         }
         
         .empty-state {
@@ -808,8 +804,8 @@ async def miniapp():
         <div class="loading">Загрузка подарков...</div>
     </div>
     
-    <div class="bottom-nav">
-        <div class="nav-item active">
+    <div class="bottom-nav" style="display: none;">
+        <div class="nav-item active" onclick="switchTab('market')">
             <div class="nav-text">Market</div>
         </div>
         <div class="nav-item" onclick="switchTab('my-channel')">
@@ -1041,7 +1037,6 @@ async def miniapp():
             currentView = 'market';
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab')[0].classList.add('active');
-            document.querySelectorAll('.nav-item')[0].classList.add('active');
             
             document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyGiftNameFilter();
@@ -1068,7 +1063,6 @@ async def miniapp():
             
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab')[0].classList.add('active');
-            document.querySelectorAll('.nav-item')[0].classList.add('active');
             
             document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyGiftNameFilter();
@@ -1169,20 +1163,14 @@ async def miniapp():
         function switchTab(tab) {
             currentView = tab;
             
-            // Обновляем активную вкладку
+            // Обновляем активную вкладку в верхних табах
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
             if (tab === 'market') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
-                document.querySelectorAll('.nav-item')[0].classList.add('active');
                 showMarket();
-            } else if (tab === 'catalog') {
-                document.querySelectorAll('.tab')[2].classList.add('active');
-                showCatalog();
             } else if (tab === 'my-channel') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
-                document.querySelectorAll('.nav-item')[1].classList.add('active');
                 showMyChannel();
             }
         }
@@ -1251,17 +1239,18 @@ async def miniapp():
             tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} ▼`);
         }
         
+        // Функция для модального окна "Все подарки" теперь доступна из фильтров
+        function openAllGiftsFilter() {
+            openGiftModal();
+        }
+        
         // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             showMarket();
         });
         
-        // Главная кнопка Telegram
-        tg.MainButton.text = "Готово";
-        tg.MainButton.show();
-        tg.MainButton.onClick(() => { 
-            tg.close();
-        });
+        // Убираем главную кнопку Telegram
+        tg.MainButton.hide();
         
         // Адаптация к теме
         if (tg.colorScheme === 'dark') {
