@@ -448,7 +448,7 @@ async def miniapp():
     
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
-        <div class="tab" onclick="switchTab('filter')">Filter</div>
+        <div class="tab" onclick="showFilter()">Все подарки</div>
         <div class="tab" onclick="switchTab('catalog')">Catalog</div>
         <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
     </div>
@@ -607,7 +607,13 @@ async def miniapp():
         
         // Показать страницу фильтра
         function showFilter() {
+            currentView = 'filter';
             document.getElementById('filtersSection').classList.add('filters-hidden');
+            
+            // Обновляем активную вкладку
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[1].classList.add('active'); // "Все подарки" активная
+            
             const grid = document.getElementById('giftsGrid');
             
             // Группируем подарки по названиям и находим минимальную цену
@@ -633,7 +639,6 @@ async def miniapp():
             
             grid.innerHTML = `
                 <div style="grid-column: 1/-1;">
-                    <button class="filter-clear-btn" onclick="clearGiftFilter()">Показать все подарки</button>
                     <div class="filter-list">
                         ${uniqueGifts.map(gift => `
                             <div class="filter-item ${selectedFilter === gift.name ? 'selected' : ''}" onclick="selectGiftFilter('${gift.name}')">
@@ -661,7 +666,14 @@ async def miniapp():
         // Очистка фильтра подарков
         function clearGiftFilter() {
             selectedFilter = null;
-            switchTab('market');
+            // Остаемся в Market но показываем все подарки
+            currentView = 'market';
+            
+            // Обновляем активную вкладку
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[0].classList.add('active'); // Market активный
+            
+            showMarket();
         }
         
         // Применение фильтра по названию подарка
@@ -767,9 +779,6 @@ async def miniapp():
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.querySelectorAll('.nav-item')[0].classList.add('active');
                 showMarket();
-            } else if (tab === 'filter') {
-                document.querySelectorAll('.tab')[1].classList.add('active');
-                showFilter();
             } else if (tab === 'catalog') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
                 showCatalog();
