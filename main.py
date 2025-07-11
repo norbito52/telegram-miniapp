@@ -421,6 +421,179 @@ async def miniapp():
             display: none;
         }
         
+        /* Modal overlay for gift filter */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal-overlay.show {
+            display: block;
+        }
+        
+        .modal-content {
+            background: #1a1a2e;
+            margin: 0;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            position: sticky;
+            top: 0;
+            background: #1a1a2e;
+            z-index: 10;
+        }
+        
+        .modal-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: #8b8b8b;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-search {
+            background: #2a2a3e;
+            border: none;
+            padding: 12px 40px 12px 15px;
+            border-radius: 10px;
+            color: white;
+            width: 100%;
+            margin: 0 20px 20px 20px;
+            font-size: 16px;
+            position: relative;
+        }
+        
+        .modal-search::placeholder {
+            color: #8b8b8b;
+        }
+        
+        .gift-options-list {
+            padding: 0 20px 100px 20px;
+        }
+        
+        .gift-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            cursor: pointer;
+            border-bottom: 1px solid #2a2a3e;
+        }
+        
+        .gift-option:last-child {
+            border-bottom: none;
+        }
+        
+        .gift-option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4a4a5e;
+            border-radius: 50%;
+            margin-right: 15px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .gift-option.selected .gift-option-radio {
+            border-color: #3d5afe;
+        }
+        
+        .gift-option.selected .gift-option-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: #3d5afe;
+            border-radius: 50%;
+        }
+        
+        .gift-option-image {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-right: 15px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
+            flex-shrink: 0;
+        }
+        
+        .gift-option-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .modal-buttons {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a2e;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            border-top: 1px solid #2a2a3e;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn.cancel {
+            background: #4a4a5e;
+            color: white;
+        }
+        
+        .modal-btn.cancel:hover {
+            background: #5a5a6e;
+        }
+        
+        .modal-btn.select {
+            background: #3d5afe;
+            color: white;
+        }
+        
+        .modal-btn.select:hover {
+            background: #2c47e8;
+        }
+        
         /* Filter page styles */
         .filter-list {
             margin-top: 20px;
@@ -523,7 +696,7 @@ async def miniapp():
     
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
-        <div class="tab" onclick="showFilter()">Все подарки</div>
+        <div class="tab" onclick="openGiftModal()">Все подарки</div>
         <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
     </div>
     
@@ -564,6 +737,27 @@ async def miniapp():
         </div>
         <div class="nav-item" onclick="switchTab('my-gifts')">
             <div class="nav-text">My Gifts</div>
+        </div>
+    </div>
+    
+    <!-- Modal для выбора подарков -->
+    <div class="modal-overlay" id="giftModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Выберите вид подарка</div>
+                <button class="modal-close" onclick="closeGiftModal()">✕</button>
+            </div>
+            
+            <input type="text" class="modal-search" placeholder="Поиск" id="modalSearchBox" onkeyup="filterModalGifts()">
+            
+            <div class="gift-options-list" id="giftOptionsList">
+                <!-- Список подарков будет сгенерирован здесь -->
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeGiftModal()">Отмена</button>
+                <button class="modal-btn select" onclick="selectModalGift()">Выбрать</button>
+            </div>
         </div>
     </div>
 
@@ -614,6 +808,7 @@ async def miniapp():
         
         let currentView = 'market';
         let selectedFilter = null; // Выбранный подарок для фильтрации
+        let tempSelectedGift = null; // Временный выбор в модальном окне
         let currentFilters = {
             giftType: '',
             sort: 'recent'
@@ -679,50 +874,107 @@ async def miniapp():
             applyFilters();
         }
         
-        // Показать страницу фильтра - ВСЕ подарки как на фото
-        function showFilter() {
-            currentView = 'filter';
-            document.getElementById('filtersSection').classList.add('filters-hidden');
+        // Функции для модального окна выбора подарков
+        function openGiftModal() {
+            const modal = document.getElementById('giftModal');
+            const optionsList = document.getElementById('giftOptionsList');
             
-            // Обновляем активную вкладку
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab')[1].classList.add('active'); // "Все подарки" активная
+            // Создаем список всех уникальных подарков
+            const giftGroups = {};
+            allGifts.forEach(gift => {
+                if (!giftGroups[gift.name]) {
+                    giftGroups[gift.name] = {
+                        name: gift.name,
+                        image: gift.image,
+                        new: gift.new
+                    };
+                }
+            });
             
-            const grid = document.getElementById('giftsGrid');
+            const uniqueGifts = Object.values(giftGroups);
             
-            // Показываем ВСЕ подарки как отдельные элементы (как на фото)
-            const allListedGifts = allGifts.filter(gift => gift.listed);
+            // Добавляем опцию "Все подарки"
+            const allGiftsOption = {
+                name: 'Все подарки',
+                image: '',
+                new: false,
+                isAll: true
+            };
             
-            grid.innerHTML = `
-                <div style="grid-column: 1/-1;">
-                    <div class="filter-list">
-                        ${allListedGifts.map(gift => `
-                            <div class="filter-item ${selectedFilter === gift.name ? 'selected' : ''}" onclick="selectGiftFilter('${gift.name}')">
-                                <div class="filter-item-image" style="background-image: url('${gift.image}')"></div>
-                                <div class="filter-item-content">
-                                    <div class="filter-item-name">${gift.name}</div>
-                                    <div class="filter-item-price">${gift.price} ▼ (${gift.count} 🎁)</div>
-                                </div>
-                                ${gift.new ? '<div class="filter-item-badge">NEW!</div>' : ''}
-                            </div>
-                        `).join('')}
-                    </div>
+            const options = [allGiftsOption, ...uniqueGifts];
+            
+            optionsList.innerHTML = options.map(gift => `
+                <div class="gift-option ${(!selectedFilter && gift.isAll) || selectedFilter === gift.name ? 'selected' : ''}" 
+                     onclick="selectModalOption('${gift.isAll ? '' : gift.name}', this)">
+                    <div class="gift-option-radio"></div>
+                    ${gift.isAll ? '' : `<div class="gift-option-image" style="background-image: url('${gift.image}')"></div>`}
+                    <div class="gift-option-name">${gift.name}</div>
                 </div>
-            `;
+            `).join('');
+            
+            // Устанавливаем текущий выбор
+            tempSelectedGift = selectedFilter;
+            
+            modal.classList.add('show');
         }
         
-        // Выбор подарка для фильтрации
-        function selectGiftFilter(giftName) {
-            selectedFilter = giftName;
-            // Переключаемся на Market и показываем только выбранный тип подарка
-            currentView = 'market';
+        function closeGiftModal() {
+            const modal = document.getElementById('giftModal');
+            modal.classList.remove('show');
+            tempSelectedGift = null;
+        }
+        
+        function selectModalOption(giftName, element) {
+            // Убираем выделение с предыдущего элемента
+            document.querySelectorAll('.gift-option').forEach(opt => opt.classList.remove('selected'));
             
-            // Обновляем активную вкладку на Market
+            // Выделяем текущий элемент
+            element.classList.add('selected');
+            
+            // Сохраняем временный выбор
+            tempSelectedGift = giftName === '' ? null : giftName;
+        }
+        
+        function selectModalGift() {
+            // Применяем выбор
+            selectedFilter = tempSelectedGift;
+            
+            // Закрываем модальное окно
+            closeGiftModal();
+            
+            // Переключаемся на Market и применяем фильтр
+            currentView = 'market';
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab')[0].classList.add('active'); // Market активный
+            document.querySelectorAll('.tab')[0].classList.add('active');
             document.querySelectorAll('.nav-item')[0].classList.add('active');
             
-            // Показываем фильтры и применяем выбранный подарок
+            document.getElementById('filtersSection').classList.remove('filters-hidden');
+            applyGiftNameFilter();
+        }
+        
+        function filterModalGifts() {
+            const query = document.getElementById('modalSearchBox').value.toLowerCase();
+            const options = document.querySelectorAll('.gift-option');
+            
+            options.forEach(option => {
+                const name = option.querySelector('.gift-option-name').textContent.toLowerCase();
+                if (name.includes(query)) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+        
+        // Выбор подарка для фильтрации (оставляем для совместимости)
+        function selectGiftFilter(giftName) {
+            selectedFilter = giftName;
+            currentView = 'market';
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+            
             document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyGiftNameFilter();
         }
