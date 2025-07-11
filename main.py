@@ -146,7 +146,7 @@ async def miniapp():
             padding: 8px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             width: 32px;
             height: 32px;
             display: flex;
@@ -154,6 +154,7 @@ async def miniapp():
             justify-content: center;
             transition: all 0.3s ease;
             flex-shrink: 0;
+            margin-left: 8px;
         }
         
         .clear-filters-btn:hover {
@@ -370,7 +371,6 @@ async def miniapp():
     <!-- Фильтры (показываются только в Market) -->
     <div class="filters-section" id="filtersSection">
         <div class="filter-row">
-            <span class="filter-label">Тип:</span>
             <select class="filter-select" id="giftTypeFilter" onchange="applyFilters()">
                 <option value="">Все подарки</option>
                 <option value="fashion">Мода</option>
@@ -384,7 +384,6 @@ async def miniapp():
                 <option value="misc">Разное</option>
             </select>
             
-            <span class="filter-label">Сорт:</span>
             <select class="filter-select" id="sortFilter" onchange="applyFilters()">
                 <option value="recent">Недавние</option>
                 <option value="price_asc">Цена: мин → макс</option>
@@ -392,7 +391,7 @@ async def miniapp():
                 <option value="rarity">По редкости</option>
             </select>
             
-            <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">🗑️</button>
+            <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">✕</button>
         </div>
     </div>
     
