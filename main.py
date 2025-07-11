@@ -352,6 +352,90 @@ async def miniapp():
         .filters-hidden {
             display: none;
         }
+        
+        /* Filter page styles */
+        .filter-list {
+            margin-top: 20px;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .filter-item:hover {
+            background: #323251;
+        }
+        
+        .filter-item.selected {
+            border-color: #3d5afe;
+            background: #2a2a5e;
+        }
+        
+        .filter-item-image {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin-right: 15px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
+            flex-shrink: 0;
+        }
+        
+        .filter-item-content {
+            flex: 1;
+        }
+        
+        .filter-item-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .filter-item-price {
+            color: #64B5F6;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .filter-item-badge {
+            background: #4CAF50;
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .filter-clear-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-clear-btn:hover {
+            background: #ff3742;
+        }
     </style>
 </head>
 <body>
@@ -364,6 +448,7 @@ async def miniapp():
     
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
+        <div class="tab" onclick="switchTab('filter')">Filter</div>
         <div class="tab" onclick="switchTab('catalog')">Catalog</div>
         <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
     </div>
@@ -454,6 +539,7 @@ async def miniapp():
         ];
         
         let currentView = 'market';
+        let selectedFilter = null; // Выбранный подарок для фильтрации
         let currentFilters = {
             giftType: '',
             sort: 'recent'
@@ -462,6 +548,11 @@ async def miniapp():
         // Применение фильтров
         function applyFilters() {
             if (currentView !== 'market') return;
+            
+            if (selectedFilter) {
+                applyGiftNameFilter();
+                return;
+            }
             
             const giftTypeFilter = document.getElementById('giftTypeFilter').value;
             const sortFilter = document.getElementById('sortFilter').value;
@@ -500,6 +591,7 @@ async def miniapp():
         function clearFilters() {
             document.getElementById('giftTypeFilter').value = '';
             document.getElementById('sortFilter').value = 'recent';
+            selectedFilter = null;
             currentFilters = {
                 giftType: '',
                 sort: 'recent'
@@ -511,6 +603,93 @@ async def miniapp():
         function showMarket() {
             document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyFilters();
+        }
+        
+        // Показать страницу фильтра
+        function showFilter() {
+            document.getElementById('filtersSection').classList.add('filters-hidden');
+            const grid = document.getElementById('giftsGrid');
+            
+            // Группируем подарки по названиям и находим минимальную цену
+            const giftGroups = {};
+            allGifts.forEach(gift => {
+                if (!giftGroups[gift.name]) {
+                    giftGroups[gift.name] = {
+                        name: gift.name,
+                        image: gift.image,
+                        minPrice: parseFloat(gift.price),
+                        new: gift.new,
+                        gifts: [gift]
+                    };
+                } else {
+                    giftGroups[gift.name].gifts.push(gift);
+                    if (parseFloat(gift.price) < giftGroups[gift.name].minPrice) {
+                        giftGroups[gift.name].minPrice = parseFloat(gift.price);
+                    }
+                }
+            });
+            
+            const uniqueGifts = Object.values(giftGroups);
+            
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1;">
+                    <button class="filter-clear-btn" onclick="clearGiftFilter()">Показать все подарки</button>
+                    <div class="filter-list">
+                        ${uniqueGifts.map(gift => `
+                            <div class="filter-item ${selectedFilter === gift.name ? 'selected' : ''}" onclick="selectGiftFilter('${gift.name}')">
+                                <div class="filter-item-image" style="background-image: url('${gift.image}')"></div>
+                                <div class="filter-item-content">
+                                    <div class="filter-item-name">${gift.name}</div>
+                                    <div class="filter-item-price">от ${gift.minPrice.toFixed(2)} ▼</div>
+                                </div>
+                                ${gift.new ? '<div class="filter-item-badge">NEW!</div>' : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Выбор подарка для фильтрации
+        function selectGiftFilter(giftName) {
+            selectedFilter = giftName;
+            // Переключаемся на Market и показываем только выбранный подарок
+            switchTab('market');
+            applyGiftNameFilter();
+        }
+        
+        // Очистка фильтра подарков
+        function clearGiftFilter() {
+            selectedFilter = null;
+            switchTab('market');
+        }
+        
+        // Применение фильтра по названию подарка
+        function applyGiftNameFilter() {
+            if (!selectedFilter) {
+                applyFilters();
+                return;
+            }
+            
+            let filteredGifts = allGifts.filter(gift => gift.listed && gift.name === selectedFilter);
+            
+            // Применяем сортировку
+            switch (currentFilters.sort) {
+                case 'recent':
+                    filteredGifts.sort((a, b) => b.new - a.new || b.id - a.id);
+                    break;
+                case 'price_asc':
+                    filteredGifts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    break;
+                case 'price_desc':
+                    filteredGifts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    break;
+                case 'rarity':
+                    filteredGifts.sort((a, b) => b.rarity - a.rarity);
+                    break;
+            }
+            
+            renderGifts(filteredGifts);
         }
         
         // Показать каталог - только фото и названия
@@ -588,11 +767,14 @@ async def miniapp():
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.querySelectorAll('.nav-item')[0].classList.add('active');
                 showMarket();
-            } else if (tab === 'catalog') {
+            } else if (tab === 'filter') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
+                showFilter();
+            } else if (tab === 'catalog') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
                 showCatalog();
             } else if (tab === 'my-gifts') {
-                document.querySelectorAll('.tab')[2].classList.add('active');
+                document.querySelectorAll('.tab')[3].classList.add('active');
                 document.querySelectorAll('.nav-item')[1].classList.add('active');
                 showMyGifts();
             }
@@ -616,9 +798,14 @@ async def miniapp():
             if (currentView === 'market') {
                 let baseGifts = allGifts.filter(gift => gift.listed);
                 
-                // Применяем фильтры
-                if (currentFilters.giftType) {
-                    baseGifts = baseGifts.filter(gift => gift.category === currentFilters.giftType);
+                // Если выбран конкретный подарок
+                if (selectedFilter) {
+                    baseGifts = baseGifts.filter(gift => gift.name === selectedFilter);
+                } else {
+                    // Применяем фильтры категорий
+                    if (currentFilters.giftType) {
+                        baseGifts = baseGifts.filter(gift => gift.category === currentFilters.giftType);
+                    }
                 }
                 
                 const filtered = baseGifts.filter(gift => 
