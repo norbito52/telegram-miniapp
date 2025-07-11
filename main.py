@@ -1,4 +1,12 @@
-# main.py - полная версия с 37 подарками
+.new-badge {
+            background: #4CAF50;
+            color: white;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-left: 4px;
+        }# main.py - полная версия с 37 подарками
 import asyncio
 import threading
 import os
@@ -189,14 +197,38 @@ async def miniapp():
             font-size: 14px;
         }
         
-        .new-badge {
-            background: #4CAF50;
+        .gift-card-catalog {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            min-height: 140px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .gift-card-catalog:hover {
+            transform: translateY(-2px);
+        }
+        
+        .gift-image-catalog {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin: 10px auto 15px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
+        }
+        
+        .gift-name-catalog {
             color: white;
-            font-size: 9px;
-            padding: 2px 5px;
-            border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
-            margin-left: 4px;
+            text-transform: uppercase;
+            line-height: 1.2;
         }
         
         .bottom-nav {
@@ -265,7 +297,7 @@ async def miniapp():
     
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
-        <div class="tab" onclick="switchTab('catalog')">Catalog (37)</div>
+        <div class="tab" onclick="switchTab('catalog')">Catalog</div>
         <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
     </div>
     
@@ -337,24 +369,23 @@ async def miniapp():
             renderGifts(topListedGifts);
         }
         
-        // Показать все 37 подарков в каталоге
+        // Показать каталог - только фото и названия
         function showCatalog() {
-            renderGifts(allGifts);
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = allGifts.map(gift => `
+                <div class="gift-card-catalog" onclick="selectGift(${gift.id})">
+                    <div class="gift-id">#${gift.id}</div>
+                    <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
+                    <div class="gift-name-catalog">${gift.name}</div>
+                </div>
+            `).join('');
         }
         
-        // Показать My Gifts с вкладками Listed/Unlisted
+        // Показать My Gifts - простая пустая страница
         function showMyGifts() {
             const grid = document.getElementById('giftsGrid');
             grid.innerHTML = `
-                <div style="grid-column: 1/-1; margin-bottom: 20px;">
-                    <div style="display: flex; background: #2a2a3e; border-radius: 10px; padding: 4px;">
-                        <div style="flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 500; color: #8b8b8b;" 
-                             onclick="showMyGiftsTab('listed')" id="myGiftsListedTab">Listed Gifts</div>
-                        <div style="flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 500; background: #3d5afe; color: white;" 
-                             onclick="showMyGiftsTab('unlisted')" id="myGiftsUnlistedTab">Unlisted Gifts</div>
-                    </div>
-                </div>
-                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #8b8b8b;">
+                <div class="empty-state">
                     <div style="font-size: 48px; margin-bottom: 15px;">📦</div>
                     <div style="font-size: 16px; margin-bottom: 8px;">У вас пока нет подарков</div>
                     <div style="font-size: 14px;">Купите подарки в Market чтобы увидеть их здесь</div>
@@ -362,83 +393,13 @@ async def miniapp():
             `;
         }
         
-        // Переключение вкладок в My Gifts
-        function showMyGiftsTab(tab) {
-            const listedTab = document.getElementById('myGiftsListedTab');
-            const unlistedTab = document.getElementById('myGiftsUnlistedTab');
-            
-            if (tab === 'listed') {
-                listedTab.style.background = '#3d5afe';
-                listedTab.style.color = 'white';
-                unlistedTab.style.background = 'transparent';
-                unlistedTab.style.color = '#8b8b8b';
-                
-                // Показать listed подарки
-                const listedGifts = allGifts.filter(gift => gift.listed);
-                const grid = document.getElementById('giftsGrid');
-                grid.innerHTML = `
-                    <div style="grid-column: 1/-1; margin-bottom: 20px;">
-                        <div style="display: flex; background: #2a2a3e; border-radius: 10px; padding: 4px;">
-                            <div style="flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 500; background: #3d5afe; color: white;" 
-                                 onclick="showMyGiftsTab('listed')" id="myGiftsListedTab">Listed Gifts</div>
-                            <div style="flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 500; color: #8b8b8b;" 
-                                 onclick="showMyGiftsTab('unlisted')" id="myGiftsUnlistedTab">Unlisted Gifts</div>
-                        </div>
-                    </div>
-                ` + listedGifts.map(gift => `
-                    <div class="gift-card">
-                        <div class="gift-id">#${gift.id}</div>
-                        <div class="gift-image" style="background-image: url('${gift.image}')"></div>
-                        <div class="gift-title">
-                            ${gift.name}
-                            ${gift.new ? '<span class="new-badge">NEW!</span>' : ''}
-                        </div>
-                        <div class="gift-subtitle">${gift.desc}</div>
-                        <button class="price-btn" onclick="buyGift(${gift.id})">
-                            <span>${gift.price}</span>
-                            <span class="triangle-icon">▼</span>
-                            <span>(${gift.count})</span>
-                        </button>
-                    </div>
-                `).join('');
-            } else {
-                unlistedTab.style.background = '#3d5afe';
-                unlistedTab.style.color = 'white';
-                listedTab.style.background = 'transparent';
-                listedTab.style.color = '#8b8b8b';
-                
-                // Показать unlisted подарки
-                const unlistedGifts = allGifts.filter(gift => !gift.listed);
-                const grid = document.getElementById('giftsGrid');
-                grid.innerHTML = `
-                    <div style="grid-column: 1/-1; margin-bottom: 20px;">
-                        <div style="display: flex; background: #2a2a3e; border-radius: 10px; padding: 4px;">
-                            <div style="flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 500; color: #8b8b8b;" 
-                                 onclick="showMyGiftsTab('listed')" id="myGiftsListedTab">Listed Gifts</div>
-                            <div style="flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 500; background: #3d5afe; color: white;" 
-                                 onclick="showMyGiftsTab('unlisted')" id="myGiftsUnlistedTab">Unlisted Gifts</div>
-                        </div>
-                    </div>
-                ` + unlistedGifts.map(gift => `
-                    <div class="gift-card">
-                        <div class="gift-id">#${gift.id}</div>
-                        <div class="gift-image" style="background-image: url('${gift.image}')"></div>
-                        <div class="gift-title">
-                            ${gift.name}
-                            ${gift.new ? '<span class="new-badge">NEW!</span>' : ''}
-                        </div>
-                        <div class="gift-subtitle">${gift.desc}</div>
-                        <button class="price-btn" onclick="buyGift(${gift.id})">
-                            <span>${gift.price}</span>
-                            <span class="triangle-icon">▼</span>
-                            <span>(${gift.count})</span>
-                        </button>
-                    </div>
-                `).join('');
-            }
+        // Выбор подарка в каталоге
+        function selectGift(id) {
+            const gift = allGifts.find(g => g.id === id);
+            tg.showAlert(`Выбран подарок #${id}: ${gift.name}`);
         }
         
-        // Рендер подарков
+        // Рендер подарков (только для Market)
         function renderGifts(gifts) {
             const grid = document.getElementById('giftsGrid');
             
@@ -460,7 +421,6 @@ async def miniapp():
                         ${gift.name}
                         ${gift.new ? '<span class="new-badge">NEW!</span>' : ''}
                     </div>
-                    <div class="gift-subtitle">${gift.desc}</div>
                     <button class="price-btn" onclick="buyGift(${gift.id})">
                         <span>${gift.price}</span>
                         <span class="triangle-icon">▼</span>
@@ -510,15 +470,25 @@ async def miniapp():
             let baseGifts = allGifts;
             if (currentView === 'market') {
                 baseGifts = allGifts.filter(gift => gift.listed);
+                const filtered = baseGifts.filter(gift => 
+                    gift.name.toLowerCase().includes(query) || 
+                    gift.id.toString().includes(query)
+                );
+                renderGifts(filtered);
+            } else if (currentView === 'catalog') {
+                const filtered = baseGifts.filter(gift => 
+                    gift.name.toLowerCase().includes(query) || 
+                    gift.id.toString().includes(query)
+                );
+                const grid = document.getElementById('giftsGrid');
+                grid.innerHTML = filtered.map(gift => `
+                    <div class="gift-card-catalog" onclick="selectGift(${gift.id})">
+                        <div class="gift-id">#${gift.id}</div>
+                        <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
+                        <div class="gift-name-catalog">${gift.name}</div>
+                    </div>
+                `).join('');
             }
-            
-            const filtered = baseGifts.filter(gift => 
-                gift.name.toLowerCase().includes(query) || 
-                gift.desc.toLowerCase().includes(query) ||
-                gift.id.toString().includes(query)
-            );
-            
-            renderGifts(filtered);
         }
         
         // Покупка подарка
