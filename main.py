@@ -1329,17 +1329,38 @@ async def miniapp():
             }
         }
         
-        // Создание объявления
-        function createAd() {
-            tg.showAlert("Функция создания объявления будет добавлена в следующем обновлении!");
+        // Створюємо змінну для поточного подарка
+        let currentGiftDetail = null;
+        
+        // Открыть детали подарка
+        function openGiftDetail(giftId) {
+            const gift = allGifts.find(g => g.id === giftId);
+            if (!gift) return;
+            
+            currentGiftDetail = gift;
+            
+            document.getElementById('giftDetailImage').style.backgroundImage = `url('${gift.image}')`;
+            document.getElementById('giftDetailTitle').textContent = gift.name;
+            document.getElementById('giftDetailId').textContent = `#${gift.id}`;
+            document.getElementById('giftDetailPriceText').textContent = gift.price;
+            document.getElementById('giftDetailCount').textContent = `(${gift.count})`;
+            
+            document.getElementById('giftDetailModal').classList.add('show');
         }
         
-        // Закрытие модальных окон при клике на фон
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('gift-detail-modal')) {
+        // Закрыть детали подарка
+        function closeGiftDetail() {
+            document.getElementById('giftDetailModal').classList.remove('show');
+            currentGiftDetail = null;
+        }
+        
+        // Купить подарок из детального просмотра
+        function buyGiftFromDetail() {
+            if (currentGiftDetail) {
+                buyGift(currentGiftDetail.id);
                 closeGiftDetail();
             }
-        });
+        }
         
         // Поиск подарков
         function searchGifts() {
@@ -1404,11 +1425,6 @@ async def miniapp():
         function openAllGiftsFilter() {
             openGiftModal();
         }
-        
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', () => {
-            showMarket();
-        });
         
         // Убираем главную кнопку Telegram
         tg.MainButton.hide();
