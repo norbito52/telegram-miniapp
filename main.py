@@ -256,7 +256,7 @@ async def miniapp():
             margin-bottom: 20px;
         }
         
-        .gift-card {
+        .gift-group-card {
             background: #2a2a3e;
             border-radius: 15px;
             padding: 15px;
@@ -267,8 +267,72 @@ async def miniapp():
             cursor: pointer;
         }
         
-        .gift-card:hover {
+        .gift-group-card:hover {
             transform: translateY(-2px);
+        }
+        
+        .gift-group-images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .gift-group-images.single {
+            justify-content: center;
+        }
+        
+        .gift-group-images.double {
+            justify-content: space-around;
+        }
+        
+        .gift-group-images.triple {
+            justify-content: space-between;
+        }
+        
+        .gift-group-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
+            flex-shrink: 0;
+        }
+        
+        .gift-group-image.single {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .gift-group-image.double {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .gift-group-image.triple {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .gift-group-count {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .gift-group-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
         
         .gift-id {
@@ -1049,7 +1113,7 @@ async def miniapp():
                     break;
             }
             
-            renderGifts(filteredGifts);
+            renderGroupedGifts(filteredGifts);
         }
         
         // Очистка фильтров
@@ -1280,8 +1344,20 @@ async def miniapp():
             tg.showAlert(`Выбран подарок #${id}: ${gift.name}`);
         }
         
-        // Рендер подарков (только для Market) - без номеров
-        function renderGifts(gifts) {
+        // Группируем подарки по названию
+        function groupGiftsByName(gifts) {
+            const groups = {};
+            gifts.forEach(gift => {
+                if (!groups[gift.name]) {
+                    groups[gift.name] = [];
+                }
+                groups[gift.name].push(gift);
+            });
+            return Object.values(groups);
+        }
+        
+        // Рендер сгруппированных подарков
+        function renderGroupedGifts(gifts) {
             const grid = document.getElementById('giftsGrid');
             
             if (gifts.length === 0) {
@@ -1294,20 +1370,39 @@ async def miniapp():
                 return;
             }
             
-            grid.innerHTML = gifts.map(gift => `
-                <div class="gift-card" onclick="openGiftDetail(${gift.id})">
-                    <div class="gift-image" style="background-image: url('${gift.image}')"></div>
-                    <div class="gift-title">
-                        ${gift.name}
-                        ${gift.new ? '<span class="new-badge">NEW!</span>' : ''}
+            const groupedGifts = groupGiftsByName(gifts);
+            
+            grid.innerHTML = groupedGifts.map(group => {
+                const count = group.length;
+                const firstGift = group[0];
+                
+                let imageClass = 'single';
+                let containerClass = 'single';
+                if (count === 2) {
+                    imageClass = 'double';
+                    containerClass = 'double';
+                } else if (count >= 3) {
+                    imageClass = 'triple';
+                    containerClass = 'triple';
+                }
+                
+                const imagesToShow = group.slice(0, 3); // Показываем максимум 3 изображения
+                
+                return `
+                    <div class="gift-group-card" onclick="openGiftGroupDetail('${firstGift.name}')">
+                        <div class="gift-group-count">${count}</div>
+                        <div class="gift-group-images ${containerClass}">
+                            ${imagesToShow.map(gift => `
+                                <div class="gift-group-image ${imageClass}" style="background-image: url('${gift.image}')"></div>
+                            `).join('')}
+                        </div>
+                        <div class="gift-group-title">${firstGift.name}</div>
+                        <button class="price-btn" onclick="event.stopPropagation(); showGiftGroupPrices('${firstGift.name}')">
+                            Ціна в TON
+                        </button>
                     </div>
-                    <button class="price-btn" onclick="event.stopPropagation(); buyGift(${gift.id})">
-                        <span>${gift.price}</span>
-                        <span class="triangle-icon">▼</span>
-                        <span>(${gift.count})</span>
-                    </button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
         // Переключение вкладок
@@ -1329,10 +1424,27 @@ async def miniapp():
             }
         }
         
+        // Открыть детали группы подарков
+        function openGiftGroupDetail(giftName) {
+            const giftsInGroup = allGifts.filter(gift => gift.name === giftName);
+            if (giftsInGroup.length === 1) {
+                // Если один подарок, открываем обычное модальное окно
+                openGiftDetail(giftsInGroup[0].id);
+            } else {
+                // Если несколько, показываем список (пока просто alert)
+                tg.showAlert(`Группа ${giftName}: ${giftsInGroup.length} подарков`);
+            }
+        }
+        
+        // Показать цены группы подарков
+        function showGiftGroupPrices(giftName) {
+            const giftsInGroup = allGifts.filter(gift => gift.name === giftName && gift.listed);
+            const prices = giftsInGroup.map(gift => `${gift.price} ▼ (${gift.count})`).join(', ');
+            tg.showAlert(`Цены ${giftName}: ${prices}`);
+        }
+        
         // Створюємо змінну для поточного подарка
         let currentGiftDetail = null;
-        
-        // Открыть детали подарка
         function openGiftDetail(giftId) {
             const gift = allGifts.find(g => g.id === giftId);
             if (!gift) return;
