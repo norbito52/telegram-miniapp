@@ -696,7 +696,7 @@ async def miniapp():
     
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
-        <div class="tab" onclick="switchTab('all-gifts')">Все подарки</div>
+        <div class="tab" onclick="openGiftModal()">Все подарки</div>
         <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
     </div>
     
@@ -922,9 +922,6 @@ async def miniapp():
             const modal = document.getElementById('giftModal');
             modal.classList.remove('show');
             tempSelectedGift = null;
-            
-            // Возвращаемся на Market при закрытии
-            switchTab('market');
         }
         
         function selectModalOption(giftName, element) {
@@ -942,10 +939,16 @@ async def miniapp():
             // Применяем выбор
             selectedFilter = tempSelectedGift;
             
-            // Закрываем модальное окно и переключаемся на Market
+            // Закрываем модальное окно
             closeGiftModal();
             
-            // Применяем фильтр в Market
+            // Переключаемся на Market и применяем фильтр
+            currentView = 'market';
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+            
+            document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyGiftNameFilter();
         }
         
