@@ -1,9 +1,4 @@
-// Показать только listed подарки в Market (топ-6)
-        function showMarket() {
-            const listedGifts = allGifts.filter(gift => gift.listed);
-            const topListedGifts = listedGifts.slice(0, 6);
-            renderGifts(topListedGifts);
-        }# main.py - каталог з 37 подарунками та ID
+# main.py - полная версия с 37 подарками
 import asyncio
 import threading
 import os
@@ -14,7 +9,7 @@ from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 import uvicorn
 
-# Конфігурація
+# Конфигурация
 BOT_TOKEN = "7878078707:AAEnd1_7b5JFw9hsEX71DKWbPiJNyW4xB2k"
 WEBAPP_URL = os.getenv("WEBAPP_URL", "https://telegram-miniapp-cmol.onrender.com")
 
@@ -335,6 +330,13 @@ async def miniapp():
         let currentView = 'market';
         let filteredGifts = allGifts;
         
+        // Показать только listed подарки в Market (топ-6)
+        function showMarket() {
+            const listedGifts = allGifts.filter(gift => gift.listed);
+            const topListedGifts = listedGifts.slice(0, 6);
+            renderGifts(topListedGifts);
+        }
+        
         // Показать все 37 подарков в каталоге
         function showCatalog() {
             renderGifts(allGifts);
@@ -434,18 +436,6 @@ async def miniapp():
                     </div>
                 `).join('');
             }
-        }
-        
-        // Показать пустые мои подарки
-        function showMyGifts() {
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <div style="font-size: 48px; margin-bottom: 15px;">📦</div>
-                    <div style="font-size: 16px; margin-bottom: 8px;">У вас пока нет подарков</div>
-                    <div style="font-size: 14px;">Купите подарки в Market чтобы увидеть их здесь</div>
-                </div>
-            `;
         }
         
         // Рендер подарков
@@ -558,7 +548,6 @@ async def miniapp():
 </html>
     """
 
-# Telegram бот
 @dp.message(Command("start"))
 async def start(message: types.Message):
     keyboard = InlineKeyboardMarkup(
