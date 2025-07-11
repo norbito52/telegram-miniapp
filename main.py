@@ -695,15 +695,28 @@ async def miniapp():
     </div>
     
     <div class="tabs">
-        <div class="tab active">Market</div>
-        <div class="tab">Все подарки</div>
-        <div class="tab">My Gifts</div>
+        <div class="tab active" onclick="switchTab('market')">Market</div>
+        <div class="tab" onclick="openGiftModal()">Все подарки</div>
+        <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
     </div>
     
     <!-- Фильтры (показываются только в Market) -->
     <div class="filters-section" id="filtersSection">
         <div class="filter-row">
-            <select class="filter-select" id="sortFilter" onchange="applyFilters()" style="flex: 2;">
+            <select class="filter-select" id="giftTypeFilter" onchange="applyFilters()">
+                <option value="">Все подарки</option>
+                <option value="fashion">Мода</option>
+                <option value="food">Еда</option>
+                <option value="animals">Животные</option>
+                <option value="objects">Предметы</option>
+                <option value="holidays">Праздники</option>
+                <option value="sports">Спорт</option>
+                <option value="symbols">Символы</option>
+                <option value="entertainment">Развлечения</option>
+                <option value="misc">Разное</option>
+            </select>
+            
+            <select class="filter-select" id="sortFilter" onchange="applyFilters()">
                 <option value="recent">Недавние</option>
                 <option value="price_asc">Цена: мин → макс</option>
                 <option value="price_desc">Цена: макс → мин</option>
@@ -722,7 +735,7 @@ async def miniapp():
         <div class="nav-item active">
             <div class="nav-text">Market</div>
         </div>
-        <div class="nav-item">
+        <div class="nav-item" onclick="switchTab('my-gifts')">
             <div class="nav-text">My Gifts</div>
         </div>
     </div>
@@ -797,6 +810,7 @@ async def miniapp():
         let selectedFilter = null; // Выбранный подарок для фильтрации
         let tempSelectedGift = null; // Временный выбор в модальном окне
         let currentFilters = {
+            giftType: '',
             sort: 'recent'
         };
         
@@ -809,11 +823,18 @@ async def miniapp():
                 return;
             }
             
+            const giftTypeFilter = document.getElementById('giftTypeFilter').value;
             const sortFilter = document.getElementById('sortFilter').value;
             
+            currentFilters.giftType = giftTypeFilter;
             currentFilters.sort = sortFilter;
             
             let filteredGifts = allGifts.filter(gift => gift.listed);
+            
+            // Фильтр по типу подарка
+            if (giftTypeFilter) {
+                filteredGifts = filteredGifts.filter(gift => gift.category === giftTypeFilter);
+            }
             
             // Сортировка
             switch (sortFilter) {
@@ -837,9 +858,11 @@ async def miniapp():
         
         // Очистка фильтров
         function clearFilters() {
+            document.getElementById('giftTypeFilter').value = '';
             document.getElementById('sortFilter').value = 'recent';
             selectedFilter = null;
             currentFilters = {
+                giftType: '',
                 sort: 'recent'
             };
             applyFilters();
@@ -853,7 +876,6 @@ async def miniapp():
         
         // Функции для модального окна выбора подарков
         function openGiftModal() {
-            console.log('Opening gift modal'); // Для отладки
             const modal = document.getElementById('giftModal');
             const optionsList = document.getElementById('giftOptionsList');
             
@@ -900,9 +922,6 @@ async def miniapp():
             const modal = document.getElementById('giftModal');
             modal.classList.remove('show');
             tempSelectedGift = null;
-            
-            // НЕ переключаемся автоматически на Market, остаемся на текущей вкладке
-            // Просто закрываем модалку
         }
         
         function selectModalOption(giftName, element) {
@@ -921,14 +940,15 @@ async def miniapp():
             selectedFilter = tempSelectedGift;
             
             // Закрываем модальное окно
-            const modal = document.getElementById('giftModal');
-            modal.classList.remove('show');
-            tempSelectedGift = null;
+            closeGiftModal();
             
             // Переключаемся на Market и применяем фильтр
-            switchTab('market');
+            currentView = 'market';
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
             
-            // Применяем фильтр в Market
+            document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyGiftNameFilter();
         }
         
@@ -1147,23 +1167,6 @@ async def miniapp():
         // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             showMarket();
-            
-            // Добавляем обработчики для вкладок
-            document.querySelectorAll('.tab').forEach((tab, index) => {
-                tab.addEventListener('click', () => {
-                    if (index === 0) switchTab('market');
-                    else if (index === 1) switchTab('all-gifts');
-                    else if (index === 2) switchTab('my-gifts');
-                });
-            });
-            
-            // Добавляем обработчики для нижней навигации
-            document.querySelectorAll('.nav-item').forEach((nav, index) => {
-                nav.addEventListener('click', () => {
-                    if (index === 0) switchTab('market');
-                    else if (index === 1) switchTab('my-gifts');
-                });
-            });
         });
         
         // Главная кнопка Telegram
