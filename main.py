@@ -1,4 +1,4 @@
- # main.py - FastAPI приложение для GiftRoom Market с My Channel
+# main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -1358,6 +1358,9 @@ async def miniapp():
             tg.showAlert(`Выбран подарок #${id}: ${gift.name}`);
         }
         
+        // Зберігаємо групи глобально для доступу
+        let currentMixedGroups = [];
+        
         // Створюємо мікс-групи різних подарків для тестування
         function createMixedGroups(gifts) {
             const mixedGroups = [];
@@ -1433,9 +1436,9 @@ async def miniapp():
                 return;
             }
             
-            const mixedGroups = createMixedGroups(gifts);
+            currentMixedGroups = createMixedGroups(gifts);
             
-            grid.innerHTML = mixedGroups.map(group => {
+            grid.innerHTML = currentMixedGroups.map((group, index) => {
                 const count = group.length;
                 const mainName = getGroupMainName(group);
                 
@@ -1452,7 +1455,7 @@ async def miniapp():
                 const imagesToShow = group.slice(0, 3);
                 
                 return `
-                    <div class="gift-group-card" onclick="openMixedGroupDetail(${JSON.stringify(group.map(g => g.id)).replace(/"/g, '&quot;')})">
+                    <div class="gift-group-card" onclick="openMixedGroupDetail(${index})">
                         <div class="gift-group-count">${count}</div>
                         <div class="gift-group-images ${containerClass}">
                             ${imagesToShow.map(gift => `
@@ -1460,7 +1463,7 @@ async def miniapp():
                             `).join('')}
                         </div>
                         <div class="gift-group-title">${mainName}</div>
-                        <button class="price-btn" onclick="event.stopPropagation(); showMixedGroupPrices(${JSON.stringify(group.map(g => g.id)).replace(/"/g, '&quot;')})">
+                        <button class="price-btn" onclick="event.stopPropagation(); showMixedGroupPrices(${index})">
                             Ціна в TON
                         </button>
                     </div>
@@ -1488,25 +1491,28 @@ async def miniapp():
         }
         
         // Открыть детали смешанной группы подарков
-        function openMixedGroupDetail(giftIds) {
-            const giftsInGroup = giftIds.map(id => allGifts.find(g => g.id === id)).filter(Boolean);
+        function openMixedGroupDetail(groupIndex) {
+            const group = currentMixedGroups[groupIndex];
+            if (!group) return;
             
-            if (giftsInGroup.length === 1) {
+            if (group.length === 1) {
                 // Если один подарок, открываем обычное модальное окно
-                openGiftDetail(giftsInGroup[0].id);
+                openGiftDetail(group[0].id);
             } else {
                 // Если несколько, показываем информацию о группе
-                const mainName = getGroupMainName(giftsInGroup);
-                const giftNames = [...new Set(giftsInGroup.map(g => g.name))];
-                const info = `Группа "${mainName}"\n\nВ группе: ${giftNames.join(', ')}\nВсего подарков: ${giftsInGroup.length}`;
+                const mainName = getGroupMainName(group);
+                const giftNames = [...new Set(group.map(g => g.name))];
+                const info = `Группа "${mainName}"\n\nВ группе: ${giftNames.join(', ')}\nВсего подарков: ${group.length}`;
                 tg.showAlert(info);
             }
         }
         
         // Показать цены смешанной группы подарков
-        function showMixedGroupPrices(giftIds) {
-            const giftsInGroup = giftIds.map(id => allGifts.find(g => g.id === id)).filter(Boolean);
-            const pricesInfo = giftsInGroup.map(gift => 
+        function showMixedGroupPrices(groupIndex) {
+            const group = currentMixedGroups[groupIndex];
+            if (!group) return;
+            
+            const pricesInfo = group.map(gift => 
                 `${gift.name}: ${gift.price} ▼ (${gift.count})`
             ).join('\n');
             tg.showAlert(`Цены в группе:\n\n${pricesInfo}`);
