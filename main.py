@@ -605,7 +605,7 @@ async def miniapp():
             applyFilters();
         }
         
-        // Показать страницу фильтра
+        // Показать страницу фильтра - ВСЕ подарки как на фото
         function showFilter() {
             currentView = 'filter';
             document.getElementById('filtersSection').classList.add('filters-hidden');
@@ -616,36 +616,18 @@ async def miniapp():
             
             const grid = document.getElementById('giftsGrid');
             
-            // Группируем подарки по названиям и находим минимальную цену
-            const giftGroups = {};
-            allGifts.forEach(gift => {
-                if (!giftGroups[gift.name]) {
-                    giftGroups[gift.name] = {
-                        name: gift.name,
-                        image: gift.image,
-                        minPrice: parseFloat(gift.price),
-                        new: gift.new,
-                        gifts: [gift]
-                    };
-                } else {
-                    giftGroups[gift.name].gifts.push(gift);
-                    if (parseFloat(gift.price) < giftGroups[gift.name].minPrice) {
-                        giftGroups[gift.name].minPrice = parseFloat(gift.price);
-                    }
-                }
-            });
-            
-            const uniqueGifts = Object.values(giftGroups);
+            // Показываем ВСЕ подарки как отдельные элементы (как на фото)
+            const allListedGifts = allGifts.filter(gift => gift.listed);
             
             grid.innerHTML = `
                 <div style="grid-column: 1/-1;">
                     <div class="filter-list">
-                        ${uniqueGifts.map(gift => `
+                        ${allListedGifts.map(gift => `
                             <div class="filter-item ${selectedFilter === gift.name ? 'selected' : ''}" onclick="selectGiftFilter('${gift.name}')">
                                 <div class="filter-item-image" style="background-image: url('${gift.image}')"></div>
                                 <div class="filter-item-content">
                                     <div class="filter-item-name">${gift.name}</div>
-                                    <div class="filter-item-price">от ${gift.minPrice.toFixed(2)} ▼</div>
+                                    <div class="filter-item-price">${gift.price} ▼ (${gift.count} 🎁)</div>
                                 </div>
                                 ${gift.new ? '<div class="filter-item-badge">NEW!</div>' : ''}
                             </div>
@@ -658,8 +640,16 @@ async def miniapp():
         // Выбор подарка для фильтрации
         function selectGiftFilter(giftName) {
             selectedFilter = giftName;
-            // Переключаемся на Market и показываем только выбранный подарок
-            switchTab('market');
+            // Переключаемся на Market и показываем только выбранный тип подарка
+            currentView = 'market';
+            
+            // Обновляем активную вкладку на Market
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[0].classList.add('active'); // Market активный
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+            
+            // Показываем фильтры и применяем выбранный подарок
+            document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyGiftNameFilter();
         }
         
