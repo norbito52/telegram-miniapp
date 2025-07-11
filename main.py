@@ -67,6 +67,76 @@ async def miniapp():
         .header .subtitle {
             color: #8b8b8b;
             font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .wallet-section {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .wallet-connect-btn {
+            background: #0088ff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .wallet-connect-btn:hover {
+            background: #006dd9;
+        }
+        
+        .balance-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .balance-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .balance-btn:hover {
+            background: #1976D2;
+            transform: scale(1.1);
+        }
+        
+        .balance-btn.minus {
+            background: #ff4757;
+        }
+        
+        .balance-btn.minus:hover {
+            background: #ff3742;
+        }
+        
+        .balance-display {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            min-width: 100px;
         }
         
         .tabs {
@@ -442,6 +512,15 @@ async def miniapp():
     <div class="header">
         <h1>GiftRoom Market</h1>
         <div class="subtitle">Магазин подарков в Telegram</div>
+        
+        <div class="wallet-section">
+            <button class="wallet-connect-btn" onclick="connectWallet()">Привязать TON кошелек</button>
+            <div class="balance-section">
+                <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
+                <div class="balance-display">0.00 TON</div>
+                <button class="balance-btn" onclick="addBalance()">+</button>
+            </div>
+        </div>
     </div>
     
     <input type="text" class="search-box" placeholder="Поиск подарков..." id="searchBox" onkeyup="searchGifts()">
@@ -449,7 +528,6 @@ async def miniapp():
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
         <div class="tab" onclick="showFilter()">Все подарки</div>
-        <div class="tab" onclick="switchTab('catalog')">Catalog</div>
         <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
     </div>
     
@@ -829,19 +907,6 @@ async def miniapp():
                 }
                 
                 renderGifts(filtered);
-            } else if (currentView === 'catalog') {
-                const filtered = allGifts.filter(gift => 
-                    gift.name.toLowerCase().includes(query) || 
-                    gift.id.toString().includes(query)
-                );
-                const grid = document.getElementById('giftsGrid');
-                grid.innerHTML = filtered.map(gift => `
-                    <div class="gift-card-catalog" onclick="selectGift(${gift.id})">
-                        <div class="gift-id">#${gift.id}</div>
-                        <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
-                        <div class="gift-name-catalog">${gift.name}</div>
-                    </div>
-                `).join('');
             }
         }
         
