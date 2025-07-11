@@ -119,7 +119,7 @@ async def miniapp():
         
         .filter-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 15px;
             align-items: center;
         }
@@ -131,7 +131,7 @@ async def miniapp():
             border-radius: 8px;
             color: white;
             font-size: 13px;
-            min-width: 120px;
+            flex: 1;
         }
         
         .filter-select option {
@@ -143,24 +143,29 @@ async def miniapp():
             background: #ff4757;
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 14px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
         
         .clear-filters-btn:hover {
             background: #ff3742;
-            transform: translateY(-1px);
+            transform: scale(1.1);
         }
         
         .filter-label {
             color: #8b8b8b;
             font-size: 12px;
             font-weight: 500;
-            min-width: 60px;
+            min-width: 35px;
         }
         
         .gifts-grid {
@@ -378,9 +383,7 @@ async def miniapp():
                 <option value="entertainment">Развлечения</option>
                 <option value="misc">Разное</option>
             </select>
-        </div>
-        
-        <div class="filter-row">
+            
             <span class="filter-label">Сорт:</span>
             <select class="filter-select" id="sortFilter" onchange="applyFilters()">
                 <option value="recent">Недавние</option>
@@ -388,7 +391,8 @@ async def miniapp():
                 <option value="price_desc">Цена: макс → мин</option>
                 <option value="rarity">По редкости</option>
             </select>
-            <button class="clear-filters-btn" onclick="clearFilters()">Очистить фильтры</button>
+            
+            <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">🗑️</button>
         </div>
     </div>
     
