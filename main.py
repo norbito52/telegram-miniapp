@@ -521,8 +521,6 @@ async def miniapp():
         </div>
     </div>
     
-    <input type="text" class="search-box" placeholder="Поиск подарков..." id="searchBox" onkeyup="searchGifts()">
-    
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
         <div class="tab" onclick="showFilter()">Все подарки</div>
