@@ -1,4 +1,4 @@
-# main.py - FastAPI приложение для GiftRoom Market с фильтрами
+# main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -358,6 +358,83 @@ async def miniapp():
             line-height: 1.2;
         }
         
+        /* My Channel Styles - в стиле старого интерфейса */
+        .channel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .channel-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 500;
+        }
+        
+        .add-ad-btn {
+            background: #3d5afe;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .add-ad-btn:hover {
+            background: #2c47e8;
+            transform: scale(1.05);
+        }
+        
+        .empty-channel {
+            text-align: center;
+            padding: 40px;
+            color: #8b8b8b;
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .empty-title {
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .empty-subtitle {
+            font-size: 14px;
+            color: #8b8b8b;
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+        
+        .create-ad-btn {
+            background: #3d5afe;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .create-ad-btn:hover {
+            background: #2c47e8;
+            transform: translateY(-1px);
+        }
+        
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -697,7 +774,7 @@ async def miniapp():
     <div class="tabs">
         <div class="tab active" onclick="switchTab('market')">Market</div>
         <div class="tab" onclick="openGiftModal()">Все подарки</div>
-        <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
+        <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
     </div>
     
     <!-- Фильтры (показываются только в Market) -->
@@ -735,8 +812,8 @@ async def miniapp():
         <div class="nav-item active">
             <div class="nav-text">Market</div>
         </div>
-        <div class="nav-item" onclick="switchTab('my-gifts')">
-            <div class="nav-text">My Gifts</div>
+        <div class="nav-item" onclick="switchTab('my-channel')">
+            <div class="nav-text">My Channel</div>
         </div>
     </div>
     
@@ -872,6 +949,24 @@ async def miniapp():
         function showMarket() {
             document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyFilters();
+        }
+        
+        // Показать My Channel в стиле старого интерфейса
+        function showMyChannel() {
+            document.getElementById('filtersSection').classList.add('filters-hidden');
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="channel-header">
+                    <div class="channel-title">Мои объявления</div>
+                    <button class="add-ad-btn" onclick="createAd()" title="Добавить объявление">+</button>
+                </div>
+                <div class="empty-channel">
+                    <div class="empty-icon">📦</div>
+                    <div class="empty-title">Нет объявлений</div>
+                    <div class="empty-subtitle">Создайте ваше первое объявление</div>
+                    <button class="create-ad-btn" onclick="createAd()">Добавить объявление</button>
+                </div>
+            `;
         }
         
         // Функции для модального окна выбора подарков
@@ -1033,19 +1128,6 @@ async def miniapp():
             `).join('');
         }
         
-        // Показать My Gifts - простая пустая страница
-        function showMyGifts() {
-            document.getElementById('filtersSection').classList.add('filters-hidden');
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <div style="font-size: 48px; margin-bottom: 15px;">📦</div>
-                    <div style="font-size: 16px; margin-bottom: 8px;">У вас пока нет подарков</div>
-                    <div style="font-size: 14px;">Купите подарки в Market чтобы увидеть их здесь</div>
-                </div>
-            `;
-        }
-        
         // Выбор подарка в каталоге
         function selectGift(id) {
             const gift = allGifts.find(g => g.id === id);
@@ -1098,18 +1180,23 @@ async def miniapp():
             } else if (tab === 'catalog') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
                 showCatalog();
-            } else if (tab === 'my-gifts') {
-                document.querySelectorAll('.tab')[3].classList.add('active');
+            } else if (tab === 'my-channel') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
                 document.querySelectorAll('.nav-item')[1].classList.add('active');
-                showMyGifts();
+                showMyChannel();
             }
+        }
+        
+        // Создание объявления
+        function createAd() {
+            tg.showAlert("Функция создания объявления будет добавлена в следующем обновлении!");
         }
         
         // Поиск подарков
         function searchGifts() {
             const query = document.getElementById('searchBox').value.toLowerCase();
             
-            if (currentView === 'my-gifts') return;
+            if (currentView === 'my-channel') return;
             
             if (query === '') {
                 if (currentView === 'market') {
@@ -1220,7 +1307,7 @@ if __name__ == "__main__":
     bot_thread.daemon = True
     bot_thread.start()
     
-    print("🎁 GiftRoom Market с фильтрами запущен!")
+    print("🎁 GiftRoom Market з My Channel запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
