@@ -900,8 +900,8 @@ async def miniapp():
             modal.classList.remove('show');
             tempSelectedGift = null;
             
-            // Возвращаемся на Market при закрытии
-            switchTab('market');
+            // НЕ переключаемся автоматически на Market, остаемся на текущей вкладке
+            // Просто закрываем модалку
         }
         
         function selectModalOption(giftName, element) {
@@ -919,8 +919,13 @@ async def miniapp():
             // Применяем выбор
             selectedFilter = tempSelectedGift;
             
-            // Закрываем модальное окно и переключаемся на Market
-            closeGiftModal();
+            // Закрываем модальное окно
+            const modal = document.getElementById('giftModal');
+            modal.classList.remove('show');
+            tempSelectedGift = null;
+            
+            // Переключаемся на Market и применяем фильтр
+            switchTab('market');
             
             // Применяем фильтр в Market
             applyGiftNameFilter();
