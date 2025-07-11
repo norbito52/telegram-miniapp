@@ -1069,10 +1069,7 @@ async def miniapp():
             {id: 41, name: "CATS", desc: "Cute cats - variant 2", price: "3.45", count: "2500", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
             {id: 42, name: "CATS", desc: "Cute cats - variant 3", price: "3.67", count: "2200", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
             
-            {id: 43, name: "HEELS", desc: "High heels - variant 2", price: "2.34", count: "10800", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-            
-            {id: 44, name: "EAGLE", desc: "Symbol of freedom - variant 2", price: "58.90", count: "140", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
-            {id: 45, name: "EAGLE", desc: "Symbol of freedom - variant 3", price: "62.15", count: "120", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"}
+            {id: 43, name: "HEELS", desc: "High heels - variant 2", price: "2.34", count: "10800", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"}
         ];
         
         let currentView = 'market';
@@ -1361,30 +1358,30 @@ async def miniapp():
         // Зберігаємо групи глобально для доступу
         let currentMixedGroups = [];
         
-        // Створюємо мікс-групи різних подарків для тестування
+        // Створюємо мікс-групи різних подарків для тестування  
         function createMixedGroups(gifts) {
             const mixedGroups = [];
             
-            // Група 1: 3 різних подарка (найбільше SNOOP DOGG)
+            // Група 1: 3 різних подарка - SNOOP DOGG + EAGLE + LOW RIDER
             const group1 = [
                 gifts.find(g => g.name === "SNOOP DOGG" && g.id === 37),
-                gifts.find(g => g.name === "SNOOP DOGG" && g.id === 38),
-                gifts.find(g => g.name === "EAGLE" && g.id === 30)
+                gifts.find(g => g.name === "EAGLE" && g.id === 30),
+                gifts.find(g => g.name === "LOW RIDER" && g.id === 34)
             ].filter(Boolean);
             if (group1.length > 0) mixedGroups.push(group1);
             
-            // Група 2: 2 різних подарка (найбільше CATS)  
+            // Група 2: 2 різних подарка - CATS + HEELS  
             const group2 = [
                 gifts.find(g => g.name === "CATS" && g.id === 3),
                 gifts.find(g => g.name === "HEELS" && g.id === 1)
             ].filter(Boolean);
             if (group2.length > 0) mixedGroups.push(group2);
             
-            // Група 3: 3 різних подарка (найбільше LOW RIDER)
+            // Група 3: 3 різних подарка - SWAG BAG + TORCH + WESTSIDE SIGN
             const group3 = [
-                gifts.find(g => g.name === "LOW RIDER" && g.id === 34),
                 gifts.find(g => g.name === "SWAG BAG" && g.id === 36),
-                gifts.find(g => g.name === "TORCH" && g.id === 32)
+                gifts.find(g => g.name === "TORCH" && g.id === 32),
+                gifts.find(g => g.name === "WESTSIDE SIGN" && g.id === 33)
             ].filter(Boolean);
             if (group3.length > 0) mixedGroups.push(group3);
             
