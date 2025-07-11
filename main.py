@@ -1,4 +1,4 @@
-# main.py - FastAPI приложение для GiftRoom Market с My Channel
+ # main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -1127,7 +1127,7 @@ async def miniapp():
                     break;
             }
             
-            renderGroupedGifts(filteredGifts);
+            renderMixedGifts(filteredGifts);
         }
         
         // Очистка фильтров
@@ -1358,20 +1358,69 @@ async def miniapp():
             tg.showAlert(`Выбран подарок #${id}: ${gift.name}`);
         }
         
-        // Группируем подарки по названию
-        function groupGiftsByName(gifts) {
-            const groups = {};
-            gifts.forEach(gift => {
-                if (!groups[gift.name]) {
-                    groups[gift.name] = [];
-                }
-                groups[gift.name].push(gift);
+        // Створюємо мікс-групи різних подарків для тестування
+        function createMixedGroups(gifts) {
+            const mixedGroups = [];
+            
+            // Група 1: 3 різних подарка (найбільше SNOOP DOGG)
+            const group1 = [
+                gifts.find(g => g.name === "SNOOP DOGG" && g.id === 37),
+                gifts.find(g => g.name === "SNOOP DOGG" && g.id === 38),
+                gifts.find(g => g.name === "EAGLE" && g.id === 30)
+            ].filter(Boolean);
+            if (group1.length > 0) mixedGroups.push(group1);
+            
+            // Група 2: 2 різних подарка (найбільше CATS)  
+            const group2 = [
+                gifts.find(g => g.name === "CATS" && g.id === 3),
+                gifts.find(g => g.name === "HEELS" && g.id === 1)
+            ].filter(Boolean);
+            if (group2.length > 0) mixedGroups.push(group2);
+            
+            // Група 3: 3 різних подарка (найбільше LOW RIDER)
+            const group3 = [
+                gifts.find(g => g.name === "LOW RIDER" && g.id === 34),
+                gifts.find(g => g.name === "SWAG BAG" && g.id === 36),
+                gifts.find(g => g.name === "TORCH" && g.id === 32)
+            ].filter(Boolean);
+            if (group3.length > 0) mixedGroups.push(group3);
+            
+            // Решта подарків поодинці
+            const usedIds = new Set();
+            mixedGroups.forEach(group => {
+                group.forEach(gift => usedIds.add(gift.id));
             });
-            return Object.values(groups);
+            
+            const singleGifts = gifts.filter(gift => !usedIds.has(gift.id));
+            singleGifts.forEach(gift => {
+                mixedGroups.push([gift]);
+            });
+            
+            return mixedGroups;
         }
         
-        // Рендер сгруппированных подарков
-        function renderGroupedGifts(gifts) {
+        // Визначаємо основну назву групи (від підарка якого найбільше)
+        function getGroupMainName(group) {
+            const nameCounts = {};
+            group.forEach(gift => {
+                nameCounts[gift.name] = (nameCounts[gift.name] || 0) + parseInt(gift.count);
+            });
+            
+            let maxCount = 0;
+            let mainName = group[0].name;
+            
+            Object.entries(nameCounts).forEach(([name, count]) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    mainName = name;
+                }
+            });
+            
+            return mainName;
+        }
+        
+        // Рендер мікс-груп подарків
+        function renderMixedGifts(gifts) {
             const grid = document.getElementById('giftsGrid');
             
             if (gifts.length === 0) {
@@ -1384,11 +1433,11 @@ async def miniapp():
                 return;
             }
             
-            const groupedGifts = groupGiftsByName(gifts);
+            const mixedGroups = createMixedGroups(gifts);
             
-            grid.innerHTML = groupedGifts.map(group => {
+            grid.innerHTML = mixedGroups.map(group => {
                 const count = group.length;
-                const firstGift = group[0];
+                const mainName = getGroupMainName(group);
                 
                 let imageClass = 'single';
                 let containerClass = 'single';
@@ -1400,18 +1449,18 @@ async def miniapp():
                     containerClass = 'triple';
                 }
                 
-                const imagesToShow = group.slice(0, 3); // Показываем максимум 3 изображения
+                const imagesToShow = group.slice(0, 3);
                 
                 return `
-                    <div class="gift-group-card" onclick="openGiftGroupDetail('${firstGift.name}')">
+                    <div class="gift-group-card" onclick="openMixedGroupDetail(${JSON.stringify(group.map(g => g.id)).replace(/"/g, '&quot;')})">
                         <div class="gift-group-count">${count}</div>
                         <div class="gift-group-images ${containerClass}">
                             ${imagesToShow.map(gift => `
                                 <div class="gift-group-image ${imageClass}" style="background-image: url('${gift.image}')"></div>
                             `).join('')}
                         </div>
-                        <div class="gift-group-title">${firstGift.name}</div>
-                        <button class="price-btn" onclick="event.stopPropagation(); showGiftGroupPrices('${firstGift.name}')">
+                        <div class="gift-group-title">${mainName}</div>
+                        <button class="price-btn" onclick="event.stopPropagation(); showMixedGroupPrices(${JSON.stringify(group.map(g => g.id)).replace(/"/g, '&quot;')})">
                             Ціна в TON
                         </button>
                     </div>
@@ -1438,23 +1487,29 @@ async def miniapp():
             }
         }
         
-        // Открыть детали группы подарков
-        function openGiftGroupDetail(giftName) {
-            const giftsInGroup = allGifts.filter(gift => gift.name === giftName);
+        // Открыть детали смешанной группы подарков
+        function openMixedGroupDetail(giftIds) {
+            const giftsInGroup = giftIds.map(id => allGifts.find(g => g.id === id)).filter(Boolean);
+            
             if (giftsInGroup.length === 1) {
                 // Если один подарок, открываем обычное модальное окно
                 openGiftDetail(giftsInGroup[0].id);
             } else {
-                // Если несколько, показываем список (пока просто alert)
-                tg.showAlert(`Группа ${giftName}: ${giftsInGroup.length} подарков`);
+                // Если несколько, показываем информацию о группе
+                const mainName = getGroupMainName(giftsInGroup);
+                const giftNames = [...new Set(giftsInGroup.map(g => g.name))];
+                const info = `Группа "${mainName}"\n\nВ группе: ${giftNames.join(', ')}\nВсего подарков: ${giftsInGroup.length}`;
+                tg.showAlert(info);
             }
         }
         
-        // Показать цены группы подарков
-        function showGiftGroupPrices(giftName) {
-            const giftsInGroup = allGifts.filter(gift => gift.name === giftName && gift.listed);
-            const prices = giftsInGroup.map(gift => `${gift.price} ▼ (${gift.count})`).join(', ');
-            tg.showAlert(`Цены ${giftName}: ${prices}`);
+        // Показать цены смешанной группы подарков
+        function showMixedGroupPrices(giftIds) {
+            const giftsInGroup = giftIds.map(id => allGifts.find(g => g.id === id)).filter(Boolean);
+            const pricesInfo = giftsInGroup.map(gift => 
+                `${gift.name}: ${gift.price} ▼ (${gift.count})`
+            ).join('\n');
+            tg.showAlert(`Цены в группе:\n\n${pricesInfo}`);
         }
         
         // Створюємо змінну для поточного подарка
