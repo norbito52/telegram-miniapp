@@ -71,48 +71,45 @@ async def miniapp():
         }
         
         .wallet-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background: #2a2a3e;
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px 15px;
             margin-bottom: 20px;
-            text-align: center;
         }
         
         .wallet-connect-btn {
-            background: #0088ff;
-            color: white;
+            background: transparent;
+            color: #0088ff;
             border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            width: 100%;
-            margin-bottom: 15px;
             transition: all 0.3s ease;
         }
         
         .wallet-connect-btn:hover {
-            background: #006dd9;
+            color: #006dd9;
         }
         
         .balance-section {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
+            gap: 8px;
         }
         
         .balance-btn {
             background: #2196F3;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 6px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
-            width: 40px;
-            height: 40px;
+            font-size: 14px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -134,9 +131,10 @@ async def miniapp():
         
         .balance-display {
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            min-width: 100px;
+            min-width: 70px;
+            text-align: center;
         }
         
         .tabs {
@@ -514,7 +512,7 @@ async def miniapp():
         <div class="subtitle">Магазин подарков в Telegram</div>
         
         <div class="wallet-section">
-            <button class="wallet-connect-btn" onclick="connectWallet()">Привязать TON кошелек</button>
+            <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
             <div class="balance-section">
                 <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
                 <div class="balance-display">0.00 TON</div>
