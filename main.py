@@ -1,4 +1,4 @@
-# main.py - FastAPI приложение для GiftRoom Market с My Channel
+ # main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -1020,7 +1020,7 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // База данных всех подарков
+        // База данных всех подарков с вариациями для тестирования групп
         const allGifts = [
             {id: 1, name: "HEELS", desc: "High heels", price: "2.12", count: "11500", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
             {id: 2, name: "BUTTON", desc: "Simple button", price: "2.90", count: "3056", new: false, listed: true, category: "objects", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
@@ -1058,157 +1058,30 @@ async def miniapp():
             {id: 34, name: "LOW RIDER", desc: "Cool car", price: "98.45", count: "23", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
             {id: 35, name: "SNOOP CIGAR", desc: "Elite cigar", price: "134.56", count: "45", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
             {id: 36, name: "SWAG BAG", desc: "Stylish bag", price: "156.78", count: "34", new: true, listed: true, category: "fashion", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
-            {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", price: "208.354", count: "15", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"}
+            {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", price: "208.354", count: "15", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+            
+            // Додаткові варіації для тестування груп
+            {id: 38, name: "SNOOP DOGG", desc: "Legendary rapper - variant 2", price: "180.25", count: "8", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+            {id: 39, name: "SNOOP DOGG", desc: "Legendary rapper - variant 3", price: "220.15", count: "5", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+            
+            {id: 40, name: "SNOOP CIGAR", desc: "Elite cigar - variant 2", price: "145.20", count: "25", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
+            
+            {id: 41, name: "CATS", desc: "Cute cats - variant 2", price: "3.45", count: "2500", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            {id: 42, name: "CATS", desc: "Cute cats - variant 3", price: "3.67", count: "2200", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            
+            {id: 43, name: "HEELS", desc: "High heels - variant 2", price: "2.34", count: "10800", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+            
+            {id: 44, name: "EAGLE", desc: "Symbol of freedom - variant 2", price: "58.90", count: "140", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
+            {id: 45, name: "EAGLE", desc: "Symbol of freedom - variant 3", price: "62.15", count: "120", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"}
         ];
         
         let currentView = 'market';
-        let selectedFilter = null;
-        let tempSelectedGift = null;
+        let selectedFilter = null; // Выбранный подарок для фильтрации
+        let tempSelectedGift = null; // Временный выбор в модальном окне
         let currentFilters = {
             giftType: '',
             sort: 'recent'
         };
-        
-        // Зберігаємо групи глобально для доступу
-        let currentMixedGroups = [];
-        
-        // Створюємо мікс-групи різних подарків для тестування  
-        function createMixedGroups(gifts) {
-            const mixedGroups = [];
-            
-            // Група 1: 3 різних подарка - SNOOP DOGG + EAGLE + LOW RIDER
-            const group1 = [
-                gifts.find(g => g.name === "SNOOP DOGG" && g.id === 37),
-                gifts.find(g => g.name === "EAGLE" && g.id === 30),
-                gifts.find(g => g.name === "LOW RIDER" && g.id === 34)
-            ].filter(Boolean);
-            if (group1.length > 0) mixedGroups.push(group1);
-            
-            // Група 2: 2 різних подарка - CATS + HEELS  
-            const group2 = [
-                gifts.find(g => g.name === "CATS" && g.id === 3),
-                gifts.find(g => g.name === "HEELS" && g.id === 1)
-            ].filter(Boolean);
-            if (group2.length > 0) mixedGroups.push(group2);
-            
-            // Група 3: 3 різних подарка - SWAG BAG + TORCH + WESTSIDE SIGN
-            const group3 = [
-                gifts.find(g => g.name === "SWAG BAG" && g.id === 36),
-                gifts.find(g => g.name === "TORCH" && g.id === 32),
-                gifts.find(g => g.name === "WESTSIDE SIGN" && g.id === 33)
-            ].filter(Boolean);
-            if (group3.length > 0) mixedGroups.push(group3);
-            
-            // Решта подарків поодинці
-            const usedIds = new Set();
-            mixedGroups.forEach(group => {
-                group.forEach(gift => usedIds.add(gift.id));
-            });
-            
-            const singleGifts = gifts.filter(gift => !usedIds.has(gift.id));
-            singleGifts.forEach(gift => {
-                mixedGroups.push([gift]);
-            });
-            
-            return mixedGroups;
-        }
-        
-        // Визначаємо основну назву групи (від підарка якого найбільше)
-        function getGroupMainName(group) {
-            const nameCounts = {};
-            group.forEach(gift => {
-                nameCounts[gift.name] = (nameCounts[gift.name] || 0) + parseInt(gift.count);
-            });
-            
-            let maxCount = 0;
-            let mainName = group[0].name;
-            
-            Object.entries(nameCounts).forEach(([name, count]) => {
-                if (count > maxCount) {
-                    maxCount = count;
-                    mainName = name;
-                }
-            });
-            
-            return mainName;
-        }
-        
-        // Рендер мікс-груп подарків
-        function renderMixedGifts(gifts) {
-            const grid = document.getElementById('giftsGrid');
-            
-            if (gifts.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
-                        <div style="font-size: 14px;">Попробуйте изменить фильтры или поисковый запрос</div>
-                    </div>
-                `;
-                return;
-            }
-            
-            currentMixedGroups = createMixedGroups(gifts);
-            
-            grid.innerHTML = currentMixedGroups.map((group, index) => {
-                const count = group.length;
-                const mainName = getGroupMainName(group);
-                
-                let imageClass = 'single';
-                let containerClass = 'single';
-                if (count === 2) {
-                    imageClass = 'double';
-                    containerClass = 'double';
-                } else if (count >= 3) {
-                    imageClass = 'triple';
-                    containerClass = 'triple';
-                }
-                
-                const imagesToShow = group.slice(0, 3);
-                
-                return `
-                    <div class="gift-group-card" onclick="openMixedGroupDetail(${index})">
-                        <div class="gift-group-count">${count}</div>
-                        <div class="gift-group-images ${containerClass}">
-                            ${imagesToShow.map(gift => `
-                                <div class="gift-group-image ${imageClass}" style="background-image: url('${gift.image}')"></div>
-                            `).join('')}
-                        </div>
-                        <div class="gift-group-title">${mainName}</div>
-                        <button class="price-btn" onclick="event.stopPropagation(); showMixedGroupPrices(${index})">
-                            Ціна в TON
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Открыть детали смешанной группы подарков
-        function openMixedGroupDetail(groupIndex) {
-            const group = currentMixedGroups[groupIndex];
-            if (!group) return;
-            
-            if (group.length === 1) {
-                // Если один подарок, открываем обычное модальное окно
-                openGiftDetail(group[0].id);
-            } else {
-                // Если несколько, показываем информацию о группе
-                const mainName = getGroupMainName(group);
-                const giftNames = [...new Set(group.map(g => g.name))];
-                const info = `Группа "${mainName}"\n\nВ группе: ${giftNames.join(', ')}\nВсего подарков: ${group.length}`;
-                tg.showAlert(info);
-            }
-        }
-        
-        // Показать цены смешанной группы подарков
-        function showMixedGroupPrices(groupIndex) {
-            const group = currentMixedGroups[groupIndex];
-            if (!group) return;
-            
-            const pricesInfo = group.map(gift => 
-                `${gift.name}: ${gift.price} ▼ (${gift.count})`
-            ).join('\n');
-            tg.showAlert(`Цены в группе:\n\n${pricesInfo}`);
-        }
         
         // Применение фильтров
         function applyFilters() {
@@ -1254,7 +1127,7 @@ async def miniapp():
                     break;
             }
             
-            renderMixedGifts(filteredGifts);
+            renderGroupedGifts(filteredGifts);
         }
         
         // Очистка фильтров
@@ -1270,7 +1143,7 @@ async def miniapp():
             if (currentView === 'market') {
                 applyMarketFilters();
             } else if (currentView === 'catalog') {
-                showCatalog();
+                showCatalog(); // Перезагружаем каталог без фильтра
             }
         }
         
@@ -1387,6 +1260,59 @@ async def miniapp():
             });
         }
         
+        // Выбор подарка для фильтрации (оставляем для совместимости)
+        function selectGiftFilter(giftName) {
+            selectedFilter = giftName;
+            currentView = 'market';
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            
+            document.getElementById('filtersSection').classList.remove('filters-hidden');
+            applyGiftNameFilter();
+        }
+        
+        // Очистка фильтра подарков
+        function clearGiftFilter() {
+            selectedFilter = null;
+            // Остаемся в Market но показываем все подарки
+            currentView = 'market';
+            
+            // Обновляем активную вкладку
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[0].classList.add('active'); // Market активный
+            
+            showMarket();
+        }
+        
+        // Применение фильтра по названию подарка
+        function applyGiftNameFilter() {
+            if (!selectedFilter) {
+                applyFilters();
+                return;
+            }
+            
+            let filteredGifts = allGifts.filter(gift => gift.listed && gift.name === selectedFilter);
+            
+            // Применяем сортировку
+            switch (currentFilters.sort) {
+                case 'recent':
+                    filteredGifts.sort((a, b) => b.new - a.new || b.id - a.id);
+                    break;
+                case 'price_asc':
+                    filteredGifts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    break;
+                case 'price_desc':
+                    filteredGifts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    break;
+                case 'rarity':
+                    filteredGifts.sort((a, b) => b.rarity - a.rarity);
+                    break;
+            }
+            
+            renderGifts(filteredGifts);
+        }
+        
         // Показать каталог - с выборочным показом подарков
         function showCatalog() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
@@ -1432,6 +1358,67 @@ async def miniapp():
             tg.showAlert(`Выбран подарок #${id}: ${gift.name}`);
         }
         
+        // Группируем подарки по названию
+        function groupGiftsByName(gifts) {
+            const groups = {};
+            gifts.forEach(gift => {
+                if (!groups[gift.name]) {
+                    groups[gift.name] = [];
+                }
+                groups[gift.name].push(gift);
+            });
+            return Object.values(groups);
+        }
+        
+        // Рендер сгруппированных подарков
+        function renderGroupedGifts(gifts) {
+            const grid = document.getElementById('giftsGrid');
+            
+            if (gifts.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
+                        <div style="font-size: 14px;">Попробуйте изменить фильтры или поисковый запрос</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const groupedGifts = groupGiftsByName(gifts);
+            
+            grid.innerHTML = groupedGifts.map(group => {
+                const count = group.length;
+                const firstGift = group[0];
+                
+                let imageClass = 'single';
+                let containerClass = 'single';
+                if (count === 2) {
+                    imageClass = 'double';
+                    containerClass = 'double';
+                } else if (count >= 3) {
+                    imageClass = 'triple';
+                    containerClass = 'triple';
+                }
+                
+                const imagesToShow = group.slice(0, 3); // Показываем максимум 3 изображения
+                
+                return `
+                    <div class="gift-group-card" onclick="openGiftGroupDetail('${firstGift.name}')">
+                        <div class="gift-group-count">${count}</div>
+                        <div class="gift-group-images ${containerClass}">
+                            ${imagesToShow.map(gift => `
+                                <div class="gift-group-image ${imageClass}" style="background-image: url('${gift.image}')"></div>
+                            `).join('')}
+                        </div>
+                        <div class="gift-group-title">${firstGift.name}</div>
+                        <button class="price-btn" onclick="event.stopPropagation(); showGiftGroupPrices('${firstGift.name}')">
+                            Ціна в TON
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
         // Переключение вкладок
         function switchTab(tab) {
             currentView = tab;
@@ -1451,9 +1438,27 @@ async def miniapp():
             }
         }
         
+        // Открыть детали группы подарков
+        function openGiftGroupDetail(giftName) {
+            const giftsInGroup = allGifts.filter(gift => gift.name === giftName);
+            if (giftsInGroup.length === 1) {
+                // Если один подарок, открываем обычное модальное окно
+                openGiftDetail(giftsInGroup[0].id);
+            } else {
+                // Если несколько, показываем список (пока просто alert)
+                tg.showAlert(`Группа ${giftName}: ${giftsInGroup.length} подарков`);
+            }
+        }
+        
+        // Показать цены группы подарков
+        function showGiftGroupPrices(giftName) {
+            const giftsInGroup = allGifts.filter(gift => gift.name === giftName && gift.listed);
+            const prices = giftsInGroup.map(gift => `${gift.price} ▼ (${gift.count})`).join(', ');
+            tg.showAlert(`Цены ${giftName}: ${prices}`);
+        }
+        
         // Створюємо змінну для поточного подарка
         let currentGiftDetail = null;
-        
         function openGiftDetail(giftId) {
             const gift = allGifts.find(g => g.id === giftId);
             if (!gift) return;
@@ -1483,17 +1488,58 @@ async def miniapp():
             }
         }
         
-        // Создание объявления
-        function createAd() {
-            tg.showAlert("Функция создания объявления будет добавлена в следующем обновлении!");
-        }
-        
-        // Закрытие модальных окон при клике на фон
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('gift-detail-modal')) {
-                closeGiftDetail();
+        // Поиск подарков
+        function searchGifts() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            
+            if (currentView === 'my-channel') return;
+            
+            if (query === '') {
+                if (currentView === 'market') {
+                    applyFilters();
+                } else if (currentView === 'catalog') {
+                    showCatalog();
+                }
+                return;
             }
-        });
+            
+            if (currentView === 'market') {
+                let baseGifts = allGifts.filter(gift => gift.listed);
+                
+                // Если выбран конкретный подарок
+                if (selectedFilter) {
+                    baseGifts = baseGifts.filter(gift => gift.name === selectedFilter);
+                } else {
+                    // Применяем фильтры категорий
+                    if (currentFilters.giftType) {
+                        baseGifts = baseGifts.filter(gift => gift.category === currentFilters.giftType);
+                    }
+                }
+                
+                const filtered = baseGifts.filter(gift => 
+                    gift.name.toLowerCase().includes(query) || 
+                    gift.id.toString().includes(query)
+                );
+                
+                // Применяем сортировку
+                switch (currentFilters.sort) {
+                    case 'recent':
+                        filtered.sort((a, b) => b.new - a.new || b.id - a.id);
+                        break;
+                    case 'price_asc':
+                        filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                        break;
+                    case 'price_desc':
+                        filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                        break;
+                    case 'rarity':
+                        filtered.sort((a, b) => b.rarity - a.rarity);
+                        break;
+                }
+                
+                renderGifts(filtered);
+            }
+        }
         
         // Покупка подарка
         function buyGift(id) {
@@ -1501,10 +1547,10 @@ async def miniapp():
             tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} ▼`);
         }
         
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', () => {
-            showMarket();
-        });
+        // Функция для модального окна "Все подарки" теперь доступна из фильтров
+        function openAllGiftsFilter() {
+            openGiftModal();
+        }
         
         // Убираем главную кнопку Telegram
         tg.MainButton.hide();
@@ -1556,4 +1602,4 @@ if __name__ == "__main__":
     print("🎁 GiftRoom Market з My Channel запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=port) 
