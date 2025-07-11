@@ -264,6 +264,7 @@ async def miniapp():
             transition: transform 0.3s ease;
             min-height: 200px;
             position: relative;
+            cursor: pointer;
         }
         
         .gift-card:hover {
@@ -271,15 +272,7 @@ async def miniapp():
         }
         
         .gift-id {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: rgba(0,0,0,0.6);
-            color: #8b8b8b;
-            font-size: 10px;
-            padding: 4px 6px;
-            border-radius: 4px;
-            font-weight: 500;
+            display: none;
         }
         
         .gift-image {
@@ -760,8 +753,99 @@ async def miniapp():
             transition: all 0.3s ease;
         }
         
-        .filter-clear-btn:hover {
-            background: #ff3742;
+        /* Gift Detail Modal */
+        .gift-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        
+        .gift-detail-modal.show {
+            display: flex;
+        }
+        
+        .gift-detail-content {
+            background: #2a2a3e;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 320px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+        
+        .gift-detail-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #4a4a5e;
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .gift-detail-image {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            background-size: cover;
+            background-position: center;
+            border: 3px solid #3a3a5c;
+        }
+        
+        .gift-detail-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .gift-detail-id {
+            color: #8b8b8b;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .gift-detail-description {
+            color: #8b8b8b;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 25px;
+            min-height: 40px;
+        }
+        
+        .gift-detail-price {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
     </style>
 </head>
@@ -847,6 +931,24 @@ async def miniapp():
                 <button class="modal-btn cancel" onclick="closeGiftModal()">Отмена</button>
                 <button class="modal-btn select" onclick="selectModalGift()">Выбрать</button>
             </div>
+        </div>
+    </div>
+    
+    <!-- Modal для деталей подарка -->
+    <div class="gift-detail-modal" id="giftDetailModal">
+        <div class="gift-detail-content">
+            <button class="gift-detail-close" onclick="closeGiftDetail()">✕</button>
+            <div class="gift-detail-image" id="giftDetailImage"></div>
+            <div class="gift-detail-title" id="giftDetailTitle"></div>
+            <div class="gift-detail-id" id="giftDetailId"></div>
+            <div class="gift-detail-description" id="giftDetailDescription">
+                <!-- Описание будет добавлено позже -->
+            </div>
+            <button class="gift-detail-price" id="giftDetailPrice" onclick="buyGiftFromDetail()">
+                <span id="giftDetailPriceText"></span>
+                <span class="triangle-icon">▼</span>
+                <span id="giftDetailCount"></span>
+            </button>
         </div>
     </div>
 
@@ -1178,7 +1280,7 @@ async def miniapp():
             tg.showAlert(`Выбран подарок #${id}: ${gift.name}`);
         }
         
-        // Рендер подарков (только для Market)
+        // Рендер подарков (только для Market) - без номеров
         function renderGifts(gifts) {
             const grid = document.getElementById('giftsGrid');
             
@@ -1193,14 +1295,13 @@ async def miniapp():
             }
             
             grid.innerHTML = gifts.map(gift => `
-                <div class="gift-card">
-                    <div class="gift-id">#${gift.id}</div>
+                <div class="gift-card" onclick="openGiftDetail(${gift.id})">
                     <div class="gift-image" style="background-image: url('${gift.image}')"></div>
                     <div class="gift-title">
                         ${gift.name}
                         ${gift.new ? '<span class="new-badge">NEW!</span>' : ''}
                     </div>
-                    <button class="price-btn" onclick="buyGift(${gift.id})">
+                    <button class="price-btn" onclick="event.stopPropagation(); buyGift(${gift.id})">
                         <span>${gift.price}</span>
                         <span class="triangle-icon">▼</span>
                         <span>(${gift.count})</span>
@@ -1232,6 +1333,13 @@ async def miniapp():
         function createAd() {
             tg.showAlert("Функция создания объявления будет добавлена в следующем обновлении!");
         }
+        
+        // Закрытие модальных окон при клике на фон
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('gift-detail-modal')) {
+                closeGiftDetail();
+            }
+        });
         
         // Поиск подарков
         function searchGifts() {
