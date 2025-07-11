@@ -1,12 +1,4 @@
-.new-badge {
-            background: #4CAF50;
-            color: white;
-            font-size: 9px;
-            padding: 2px 5px;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-left: 4px;
-        }# main.py - полная версия с 37 подарками
+# main.py - FastAPI приложение для GiftRoom Market
 import asyncio
 import threading
 import os
@@ -36,6 +28,16 @@ async def miniapp():
     <title>GiftRoom Market</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        .new-badge {
+            background: #4CAF50;
+            color: white;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
         * {
             margin: 0;
             padding: 0;
