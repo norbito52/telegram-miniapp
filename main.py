@@ -695,9 +695,9 @@ async def miniapp():
     </div>
     
     <div class="tabs">
-        <div class="tab active" onclick="switchTab('market')">Market</div>
-        <div class="tab" onclick="switchTab('all-gifts')">Все подарки</div>
-        <div class="tab" onclick="switchTab('my-gifts')">My Gifts</div>
+        <div class="tab active">Market</div>
+        <div class="tab">Все подарки</div>
+        <div class="tab">My Gifts</div>
     </div>
     
     <!-- Фильтры (показываются только в Market) -->
@@ -722,7 +722,7 @@ async def miniapp():
         <div class="nav-item active">
             <div class="nav-text">Market</div>
         </div>
-        <div class="nav-item" onclick="switchTab('my-gifts')">
+        <div class="nav-item">
             <div class="nav-text">My Gifts</div>
         </div>
     </div>
@@ -853,6 +853,7 @@ async def miniapp():
         
         // Функции для модального окна выбора подарков
         function openGiftModal() {
+            console.log('Opening gift modal'); // Для отладки
             const modal = document.getElementById('giftModal');
             const optionsList = document.getElementById('giftOptionsList');
             
@@ -1146,6 +1147,23 @@ async def miniapp():
         // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             showMarket();
+            
+            // Добавляем обработчики для вкладок
+            document.querySelectorAll('.tab').forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    if (index === 0) switchTab('market');
+                    else if (index === 1) switchTab('all-gifts');
+                    else if (index === 2) switchTab('my-gifts');
+                });
+            });
+            
+            // Добавляем обработчики для нижней навигации
+            document.querySelectorAll('.nav-item').forEach((nav, index) => {
+                nav.addEventListener('click', () => {
+                    if (index === 0) switchTab('market');
+                    else if (index === 1) switchTab('my-gifts');
+                });
+            });
         });
         
         // Главная кнопка Telegram
