@@ -1,4 +1,4 @@
-# main.py - без емодзі, на російській мові
+# main.py - каталог з 37 подарунками та ID
 import asyncio
 import threading
 import os
@@ -75,6 +75,7 @@ async def miniapp():
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 500;
+            font-size: 14px;
         }
         
         .tab.active {
@@ -83,6 +84,21 @@ async def miniapp():
         }
         
         .tab:not(.active) {
+            color: #8b8b8b;
+        }
+        
+        .search-box {
+            background: #2a2a3e;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: white;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .search-box::placeholder {
             color: #8b8b8b;
         }
         
@@ -99,46 +115,58 @@ async def miniapp():
             padding: 15px;
             text-align: center;
             transition: transform 0.3s ease;
-            min-height: 180px;
+            min-height: 200px;
+            position: relative;
         }
         
         .gift-card:hover {
             transform: translateY(-2px);
         }
         
-        .gift-image-placeholder {
+        .gift-id {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.6);
+            color: #8b8b8b;
+            font-size: 10px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .gift-image {
             width: 70px;
             height: 70px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 10px;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: white;
-            font-weight: 600;
+            margin: 15px auto 10px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
         }
         
         .gift-title {
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             margin-bottom: 8px;
             text-transform: uppercase;
+            line-height: 1.2;
         }
         
         .gift-subtitle {
             color: #8b8b8b;
-            font-size: 12px;
+            font-size: 11px;
             margin-bottom: 15px;
+            line-height: 1.3;
         }
         
         .price-btn {
             background: #2196F3;
             color: white;
             border: none;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             width: 100%;
             font-weight: 600;
@@ -147,7 +175,8 @@ async def miniapp():
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 4px;
+            font-size: 12px;
         }
         
         .price-btn:hover {
@@ -157,18 +186,17 @@ async def miniapp():
         
         .triangle-icon {
             color: #64B5F6;
-            font-size: 16px;
+            font-size: 14px;
         }
         
-        .cancel-btn {
-            background: #f44336;
+        .new-badge {
+            background: #4CAF50;
             color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            margin-top: 8px;
-            cursor: pointer;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-left: 4px;
         }
         
         .bottom-nav {
@@ -203,28 +231,17 @@ async def miniapp():
             font-weight: 500;
         }
         
-        .new-badge {
-            background: #4CAF50;
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin-left: 5px;
+        .empty-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 40px;
+            color: #8b8b8b;
         }
         
-        .search-box {
-            background: #2a2a3e;
-            border: none;
-            padding: 12px 15px;
-            border-radius: 10px;
-            color: white;
-            width: 100%;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        .search-box::placeholder {
+        .loading {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 40px;
             color: #8b8b8b;
         }
         
@@ -236,25 +253,6 @@ async def miniapp():
         .gift-card {
             animation: fadeIn 0.6s ease-out;
         }
-        
-        .empty-state {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 40px;
-            color: #8b8b8b;
-        }
-        
-        .empty-icon {
-            width: 80px;
-            height: 80px;
-            background: #2a2a3e;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
     </style>
 </head>
 <body>
@@ -263,86 +261,23 @@ async def miniapp():
         <div class="subtitle">Магазин подарков в Telegram</div>
     </div>
     
-    <input type="text" class="search-box" placeholder="Поиск подарков...">
+    <input type="text" class="search-box" placeholder="Поиск подарков..." id="searchBox" onkeyup="searchGifts()">
     
     <div class="tabs">
-        <div class="tab active" onclick="switchTab('listed')">Listed Gifts</div>
+        <div class="tab active" onclick="switchTab('market')">Market</div>
+        <div class="tab" onclick="switchTab('listed')">Listed Gifts</div>
         <div class="tab" onclick="switchTab('unlisted')">Unlisted Gifts</div>
     </div>
     
     <div class="gifts-grid" id="giftsGrid">
-        <div class="gift-card">
-            <div class="gift-image-placeholder">ОРЕЛ</div>
-            <div class="gift-title">ОРЕЛ <span class="new-badge">NEW!</span></div>
-            <div class="gift-subtitle">Символ свободы</div>
-            <button class="price-btn">
-                <span>2.12</span>
-                <span class="triangle-icon">▼</span>
-                <span>(1244 подарков)</span>
-            </button>
-        </div>
-        
-        <div class="gift-card">
-            <div class="gift-image-placeholder">СТАТУЯ</div>
-            <div class="gift-title">СТАТУЯ <span class="new-badge">NEW!</span></div>
-            <div class="gift-subtitle">Статуя Свободы</div>
-            <button class="price-btn">
-                <span>5.3</span>
-                <span class="triangle-icon">▼</span>
-                <span>(508 подарков)</span>
-            </button>
-        </div>
-        
-        <div class="gift-card">
-            <div class="gift-image-placeholder">ФАКЕЛ</div>
-            <div class="gift-title">ФАКЕЛ <span class="new-badge">NEW!</span></div>
-            <div class="gift-subtitle">Огонь свободы</div>
-            <button class="price-btn">
-                <span>4.759</span>
-                <span class="triangle-icon">▼</span>
-                <span>(215 подарков)</span>
-            </button>
-        </div>
-        
-        <div class="gift-card">
-            <div class="gift-image-placeholder">СОСКА</div>
-            <div class="gift-title">СОСКА <span class="new-badge">NEW!</span></div>
-            <div class="gift-subtitle">Золотая соска</div>
-            <button class="price-btn">
-                <span>12.614</span>
-                <span class="triangle-icon">▼</span>
-                <span>(611 подарков)</span>
-            </button>
-        </div>
-        
-        <div class="gift-card">
-            <div class="gift-image-placeholder">МОРОЖЕНОЕ</div>
-            <div class="gift-title">МОРОЖЕНОЕ</div>
-            <div class="gift-subtitle">Холодное удовольствие</div>
-            <button class="price-btn">
-                <span>95.4</span>
-                <span class="triangle-icon">▼</span>
-                <span>(231 подарок)</span>
-            </button>
-        </div>
-        
-        <div class="gift-card">
-            <div class="gift-image-placeholder">КУЛИЧ</div>
-            <div class="gift-title">КУЛИЧ</div>
-            <div class="gift-subtitle">Праздничный десерт</div>
-            <button class="price-btn">
-                <span>2.12</span>
-                <span class="triangle-icon">▼</span>
-                <span>(11500 подарков)</span>
-            </button>
-        </div>
+        <div class="loading">Загрузка подарков...</div>
     </div>
     
     <div class="bottom-nav">
         <div class="nav-item active">
             <div class="nav-text">Market</div>
         </div>
-        <div class="nav-item" onclick="showMyGifts()">
+        <div class="nav-item" onclick="switchTab('my-gifts')">
             <div class="nav-text">My Gifts</div>
         </div>
     </div>
@@ -351,57 +286,192 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        function switchTab(tab) {
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (tab === 'unlisted') {
-                showMyGifts();
-            } else {
-                showListedGifts();
-            }
+        // База данных всех 37 подарков с реальными фото
+        const allGifts = [
+            {id: 1, name: "HEELS", desc: "Высокие каблуки", price: "2.12", count: "11500", new: false, listed: true, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+            {id: 2, name: "BUTTON", desc: "Простая кнопка", price: "2.90", count: "3056", new: false, listed: true, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+            {id: 3, name: "CATS", desc: "Милые котики", price: "3.23", count: "2945", new: false, listed: true, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            {id: 4, name: "SOCKS", desc: "Теплые носки", price: "3.56", count: "2834", new: false, listed: false, image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+            {id: 5, name: "BICEPS", desc: "Мощные мышцы", price: "3.89", count: "2723", new: false, listed: true, image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
+            {id: 6, name: "LAMP", desc: "Настольная лампа", price: "4.12", count: "2612", new: false, listed: true, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+            {id: 7, name: "BOUQUET", desc: "Букет цветов", price: "4.45", count: "2501", new: false, listed: false, image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
+            {id: 8, name: "CUPCAKE", desc: "Сладкий кекс", price: "4.78", count: "2390", new: false, listed: true, image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
+            {id: 9, name: "MARCH 8", desc: "Женский день", price: "5.12", count: "2289", new: false, listed: false, image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"},
+            {id: 10, name: "DYSON", desc: "Мощный пылесос", price: "5.45", count: "2178", new: false, listed: true, image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+            {id: 11, name: "BOILER", desc: "Паровой котел", price: "5.89", count: "2067", new: false, listed: false, image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
+            {id: 12, name: "CLOVER", desc: "Четырехлистник", price: "6.34", count: "1956", new: false, listed: true, image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"},
+            {id: 13, name: "AMULET", desc: "Защитный амулет", price: "6.78", count: "1845", new: false, listed: false, image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+            {id: 14, name: "MOSQUE", desc: "Красивая мечеть", price: "7.23", count: "1734", new: false, listed: true, image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
+            {id: 15, name: "DOSHIK", desc: "Быстрая лапша", price: "7.89", count: "1623", new: false, listed: true, image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+            {id: 16, name: "POOP", desc: "Смешная какашка", price: "8.67", count: "1512", new: false, listed: false, image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
+            {id: 17, name: "MONKEY", desc: "Озорная обезьянка", price: "9.45", count: "1401", new: false, listed: true, image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+            {id: 18, name: "BRICK", desc: "Строительный кирпич", price: "10.78", count: "1290", new: false, listed: false, image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
+            {id: 19, name: "ROCKET", desc: "Космическая ракета", price: "12.34", count: "1189", new: false, listed: true, image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
+            {id: 20, name: "EASTER", desc: "Пасхальный праздник", price: "13.67", count: "1078", new: false, listed: true, image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"},
+            {id: 21, name: "RABBIT", desc: "Пушистый кролик", price: "15.43", count: "967", new: false, listed: false, image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+            {id: 22, name: "1 MAY", desc: "Первомайский подарок", price: "17.89", count: "856", new: false, listed: true, image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"},
+            {id: 23, name: "MEDAL", desc: "Золотая медаль", price: "19.56", count: "745", new: false, listed: true, image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+            {id: 24, name: "PIGEON", desc: "Городской голубь", price: "22.78", count: "634", new: false, listed: false, image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
+            {id: 25, name: "STAR", desc: "Яркая звезда", price: "25.34", count: "512", new: false, listed: true, image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
+            {id: 26, name: "CREAMY ICE CREAM", desc: "Сливочное мороженое", price: "28.67", count: "423", new: false, listed: true, image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
+            {id: 27, name: "ESKIMO", desc: "Эскимо мороженое", price: "32.45", count: "345", new: false, listed: false, image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
+            {id: 28, name: "PLUMBER", desc: "Сантехник", price: "38.90", count: "267", new: true, listed: true, image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
+            {id: 29, name: "NIPPLE", desc: "Золотая соска", price: "45.78", count: "203", new: true, listed: true, image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
+            {id: 30, name: "EAGLE", desc: "Символ свободы", price: "54.67", count: "156", new: true, listed: true, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
+            {id: 31, name: "STATUE", desc: "Статуя Свободы", price: "65.43", count: "112", new: true, listed: true, image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"},
+            {id: 32, name: "TORCH", desc: "Факел свободы", price: "76.89", count: "89", new: true, listed: true, image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"},
+            {id: 33, name: "WESTSIDE SIGN", desc: "Знак западного побережья", price: "87.32", count: "67", new: true, listed: true, image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
+            {id: 34, name: "LOW RIDER", desc: "Крутая тачка", price: "98.45", count: "23", new: true, listed: true, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
+            {id: 35, name: "SNOOP CIGAR", desc: "Элитная сигара", price: "134.56", count: "45", new: true, listed: true, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
+            {id: 36, name: "SWAG BAG", desc: "Стильная сумка", price: "156.78", count: "34", new: true, listed: true, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+            {id: 37, name: "SNOOP DOGG", desc: "Легендарный рэпер", price: "208.354", count: "15", new: true, listed: true, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"}
+        ];
+        
+        let currentView = 'market';
+        let filteredGifts = allGifts;
+        
+        // Показать только listed подарки в Market (топ-6)
+        function showMarket() {
+            const listedGifts = allGifts.filter(gift => gift.listed);
+            const topListedGifts = listedGifts.slice(0, 6);
+            renderGifts(topListedGifts);
         }
         
+        // Показать только listed подарки
+        function showListedGifts() {
+            const listedGifts = allGifts.filter(gift => gift.listed);
+            renderGifts(listedGifts);
+        }
+        
+        // Показать только unlisted подарки  
+        function showUnlistedGifts() {
+            const unlistedGifts = allGifts.filter(gift => !gift.listed);
+            renderGifts(unlistedGifts);
+        }
+        
+        // Показать пустые мои подарки
         function showMyGifts() {
             const grid = document.getElementById('giftsGrid');
             grid.innerHTML = `
                 <div class="empty-state">
-                    <div class="empty-icon">?</div>
+                    <div style="font-size: 48px; margin-bottom: 15px;">📦</div>
                     <div style="font-size: 16px; margin-bottom: 8px;">У вас пока нет подарков</div>
                     <div style="font-size: 14px;">Купите подарки в Market чтобы увидеть их здесь</div>
                 </div>
             `;
-            
-            // Обновляем навигацию
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            navItems[1].classList.add('active');
         }
         
-        function showListedGifts() {
-            location.reload(); // Простое обновление страницы
+        // Рендер подарков
+        function renderGifts(gifts) {
+            const grid = document.getElementById('giftsGrid');
+            
+            if (gifts.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
+                        <div style="font-size: 14px;">Попробуйте изменить поисковый запрос</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = gifts.map(gift => `
+                <div class="gift-card">
+                    <div class="gift-id">#${gift.id}</div>
+                    <div class="gift-image" style="background-image: url('${gift.image}')"></div>
+                    <div class="gift-title">
+                        ${gift.name}
+                        ${gift.new ? '<span class="new-badge">NEW!</span>' : ''}
+                    </div>
+                    <div class="gift-subtitle">${gift.desc}</div>
+                    <button class="price-btn" onclick="buyGift(${gift.id})">
+                        <span>${gift.price}</span>
+                        <span class="triangle-icon">▼</span>
+                        <span>(${gift.count})</span>
+                    </button>
+                </div>
+            `).join('');
         }
+        
+        // Переключение вкладок
+        function switchTab(tab) {
+            currentView = tab;
+            
+            // Обновляем активную вкладку
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            if (tab === 'market') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+                showMarket();
+            } else if (tab === 'listed') {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                showListedGifts();
+            } else if (tab === 'unlisted') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
+                showUnlistedGifts();
+            } else if (tab === 'my-gifts') {
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+                showMyGifts();
+            }
+        }
+        
+        // Поиск подарков
+        function searchGifts() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            
+            if (currentView === 'my-gifts') return;
+            
+            let baseGifts = allGifts;
+            if (currentView === 'market' || currentView === 'listed') {
+                baseGifts = allGifts.filter(gift => gift.listed);
+            } else if (currentView === 'unlisted') {
+                baseGifts = allGifts.filter(gift => !gift.listed);
+            }
+            
+            if (query === '') {
+                if (currentView === 'market') {
+                    showMarket();
+                } else if (currentView === 'listed') {
+                    showListedGifts();
+                } else if (currentView === 'unlisted') {
+                    showUnlistedGifts();
+                }
+                return;
+            }
+            
+            const filtered = baseGifts.filter(gift => 
+                gift.name.toLowerCase().includes(query) || 
+                gift.desc.toLowerCase().includes(query) ||
+                gift.id.toString().includes(query)
+            );
+            
+            renderGifts(filtered);
+        }
+        
+        // Покупка подарка
+        function buyGift(id) {
+            const gift = allGifts.find(g => g.id === id);
+            tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} ▼`);
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            showMarket();
+        });
         
         // Главная кнопка Telegram
         tg.MainButton.text = "Готово";
         tg.MainButton.show();
         tg.MainButton.onClick(() => { 
-            tg.showAlert('GiftRoom Market работает!');
+            tg.close();
         });
         
         // Адаптация к теме
         if (tg.colorScheme === 'dark') {
             document.body.style.background = '#0f0f1a';
         }
-        
-        // Анимация при загрузке
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.gift-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
-            });
-        });
     </script>
 </body>
 </html>
@@ -422,19 +492,11 @@ async def start(message: types.Message):
     await message.answer(
         f"Привет {message.from_user.first_name}!\n\n"
         f"Добро пожаловать в GiftRoom Market!\n"
-        f"Магазин уникальных подарков в Telegram.\n\n"
+        f"🎁 37 уникальных подарков\n"
+        f"🔍 Поиск по ID и названию\n"
+        f"💎 Редкие и обычные подарки\n\n"
         f"Нажми кнопку чтобы открыть каталог:",
         reply_markup=keyboard
-    )
-
-@dp.message(Command("help"))
-async def help_command(message: types.Message):
-    await message.answer(
-        "Доступные команды:\n\n"
-        "/start - Открыть GiftRoom Market\n"
-        "/help - Показать эту помощь\n"
-        "/catalog - Посмотреть каталог\n"
-        "/support - Поддержка"
     )
 
 async def run_bot():
@@ -450,8 +512,7 @@ if __name__ == "__main__":
     bot_thread.daemon = True
     bot_thread.start()
     
-    print("GiftRoom Market запущен!")
-    print(f"URL: {WEBAPP_URL}")
-    print("Магазин подарков готов!")
+    print("🎁 GiftRoom Market с 37 подарками запущен!")
+    print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
