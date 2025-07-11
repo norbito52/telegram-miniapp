@@ -140,15 +140,13 @@ async def miniapp():
         }
         
         .ton-icon {
-            width: 16px;
-            height: 16px;
-            background: #0088ff;
+            width: 18px;
+            height: 18px;
+            background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png');
+            background-size: cover;
+            background-position: center;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
+            flex-shrink: 0;
         }
         
         .tabs {
@@ -777,7 +775,7 @@ async def miniapp():
             <div class="balance-section">
                 <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
                 <div class="balance-display">
-                    <div class="ton-icon">◆</div>
+                    <div class="ton-icon"></div>
                     <span>0.00 TON</span>
                 </div>
                 <button class="balance-btn" onclick="addBalance()">+</button>
@@ -907,8 +905,13 @@ async def miniapp():
         
         // Применение фильтров
         function applyFilters() {
-            if (currentView !== 'market') return;
-            
+            if (currentView === 'market') {
+                applyMarketFilters();
+            }
+        }
+        
+        // Применение фильтров в Market
+        function applyMarketFilters() {
             if (selectedFilter) {
                 applyGiftNameFilter();
                 return;
@@ -956,13 +959,18 @@ async def miniapp():
                 giftType: '',
                 sort: 'recent'
             };
-            applyFilters();
+            
+            if (currentView === 'market') {
+                applyMarketFilters();
+            } else if (currentView === 'catalog') {
+                showCatalog(); // Перезагружаем каталог без фильтра
+            }
         }
         
         // Показать только listed подарки в Market
         function showMarket() {
             document.getElementById('filtersSection').classList.remove('filters-hidden');
-            applyFilters();
+            applyMarketFilters();
         }
         
         // Показать My Channel в стиле старого интерфейса
@@ -984,14 +992,46 @@ async def miniapp():
         }
         
         function openGiftModal() {
-            // Тепер відкриваємо Collections замість модального вікна
-            currentView = 'catalog';
+            const modal = document.getElementById('giftModal');
+            const optionsList = document.getElementById('giftOptionsList');
             
-            // Обновляем активную вкладку
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab')[1].classList.add('active');
+            // Создаем список всех уникальных подарков
+            const giftGroups = {};
+            allGifts.forEach(gift => {
+                if (!giftGroups[gift.name]) {
+                    giftGroups[gift.name] = {
+                        name: gift.name,
+                        image: gift.image,
+                        new: gift.new
+                    };
+                }
+            });
             
-            showCatalog();
+            const uniqueGifts = Object.values(giftGroups);
+            
+            // Добавляем опцию "Все подарки"
+            const allGiftsOption = {
+                name: 'Все подарки',
+                image: '',
+                new: false,
+                isAll: true
+            };
+            
+            const options = [allGiftsOption, ...uniqueGifts];
+            
+            optionsList.innerHTML = options.map(gift => `
+                <div class="gift-option ${(!selectedFilter && gift.isAll) || selectedFilter === gift.name ? 'selected' : ''}" 
+                     onclick="selectModalOption('${gift.isAll ? '' : gift.name}', this)">
+                    <div class="gift-option-radio"></div>
+                    ${gift.isAll ? '' : `<div class="gift-option-image" style="background-image: url('${gift.image}')"></div>`}
+                    <div class="gift-option-name">${gift.name}</div>
+                </div>
+            `).join('');
+            
+            // Устанавливаем текущий выбор
+            tempSelectedGift = selectedFilter;
+            
+            modal.classList.add('show');
         }
         
         function closeGiftModal() {
@@ -1018,13 +1058,12 @@ async def miniapp():
             // Закрываем модальное окно
             closeGiftModal();
             
-            // Переключаемся на Market и применяем фильтр
-            currentView = 'market';
+            // Переключаемся на Collections и применяем фильтр
+            currentView = 'catalog';
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.querySelectorAll('.tab')[1].classList.add('active');
             
-            document.getElementById('filtersSection').classList.remove('filters-hidden');
-            applyGiftNameFilter();
+            showCatalog();
         }
         
         function filterModalGifts() {
@@ -1094,15 +1133,37 @@ async def miniapp():
             renderGifts(filteredGifts);
         }
         
-        // Показать каталог - только фото и названия (сортируем по убыванию ID)
+        // Показать каталог - с выборочным показом подарков
         function showCatalog() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
+            
+            if (selectedFilter) {
+                // Показываем только выбранный тип подарка
+                const filteredGifts = allGifts.filter(gift => gift.name === selectedFilter);
+                const sortedGifts = filteredGifts.sort((a, b) => b.id - a.id);
+                renderCatalogGifts(sortedGifts);
+            } else {
+                // Показываем все подарки
+                const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
+                renderCatalogGifts(sortedGifts);
+            }
+        }
+        
+        // Рендер подарков в Collections
+        function renderCatalogGifts(gifts) {
             const grid = document.getElementById('giftsGrid');
             
-            // Сортируем подарки от большего ID к меньшему
-            const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
+            if (gifts.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
+                        <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
+                    </div>
+                `;
+                return;
+            }
             
-            grid.innerHTML = sortedGifts.map(gift => `
+            grid.innerHTML = gifts.map(gift => `
                 <div class="gift-card-catalog" onclick="selectGift(${gift.id})">
                     <div class="gift-id">#${gift.id}</div>
                     <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
