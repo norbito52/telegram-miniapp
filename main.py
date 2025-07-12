@@ -1,4 +1,4 @@
- # main.py - FastAPI приложение для GiftRoom Market с My Channel
+# main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -28,6 +28,164 @@ async def miniapp():
     <title>GiftRoom Market</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease-out;
+        }
+        
+        /* Logo Animation */
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Title Animation */
+        .loading-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            animation: slideUp 1s ease-out 0.3s both;
+            text-align: center;
+        }
+        
+        .loading-subtitle {
+            font-size: 16px;
+            color: #8b8b8b;
+            margin-bottom: 40px;
+            animation: slideUp 1s ease-out 0.5s both;
+            text-align: center;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Gift Box Loading Animation */
+        .gift-loader {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            animation: slideUp 1s ease-out 0.7s both;
+        }
+        
+        .gift-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-radius: 8px;
+            animation: bounce 1.5s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .gift-box:nth-child(1) { animation-delay: 0s; }
+        .gift-box:nth-child(2) { animation-delay: 0.2s; }
+        .gift-box:nth-child(3) { animation-delay: 0.4s; }
+        
+        .gift-box::before {
+            content: '🎁';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-15px);
+            }
+            60% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            animation: slideUp 1s ease-out 0.9s both;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            animation: loadProgress 3s ease-out;
+        }
+        
+        @keyframes loadProgress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        
+        /* Loading Text */
+        .loading-text {
+            color: #8b8b8b;
+            font-size: 14px;
+            animation: slideUp 1s ease-out 1.1s both;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Main App Container */
+        .main-app {
+            opacity: 0;
+            transition: opacity 0.8s ease-in;
+        }
+        
+        .main-app.visible {
+            opacity: 1;
+        }
+        
         .new-badge {
             background: #4CAF50;
             color: white;
@@ -49,7 +207,6 @@ async def miniapp():
             color: white;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
-            padding: 20px;
         }
         
         .header {
@@ -914,66 +1071,88 @@ async def miniapp():
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>GiftRoom Market</h1>
-        <div class="subtitle">Магазин подарков в Telegram</div>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">🎁</div>
+        <div class="loading-title">GiftRoom</div>
+        <div class="loading-subtitle">Магазин подарунків в Telegram</div>
         
-        <div class="wallet-section">
-            <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
-            <div class="balance-section">
-                <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
-                <div class="balance-display">
-                    <div class="ton-icon"></div>
-                    <span>0.00 TON</span>
+        <div class="gift-loader">
+            <div class="gift-box"></div>
+            <div class="gift-box"></div>
+            <div class="gift-box"></div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="loading-text">Завантаження...</div>
+    </div>
+
+    <!-- Main App -->
+    <div class="main-app" id="mainApp">
+        <div class="header">
+            <h1>GiftRoom Market</h1>
+            <div class="subtitle">Магазин подарків в Telegram</div>
+            
+            <div class="wallet-section">
+                <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
+                <div class="balance-section">
+                    <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
+                    <div class="balance-display">
+                        <div class="ton-icon"></div>
+                        <span>0.00 TON</span>
+                    </div>
+                    <button class="balance-btn" onclick="addBalance()">+</button>
                 </div>
-                <button class="balance-btn" onclick="addBalance()">+</button>
             </div>
         </div>
-    </div>
-    
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('market')">Market</div>
-        <div class="tab" onclick="openGiftModal()">Collections</div>
-        <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
-    </div>
-    
-    <!-- Фильтры (показываются только в Market) -->
-    <div class="filters-section" id="filtersSection">
-        <div class="filter-row">
-            <select class="filter-select" id="giftTypeFilter" onchange="applyFilters()">
-                <option value="">Все подарки</option>
-                <option value="fashion">Мода</option>
-                <option value="food">Еда</option>
-                <option value="animals">Животные</option>
-                <option value="objects">Предметы</option>
-                <option value="holidays">Праздники</option>
-                <option value="sports">Спорт</option>
-                <option value="symbols">Символы</option>
-                <option value="entertainment">Развлечения</option>
-                <option value="misc">Разное</option>
-            </select>
-            
-            <select class="filter-select" id="sortFilter" onchange="applyFilters()">
-                <option value="recent">Недавние</option>
-                <option value="price_asc">Цена: мин → макс</option>
-                <option value="price_desc">Цена: макс → мин</option>
-                <option value="rarity">По редкости</option>
-            </select>
-            
-            <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">✕</button>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('market')">Market</div>
+            <div class="tab" onclick="openGiftModal()">Collections</div>
+            <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
         </div>
-    </div>
-    
-    <div class="gifts-grid" id="giftsGrid">
-        <div class="loading">Загрузка подарков...</div>
-    </div>
-    
-    <div class="bottom-nav" style="display: none;">
-        <div class="nav-item active" onclick="switchTab('market')">
-            <div class="nav-text">Market</div>
+        
+        <!-- Фільтри (показываются только в Market) -->
+        <div class="filters-section" id="filtersSection">
+            <div class="filter-row">
+                <select class="filter-select" id="giftTypeFilter" onchange="applyFilters()">
+                    <option value="">Все подарки</option>
+                    <option value="fashion">Мода</option>
+                    <option value="food">Еда</option>
+                    <option value="animals">Животные</option>
+                    <option value="objects">Предметы</option>
+                    <option value="holidays">Праздники</option>
+                    <option value="sports">Спорт</option>
+                    <option value="symbols">Символы</option>
+                    <option value="entertainment">Развлечения</option>
+                    <option value="misc">Разное</option>
+                </select>
+                
+                <select class="filter-select" id="sortFilter" onchange="applyFilters()">
+                    <option value="recent">Недавние</option>
+                    <option value="price_asc">Цена: мин → макс</option>
+                    <option value="price_desc">Цена: макс → мин</option>
+                    <option value="rarity">По редкости</option>
+                </select>
+                
+                <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">✕</button>
+            </div>
         </div>
-        <div class="nav-item" onclick="switchTab('my-channel')">
-            <div class="nav-text">My Channel</div>
+        
+        <div class="gifts-grid" id="giftsGrid">
+            <div class="loading">Загрузка подарков...</div>
+        </div>
+        
+        <div class="bottom-nav" style="display: none;">
+            <div class="nav-item active" onclick="switchTab('market')">
+                <div class="nav-text">Market</div>
+            </div>
+            <div class="nav-item" onclick="switchTab('my-channel')">
+                <div class="nav-text">My Channel</div>
+            </div>
         </div>
     </div>
     
@@ -1019,6 +1198,39 @@ async def miniapp():
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
+        
+        // Loading Screen Logic
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const mainApp = document.getElementById('mainApp');
+            
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                mainApp.classList.add('visible');
+            }, 3200);
+        }
+        
+        // Initialize app
+        function initializeApp() {
+            // Initialize your existing app logic here
+            console.log('GiftRoom Market initialized');
+            
+            // Load gifts after a delay to show the beautiful loader
+            setTimeout(() => {
+                loadInitialGifts();
+            }, 1000);
+        }
+        
+        function loadInitialGifts() {
+            // Your existing gift loading logic
+            showMarket();
+        }
+        
+        // Start loading process when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+            hideLoadingScreen();
+        });
         
         // База данных всех подарков с вариациями для тестирования групп
         const allGifts = [
@@ -1076,8 +1288,8 @@ async def miniapp():
         ];
         
         let currentView = 'market';
-        let selectedFilter = null; // Выбранный подарок для фильтрации
-        let tempSelectedGift = null; // Временный выбор в модальном окне
+        let selectedFilter = null;
+        let tempSelectedGift = null;
         let currentFilters = {
             giftType: '',
             sort: 'recent'
@@ -1113,7 +1325,6 @@ async def miniapp():
             // Сортировка
             switch (sortFilter) {
                 case 'recent':
-                    // По умолчанию (новые сначала, потом по ID)
                     filteredGifts.sort((a, b) => b.new - a.new || b.id - a.id);
                     break;
                 case 'price_asc':
@@ -1143,7 +1354,7 @@ async def miniapp():
             if (currentView === 'market') {
                 applyMarketFilters();
             } else if (currentView === 'catalog') {
-                showCatalog(); // Перезагружаем каталог без фильтра
+                showCatalog();
             }
         }
         
@@ -1419,6 +1630,33 @@ async def miniapp():
             }).join('');
         }
         
+        // Рендер обычных подарков (без группировки)
+        function renderGifts(gifts) {
+            const grid = document.getElementById('giftsGrid');
+            
+            if (gifts.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
+                        <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = gifts.map(gift => `
+                <div class="gift-card-catalog" onclick="openGiftDetail(${gift.id})">
+                    ${gift.new ? '<span class="new-badge">NEW</span>' : ''}
+                    <div class="gift-id">#${gift.id}</div>
+                    <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
+                    <div class="gift-name-catalog">${gift.name}</div>
+                    <div class="price-btn" style="margin-top: 10px;">
+                        ${gift.price} ▼ (${gift.count})
+                    </div>
+                </div>
+            `).join('');
+        }
+        
         // Переключение вкладок
         function switchTab(tab) {
             currentView = tab;
@@ -1488,68 +1726,28 @@ async def miniapp():
             }
         }
         
-        // Поиск подарков
-        function searchGifts() {
-            const query = document.getElementById('searchBox').value.toLowerCase();
-            
-            if (currentView === 'my-channel') return;
-            
-            if (query === '') {
-                if (currentView === 'market') {
-                    applyFilters();
-                } else if (currentView === 'catalog') {
-                    showCatalog();
-                }
-                return;
-            }
-            
-            if (currentView === 'market') {
-                let baseGifts = allGifts.filter(gift => gift.listed);
-                
-                // Если выбран конкретный подарок
-                if (selectedFilter) {
-                    baseGifts = baseGifts.filter(gift => gift.name === selectedFilter);
-                } else {
-                    // Применяем фильтры категорий
-                    if (currentFilters.giftType) {
-                        baseGifts = baseGifts.filter(gift => gift.category === currentFilters.giftType);
-                    }
-                }
-                
-                const filtered = baseGifts.filter(gift => 
-                    gift.name.toLowerCase().includes(query) || 
-                    gift.id.toString().includes(query)
-                );
-                
-                // Применяем сортировку
-                switch (currentFilters.sort) {
-                    case 'recent':
-                        filtered.sort((a, b) => b.new - a.new || b.id - a.id);
-                        break;
-                    case 'price_asc':
-                        filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-                        break;
-                    case 'price_desc':
-                        filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-                        break;
-                    case 'rarity':
-                        filtered.sort((a, b) => b.rarity - a.rarity);
-                        break;
-                }
-                
-                renderGifts(filtered);
-            }
-        }
-        
         // Покупка подарка
         function buyGift(id) {
             const gift = allGifts.find(g => g.id === id);
             tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} ▼`);
         }
         
-        // Функция для модального окна "Все подарки" теперь доступна из фильтров
-        function openAllGiftsFilter() {
-            openGiftModal();
+        // Функция для создания объявления
+        function createAd() {
+            tg.showAlert('Создание объявления - функция в разработке');
+        }
+        
+        // Функции кошелька
+        function connectWallet() {
+            tg.showAlert('Подключение TON кошелька');
+        }
+        
+        function withdrawBalance() {
+            tg.showAlert('Вывод средств');
+        }
+        
+        function addBalance() {
+            tg.showAlert('Пополнение баланса');
         }
         
         // Убираем главную кнопку Telegram
@@ -1559,6 +1757,9 @@ async def miniapp():
         if (tg.colorScheme === 'dark') {
             document.body.style.background = '#0f0f1a';
         }
+        
+        // Telegram WebApp готов
+        tg.ready();
     </script>
 </body>
 </html>
@@ -1602,4 +1803,4 @@ if __name__ == "__main__":
     print("🎁 GiftRoom Market з My Channel запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
-    uvicorn.run(app, host="0.0.0.0", port=port) 
+    uvicorn.run(app, host="0.0.0.0", port=port)
