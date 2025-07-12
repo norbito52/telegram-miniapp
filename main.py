@@ -1,4 +1,4 @@
- # main.py - FastAPI приложение для ChannelGift Market - торговля Telegram каналами с подарками
+ # main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -25,218 +25,9 @@ async def miniapp():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChannelGift Market</title>
+    <title>GiftRoom Market</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Loading Screen Styles */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        .loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.8s ease-out;
-        }
-        
-        /* Logo Animation */
-        .loading-logo {
-            width: 140px;
-            height: 140px;
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 25%, #fbbc05 50%, #ea4335 75%);
-            border-radius: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 56px;
-            margin-bottom: 35px;
-            animation: pulse 2s ease-in-out infinite;
-            box-shadow: 0 25px 50px rgba(66, 133, 244, 0.4);
-            position: relative;
-        }
-        
-        .loading-logo::before {
-            content: '';
-            position: absolute;
-            width: 160px;
-            height: 160px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            animation: rotate 3s linear infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Title Animation */
-        .loading-title {
-            font-size: 36px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
-            animation: slideUp 1s ease-out 0.3s both;
-            text-align: center;
-        }
-        
-        .loading-subtitle {
-            font-size: 18px;
-            color: #8b8b8b;
-            margin-bottom: 45px;
-            animation: slideUp 1s ease-out 0.5s both;
-            text-align: center;
-            font-weight: 500;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Channel Loading Animation */
-        .channel-loader {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 35px;
-            animation: slideUp 1s ease-out 0.7s both;
-        }
-        
-        .channel-box {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 12px;
-            animation: bounce 1.8s ease-in-out infinite;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .channel-box:nth-child(1) { 
-            animation-delay: 0s; 
-            background: linear-gradient(45deg, #4285f4, #1976d2);
-        }
-        .channel-box:nth-child(2) { 
-            animation-delay: 0.3s; 
-            background: linear-gradient(45deg, #34a853, #2e7d32);
-        }
-        .channel-box:nth-child(3) { 
-            animation-delay: 0.6s; 
-            background: linear-gradient(45deg, #fbbc05, #f57c00);
-        }
-        
-        .channel-box::before {
-            content: '📺';
-            font-size: 24px;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        /* Progress Bar */
-        .progress-container {
-            width: 250px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            animation: slideUp 1s ease-out 0.9s both;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4285f4, #34a853, #fbbc05);
-            border-radius: 3px;
-            animation: loadProgress 3.5s ease-out;
-        }
-        
-        @keyframes loadProgress {
-            from { width: 0%; }
-            to { width: 100%; }
-        }
-        
-        /* Loading Text */
-        .loading-text {
-            color: #8b8b8b;
-            font-size: 16px;
-            font-weight: 500;
-            animation: slideUp 1s ease-out 1.1s both;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Main App Container */
-        .main-app {
-            opacity: 0;
-            transition: opacity 0.8s ease-in;
-        }
-        
-        .main-app.visible {
-            opacity: 1;
-        }
-        
-        .new-badge {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            font-size: 10px;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-weight: 700;
-            margin-left: 6px;
-            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
-        }
-        
-        .hot-badge {
-            background: linear-gradient(135deg, #ff4757, #ff3742);
-            color: white;
-            font-size: 10px;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-weight: 700;
-            margin-left: 6px;
-            box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
-        }
-        
         * {
             margin: 0;
             padding: 0;
@@ -248,68 +39,449 @@ async def miniapp():
             color: white;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: gradientShift 6s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%); }
+            33% { background: linear-gradient(135deg, #2a5298 0%, #3d5afe 50%, #2a5298 100%); }
+            66% { background: linear-gradient(135deg, #3d5afe 0%, #667eea 50%, #3d5afe 100%); }
+        }
+        
+        .logo-container {
+            position: relative;
+            margin-bottom: 50px;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+        
+        .logo-bg {
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500, #4ecdc4, #45b7d1);
+            background-size: 400% 400%;
+            border-radius: 30px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: gradientRotate 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .logo-bg::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            border-radius: 33px;
+            animation: shimmer 2s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(200%) rotate(45deg); }
+        }
+        
+        .rocket {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            animation: rocketBounce 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes rocketBounce {
+            0%, 100% { transform: translate(-50%, -50%) rotate(-5deg); }
+            50% { transform: translate(-50%, -55%) rotate(5deg); }
+        }
+        
+        .app-name {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1, #96c93d, #ffa500);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            animation: textGradient 3s ease-in-out infinite;
+            text-align: center;
+        }
+        
+        @keyframes textGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .app-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 60px;
+            text-align: center;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        .gift-icons {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 45px;
+            animation: iconsFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes iconsFloat {
+            0%, 100% { transform: translateY(0px); }
+            33% { transform: translateY(-6px); }
+            66% { transform: translateY(3px); }
+        }
+        
+        .gift-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+        
+        .gift-icon:nth-child(1) {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            animation-delay: 0s;
+        }
+        
+        .gift-icon:nth-child(2) {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            animation-delay: 0.3s;
+        }
+        
+        .gift-icon:nth-child(3) {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1) rotateY(0deg); }
+            50% { transform: scale(1.1) rotateY(180deg); }
+        }
+        
+        .progress-container {
+            width: 260px;
+            height: 5px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #45b7d1, #96c93d, #ffa500);
+            background-size: 400% 100%;
+            border-radius: 8px;
+            animation: progressGradient 2s linear infinite, progressFill 4s ease-in-out forwards;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -40px;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: progressShine 2s linear infinite;
+        }
+        
+        @keyframes progressGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        @keyframes progressFill {
+            0% { width: 0%; }
+            25% { width: 30%; }
+            50% { width: 60%; }
+            75% { width: 85%; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes progressShine {
+            0% { left: -40px; }
+            100% { left: 100%; }
+        }
+        
+        .loading-text {
+            font-size: 15px;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            animation: textPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Main App Styles */
+        .main-app {
+            display: none;
+            padding: 20px;
+        }
+        
+        .new-badge {
+            background: #4CAF50;
+            color: white;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-left: 4px;
         }
         
         .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .header h1 {
-            font-size: 28px;
-            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-            font-weight: 800;
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 5px;
         }
         
         .header .subtitle {
             color: #8b8b8b;
-            font-size: 16px;
-            margin-bottom: 20px;
-            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 15px;
         }
         
         .wallet-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(135deg, #2a2a3e 0%, #2d2d42 100%);
-            border-radius: 16px;
-            padding: 15px 18px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
         }
         
         .wallet-connect-btn {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
-            color: white;
+            background: transparent;
+            color: #0088ff;
             border: none;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 12px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
         }
         
         .wallet-connect-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+            color: #006dd9;
         }
         
         .balance-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .balance-btn {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .balance-btn:hover {
+            background: #1976D2;
+            transform: scale(1.1);
+        }
+        
+        .balance-btn.minus {
+            background: #ff4757;
+        }
+        
+        .balance-btn.minus:hover {
+            background: #ff3742;
+        }
+        
+        .balance-display {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .ton-icon {
+            width: 18px;
+            height: 18px;
+            background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #2a2a3e;
+            border-radius: 10px;
+            padding: 4px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .tab.active {
+            background: #3d5afe;
+            color: white;
+        }
+        
+        .tab:not(.active) {
+            color: #8b8b8b;
+        }
+        
+        .search-box {
+            background: #2a2a3e;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: white;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .search-box::placeholder {
+            color: #8b8b8b;
+        }
+        
+        /* Фильтры */
+        .filters-section {
+            margin-bottom: 20px;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .filter-select {
+            background: #2a2a3e;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .filter-select option {
+            background: #2a2a3e;
+            color: white;
+        }
+        
+        .clear-filters-btn {
+            background: #ff4757;
             color: white;
             border: none;
             padding: 8px;
@@ -322,310 +494,159 @@ async def miniapp():
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-        }
-        
-        .balance-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
-        }
-        
-        .balance-btn.minus {
-            background: linear-gradient(135deg, #ff4757, #ff3742);
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
-        }
-        
-        .balance-btn.minus:hover {
-            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
-        }
-        
-        .balance-display {
-            color: white;
-            font-size: 15px;
-            font-weight: 700;
-            min-width: 80px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .ton-icon {
-            width: 20px;
-            height: 20px;
-            background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png');
-            background-size: cover;
-            background-position: center;
-            border-radius: 50%;
             flex-shrink: 0;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 25px;
-            background: linear-gradient(135deg, #2a2a3e 0%, #2d2d42 100%);
-            border-radius: 14px;
-            padding: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .tab {
-            flex: 1;
-            padding: 14px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 15px;
-            position: relative;
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
-            color: white;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-        }
-        
-        .tab:not(.active) {
-            color: #8b8b8b;
-        }
-        
-        .tab:not(.active):hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        /* Фильтры */
-        .filters-section {
-            margin-bottom: 25px;
-        }
-        
-        .filter-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 18px;
-            align-items: center;
-        }
-        
-        .filter-select {
-            background: linear-gradient(135deg, #2a2a3e 0%, #2d2d42 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 15px;
-            border-radius: 12px;
-            color: white;
-            font-size: 14px;
-            flex: 1;
-            transition: all 0.3s ease;
-        }
-        
-        .filter-select:focus {
-            outline: none;
-            border-color: #4285f4;
-            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
-        }
-        
-        .filter-select option {
-            background: #2a2a3e;
-            color: white;
-        }
-        
-        .clear-filters-btn {
-            background: linear-gradient(135deg, #ff4757, #ff3742);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-            margin-left: 10px;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+            margin-left: 8px;
         }
         
         .clear-filters-btn:hover {
+            background: #ff3742;
             transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
         }
         
-        .channels-grid {
+        .filter-label {
+            color: #8b8b8b;
+            font-size: 12px;
+            font-weight: 500;
+            min-width: 35px;
+        }
+        
+        .gifts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-            margin-bottom: 25px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
-        .channel-group-card {
-            background: linear-gradient(135deg, #2a2a3e 0%, #2d2d42 100%);
-            border-radius: 18px;
-            padding: 18px;
+        .gift-group-card {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 15px;
             text-align: center;
-            transition: all 0.3s ease;
-            min-height: 220px;
+            transition: transform 0.3s ease;
+            min-height: 200px;
             position: relative;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
-        .channel-group-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            border-color: rgba(66, 133, 244, 0.3);
+        .gift-group-card:hover {
+            transform: translateY(-2px);
         }
         
-        .channel-group-images {
+        .gift-group-images {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 18px;
-            gap: 10px;
+            margin-bottom: 15px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
-        .channel-group-images.single {
+        .gift-group-images.single {
             justify-content: center;
         }
         
-        .channel-group-images.double {
+        .gift-group-images.double {
             justify-content: space-around;
         }
         
-        .channel-group-images.triple {
+        .gift-group-images.triple {
             justify-content: space-between;
         }
         
-        .channel-group-image {
+        .gift-group-image {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
+            border-radius: 10px;
             background-size: cover;
             background-position: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid #3a3a5c;
             flex-shrink: 0;
-            position: relative;
         }
         
-        .channel-group-image::before {
+        .gift-group-image.single {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .gift-group-image.double {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .gift-group-image.triple {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .gift-group-count {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .gift-group-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .gift-id {
             display: none;
         }
         
-        .channel-group-image.single {
-            width: 85px;
-            height: 85px;
-        }
-        
-        .channel-group-image.single::before {
-            font-size: 30px;
-        }
-        
-        .channel-group-image.double {
-            width: 65px;
-            height: 65px;
-        }
-        
-        .channel-group-image.double::before {
-            font-size: 22px;
-        }
-        
-        .channel-group-image.triple {
-            width: 50px;
-            height: 50px;
-        }
-        
-        .channel-group-image.triple::before {
-            font-size: 18px;
-        }
-        
-        .channel-group-count {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #4285f4, #1976d2);
-            color: white;
-            font-size: 12px;
-            padding: 6px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-        }
-        
-        .channel-group-title {
-            color: white;
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 18px;
-            text-transform: uppercase;
-        }
-        
-        .channel-card-catalog {
-            background: linear-gradient(135deg, #2a2a3e 0%, #2d2d42 100%);
-            border-radius: 18px;
-            padding: 18px;
-            text-align: center;
-            transition: all 0.3s ease;
-            min-height: 160px;
-            position: relative;
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        .channel-card-catalog:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        }
-        
-        .channel-image-catalog {
-            width: 85px;
-            height: 85px;
+        .gift-image {
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            margin: 12px auto 18px;
+            border-radius: 10px;
+            margin: 15px auto 10px;
             background-size: cover;
             background-position: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            position: relative;
+            border: 2px solid #3a3a5c;
         }
         
-        .channel-image-catalog::before {
-            display: none;
-        }
-        
-        .channel-name-catalog {
+        .gift-title {
             color: white;
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
             text-transform: uppercase;
             line-height: 1.2;
         }
         
+        .gift-subtitle {
+            color: #8b8b8b;
+            font-size: 11px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
         .price-btn {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
+            background: #2196F3;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: 8px;
             width: 100%;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            gap: 4px;
+            font-size: 12px;
         }
         
         .price-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+            background: #1976D2;
+            transform: translateY(-1px);
         }
         
         .triangle-icon {
@@ -633,98 +654,158 @@ async def miniapp():
             font-size: 14px;
         }
         
-        /* My Channel Styles */
+        .gift-card-catalog {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            min-height: 140px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .gift-card-catalog:hover {
+            transform: translateY(-2px);
+        }
+        
+        .gift-image-catalog {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin: 10px auto 15px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
+        }
+        
+        .gift-name-catalog {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        
+        /* My Channel Styles - в стиле старого интерфейса */
         .channel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
         
-        .channel-title-header {
+        .channel-title {
             color: white;
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 500;
         }
         
         .add-ad-btn {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
+            background: #3d5afe;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 20px;
-            width: 45px;
-            height: 45px;
+            font-size: 18px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
         }
         
         .add-ad-btn:hover {
+            background: #2c47e8;
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
         }
         
         .empty-channel {
             text-align: center;
-            padding: 50px;
+            padding: 40px;
             color: #8b8b8b;
         }
         
         .empty-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
+            font-size: 48px;
+            margin-bottom: 15px;
         }
         
         .empty-title {
-            font-size: 18px;
+            font-size: 16px;
             color: #ffffff;
-            margin-bottom: 10px;
-            font-weight: 600;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
         
         .empty-subtitle {
-            font-size: 15px;
+            font-size: 14px;
             color: #8b8b8b;
-            margin-bottom: 30px;
-            line-height: 1.4;
+            margin-bottom: 25px;
+            line-height: 1.3;
         }
         
         .create-ad-btn {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
+            background: #3d5afe;
             color: white;
             border: none;
-            padding: 15px 25px;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
         }
         
         .create-ad-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+            background: #2c47e8;
+            transform: translateY(-1px);
+        }
+        
+        .bottom-nav {
+            display: none;
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .nav-item.active {
+            background: #3d5afe;
+            color: white;
+        }
+        
+        .nav-item:not(.active) {
+            background: #2a2a3e;
+            color: #8b8b8b;
+        }
+        
+        .nav-text {
+            font-size: 16px;
+            font-weight: 600;
         }
         
         .empty-state {
             grid-column: 1/-1;
             text-align: center;
-            padding: 50px;
+            padding: 40px;
             color: #8b8b8b;
         }
         
         .loading {
             grid-column: 1/-1;
             text-align: center;
-            padding: 50px;
+            padding: 40px;
             color: #8b8b8b;
-            font-size: 16px;
         }
         
         @keyframes fadeIn {
@@ -732,15 +813,19 @@ async def miniapp():
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .channel-card {
+        .gift-card {
             animation: fadeIn 0.6s ease-out;
+        }
+        
+        .active-filter {
+            background: #3d5afe !important;
         }
         
         .filters-hidden {
             display: none;
         }
         
-        /* Modal overlay for channel filter */
+        /* Modal overlay for gift filter */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -768,7 +853,7 @@ async def miniapp():
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 25px;
+            padding: 20px;
             border-bottom: 1px solid #2a2a3e;
             position: sticky;
             top: 0;
@@ -778,93 +863,71 @@ async def miniapp():
         
         .modal-title {
             color: white;
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 600;
         }
         
         .modal-close {
             background: none;
             border: none;
             color: #8b8b8b;
-            font-size: 28px;
+            font-size: 24px;
             cursor: pointer;
             padding: 0;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-close:hover {
-            color: white;
-            transform: scale(1.1);
         }
         
         .modal-search {
-            background: linear-gradient(135deg, #2a2a3e 0%, #2d2d42 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px 45px 14px 18px;
-            border-radius: 12px;
+            background: #2a2a3e;
+            border: none;
+            padding: 12px 40px 12px 15px;
+            border-radius: 10px;
             color: white;
-            width: calc(100% - 40px);
-            margin: 0 20px 25px 20px;
+            width: 100%;
+            margin: 0 20px 20px 20px;
             font-size: 16px;
             position: relative;
-        }
-        
-        .modal-search:focus {
-            outline: none;
-            border-color: #4285f4;
-            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
         }
         
         .modal-search::placeholder {
             color: #8b8b8b;
         }
         
-        .channel-options-list {
-            padding: 0 20px 120px 20px;
+        .gift-options-list {
+            padding: 0 20px 100px 20px;
         }
         
-        .channel-option {
+        .gift-option {
             display: flex;
             align-items: center;
-            padding: 18px 0;
+            padding: 15px 0;
             cursor: pointer;
             border-bottom: 1px solid #2a2a3e;
-            transition: all 0.3s ease;
         }
         
-        .channel-option:last-child {
+        .gift-option:last-child {
             border-bottom: none;
         }
         
-        .channel-option:hover {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            margin: 0 -15px;
-            padding: 18px 15px;
-        }
-        
-        .channel-option-radio {
-            width: 22px;
-            height: 22px;
+        .gift-option-radio {
+            width: 20px;
+            height: 20px;
             border: 2px solid #4a4a5e;
             border-radius: 50%;
-            margin-right: 18px;
+            margin-right: 15px;
             position: relative;
             flex-shrink: 0;
-            transition: all 0.3s ease;
         }
         
-        .channel-option.selected .channel-option-radio {
-            border-color: #4285f4;
-            background: rgba(66, 133, 244, 0.1);
+        .gift-option.selected .gift-option-radio {
+            border-color: #3d5afe;
         }
         
-        .channel-option.selected .channel-option-radio::after {
+        .gift-option.selected .gift-option-radio::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -872,31 +935,26 @@ async def miniapp():
             transform: translate(-50%, -50%);
             width: 10px;
             height: 10px;
-            background: #4285f4;
+            background: #3d5afe;
             border-radius: 50%;
         }
         
-        .channel-option-image {
-            width: 45px;
-            height: 45px;
+        .gift-option-image {
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            margin-right: 18px;
+            border-radius: 8px;
+            margin-right: 15px;
             background-size: cover;
             background-position: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid #3a3a5c;
             flex-shrink: 0;
-            position: relative;
         }
         
-        .channel-option-image::before {
-            display: none;
-        }
-        
-        .channel-option-name {
+        .gift-option-name {
             color: white;
-            font-size: 17px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 500;
         }
         
         .modal-buttons {
@@ -905,19 +963,19 @@ async def miniapp():
             left: 0;
             right: 0;
             background: #1a1a2e;
-            padding: 25px;
+            padding: 20px;
             display: flex;
-            gap: 18px;
+            gap: 15px;
             border-top: 1px solid #2a2a3e;
         }
         
         .modal-btn {
             flex: 1;
-            padding: 18px;
+            padding: 15px;
             border: none;
-            border-radius: 15px;
-            font-size: 17px;
-            font-weight: 700;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -929,28 +987,105 @@ async def miniapp():
         
         .modal-btn.cancel:hover {
             background: #5a5a6e;
-            transform: translateY(-2px);
         }
         
         .modal-btn.select {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
+            background: #3d5afe;
             color: white;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
         }
         
         .modal-btn.select:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+            background: #2c47e8;
         }
         
-        /* Channel Detail Modal */
-        .channel-detail-modal {
+        /* Filter page styles */
+        .filter-list {
+            margin-top: 20px;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .filter-item:hover {
+            background: #323251;
+        }
+        
+        .filter-item.selected {
+            border-color: #3d5afe;
+            background: #2a2a5e;
+        }
+        
+        .filter-item-image {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin-right: 15px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
+            flex-shrink: 0;
+        }
+        
+        .filter-item-content {
+            flex: 1;
+        }
+        
+        .filter-item-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .filter-item-price {
+            color: #64B5F6;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .filter-item-badge {
+            background: #4CAF50;
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .filter-clear-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Gift Detail Modal */
+        .gift-detail-modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             display: none;
             align-items: center;
@@ -958,223 +1093,216 @@ async def miniapp():
             padding: 40px 20px;
         }
         
-        .channel-detail-modal.show {
+        .gift-detail-modal.show {
             display: flex;
         }
         
-        .channel-detail-content {
-            background: linear-gradient(135deg, #2a2a3e 0%, #2d2d42 100%);
-            border-radius: 25px;
-            padding: 35px;
-            max-width: 350px;
+        .gift-detail-content {
+            background: #2a2a3e;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 320px;
             width: 100%;
             text-align: center;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
         
-        .channel-detail-close {
+        .gift-detail-close {
             position: absolute;
-            top: 18px;
-            right: 18px;
+            top: 15px;
+            right: 15px;
             background: #4a4a5e;
             border: none;
             color: white;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
         }
         
-        .channel-detail-close:hover {
-            background: #5a5a6e;
-            transform: scale(1.1);
-        }
-        
-        .channel-detail-image {
-            width: 130px;
-            height: 130px;
+        .gift-detail-image {
+            width: 120px;
+            height: 120px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 25px;
-            margin: 0 auto 25px;
+            border-radius: 20px;
+            margin: 0 auto 20px;
             background-size: cover;
             background-position: center;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            position: relative;
+            border: 3px solid #3a3a5c;
         }
         
-        .channel-detail-image::before {
-            display: none;
-        }
-        
-        .channel-detail-title {
+        .gift-detail-title {
             color: white;
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         
-        .channel-detail-id {
+        .gift-detail-id {
             color: #8b8b8b;
-            font-size: 15px;
-            margin-bottom: 18px;
+            font-size: 14px;
+            margin-bottom: 15px;
         }
         
-        .channel-detail-description {
+        .gift-detail-description {
             color: #8b8b8b;
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            min-height: 45px;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 25px;
+            min-height: 40px;
         }
         
-        .channel-detail-price {
-            background: linear-gradient(135deg, #4285f4, #1976d2);
+        .gift-detail-price {
+            background: #2196F3;
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 15px;
+            padding: 15px;
+            border-radius: 12px;
             width: 100%;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 17px;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-        }
-        
-        .channel-detail-price:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+            gap: 6px;
         }
     </style>
 </head>
 <body>
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <div class="loading-logo">🚀</div>
-        <div class="loading-title">GiftRoom</div>
-        <div class="loading-subtitle">Магазин подарунків в Telegram</div>
+        <div class="logo-container">
+            <div class="logo-bg">
+                <div class="rocket">🚀</div>
+            </div>
+        </div>
         
-        <div class="channel-loader">
-            <div class="channel-box"></div>
-            <div class="channel-box"></div>
-            <div class="channel-box"></div>
+        <div class="app-name">GiftRoom</div>
+        <div class="app-subtitle">Магазин подарков в Telegram</div>
+        
+        <div class="gift-icons">
+            <div class="gift-icon">🎁</div>
+            <div class="gift-icon">💎</div>
+            <div class="gift-icon">🏆</div>
         </div>
         
         <div class="progress-container">
             <div class="progress-bar"></div>
         </div>
         
-        <div class="loading-text">Загрузка подарков...</div>
+        <div class="loading-text">
+            <span class="loading-dots">Загрузка подарков</span>
+        </div>
     </div>
 
     <!-- Main App -->
     <div class="main-app" id="mainApp">
-        <div style="padding: 20px;">
-            <div class="header">
-                <h1>GiftRoom Market</h1>
-                <div class="subtitle">Магазин подарунків в Telegram</div>
-                
-                <div class="wallet-section">
-                    <button class="wallet-connect-btn" onclick="connectWallet()">TON гаманець</button>
-                    <div class="balance-section">
-                        <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
-                        <div class="balance-display">
-                            <div class="ton-icon"></div>
-                            <span>0.00 TON</span>
-                        </div>
-                        <button class="balance-btn" onclick="addBalance()">+</button>
+        <div class="header">
+            <h1>GiftRoom Market</h1>
+            <div class="subtitle">Магазин подарков в Telegram</div>
+            
+            <div class="wallet-section">
+                <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
+                <div class="balance-section">
+                    <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
+                    <div class="balance-display">
+                        <div class="ton-icon"></div>
+                        <span>0.00 TON</span>
                     </div>
+                    <button class="balance-btn" onclick="addBalance()">+</button>
                 </div>
             </div>
-            
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab('market')">Market</div>
-                <div class="tab" onclick="openChannelModal()">Collections</div>
-                <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('market')">Market</div>
+            <div class="tab" onclick="openGiftModal()">Collections</div>
+            <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
+        </div>
+        
+        <!-- Фильтры (показываются только в Market) -->
+        <div class="filters-section" id="filtersSection">
+            <div class="filter-row">
+                <select class="filter-select" id="giftTypeFilter" onchange="applyFilters()">
+                    <option value="">Все подарки</option>
+                    <option value="fashion">Мода</option>
+                    <option value="food">Еда</option>
+                    <option value="animals">Животные</option>
+                    <option value="objects">Предметы</option>
+                    <option value="holidays">Праздники</option>
+                    <option value="sports">Спорт</option>
+                    <option value="symbols">Символы</option>
+                    <option value="entertainment">Развлечения</option>
+                    <option value="misc">Разное</option>
+                </select>
+                
+                <select class="filter-select" id="sortFilter" onchange="applyFilters()">
+                    <option value="recent">Недавние</option>
+                    <option value="price_asc">Цена: мин → макс</option>
+                    <option value="price_desc">Цена: макс → мин</option>
+                    <option value="rarity">По редкости</option>
+                </select>
+                
+                <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">✕</button>
             </div>
-            
-            <!-- Фильтры (показываются только в Маркете) -->
-            <div class="filters-section" id="filtersSection">
-                <div class="filter-row">
-                    <select class="filter-select" id="channelTypeFilter" onchange="applyFilters()">
-                        <option value="">Все каналы</option>
-                        <option value="fashion">Мода</option>
-                        <option value="food">Еда</option>
-                        <option value="animals">Животные</option>
-                        <option value="objects">Предметы</option>
-                        <option value="holidays">Праздники</option>
-                        <option value="sports">Спорт</option>
-                        <option value="symbols">Символы</option>
-                        <option value="entertainment">Развлечения</option>
-                        <option value="misc">Разное</option>
-                    </select>
-                    
-                    <select class="filter-select" id="sortFilter" onchange="applyFilters()">
-                        <option value="recent">Новые</option>
-                        <option value="price_asc">Цена: мин → макс</option>
-                        <option value="price_desc">Цена: макс → мин</option>
-                        <option value="rarity">По редкости</option>
-                        <option value="popular">Популярные</option>
-                    </select>
-                    
-                    <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">✕</button>
+        </div>
+        
+        <div class="gifts-grid" id="giftsGrid">
+            <div class="loading">Загрузка подарков...</div>
+        </div>
+        
+        <div class="bottom-nav" style="display: none;">
+            <div class="nav-item active" onclick="switchTab('market')">
+                <div class="nav-text">Market</div>
+            </div>
+            <div class="nav-item" onclick="switchTab('my-channel')">
+                <div class="nav-text">My Channel</div>
+            </div>
+        </div>
+        
+        <!-- Modal для выбора подарков -->
+        <div class="modal-overlay" id="giftModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Выберите вид подарка</div>
+                    <button class="modal-close" onclick="closeGiftModal()">✕</button>
+                </div>
+                
+                <input type="text" class="modal-search" placeholder="Поиск" id="modalSearchBox" onkeyup="filterModalGifts()">
+                
+                <div class="gift-options-list" id="giftOptionsList">
+                    <!-- Список подарков будет сгенерирован здесь -->
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="modal-btn cancel" onclick="closeGiftModal()">Отмена</button>
+                    <button class="modal-btn select" onclick="selectModalGift()">Выбрать</button>
                 </div>
             </div>
-            
-            <div class="channels-grid" id="channelsGrid">
-                <div class="loading">Загрузка подарков...</div>
-            </div>
         </div>
-    </div>
-    
-    <!-- Modal для выбора каналов -->
-    <div class="modal-overlay" id="channelModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Выберите тип канала</div>
-                <button class="modal-close" onclick="closeChannelModal()">✕</button>
+        
+        <!-- Modal для деталей подарка -->
+        <div class="gift-detail-modal" id="giftDetailModal">
+            <div class="gift-detail-content">
+                <button class="gift-detail-close" onclick="closeGiftDetail()">✕</button>
+                <div class="gift-detail-image" id="giftDetailImage"></div>
+                <div class="gift-detail-title" id="giftDetailTitle"></div>
+                <div class="gift-detail-id" id="giftDetailId"></div>
+                <div class="gift-detail-description" id="giftDetailDescription">
+                    <!-- Описание будет добавлено позже -->
+                </div>
+                <button class="gift-detail-price" id="giftDetailPrice" onclick="buyGiftFromDetail()">
+                    <span id="giftDetailPriceText"></span>
+                    <span class="triangle-icon">▼</span>
+                    <span id="giftDetailCount"></span>
+                </button>
             </div>
-            
-            <input type="text" class="modal-search" placeholder="Поиск каналов..." id="modalSearchBox" onkeyup="filterModalChannels()">
-            
-            <div class="channel-options-list" id="channelOptionsList">
-                <!-- Список каналов будет сгенерирован здесь -->
-            </div>
-            
-            <div class="modal-buttons">
-                <button class="modal-btn cancel" onclick="closeChannelModal()">Отмена</button>
-                <button class="modal-btn select" onclick="selectModalChannel()">Выбрать</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal для деталей канала -->
-    <div class="channel-detail-modal" id="channelDetailModal">
-        <div class="channel-detail-content">
-            <button class="channel-detail-close" onclick="closeChannelDetail()">✕</button>
-            <div class="channel-detail-image" id="channelDetailImage"></div>
-            <div class="channel-detail-title" id="channelDetailTitle"></div>
-            <div class="channel-detail-id" id="channelDetailId"></div>
-            <div class="channel-detail-description" id="channelDetailDescription">
-                Канал с уникальными подарками в Telegram. Получите доступ к эксклюзивным коллекциям!
-            </div>
-            <button class="channel-detail-price" id="channelDetailPrice" onclick="buyChannelFromDetail()">
-                <span id="channelDetailPriceText"></span>
-                <span class="triangle-icon">▼</span>
-                <span id="channelDetailSubscribers"></span>
-            </button>
         </div>
     </div>
 
@@ -1183,90 +1311,138 @@ async def miniapp():
         tg.expand();
         
         // Loading Screen Logic
-        function hideLoadingScreen() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const mainApp = document.getElementById('mainApp');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.width = particle.style.height = Math.random() * 4 + 2 + 'px';
+            particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.querySelector('.loading-screen').appendChild(particle);
             
             setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-                mainApp.classList.add('visible');
-            }, 3800);
+                particle.remove();
+            }, 6000);
         }
         
-        // Initialize app
+        function startParticles() {
+            const particleInterval = setInterval(() => {
+                if (document.getElementById('loadingScreen').style.display !== 'none') {
+                    createParticle();
+                } else {
+                    clearInterval(particleInterval);
+                }
+            }, 300);
+        }
+        
+        function startLoading() {
+            startParticles();
+            
+            const loadingTexts = [
+                'Загрузка подарков',
+                'Подключение к TON',
+                'Синхронизация данных',
+                'Подготовка интерфейса',
+                'Почти готово'
+            ];
+            
+            let textIndex = 0;
+            const textInterval = setInterval(() => {
+                if (textIndex < loadingTexts.length) {
+                    document.querySelector('.loading-dots').textContent = loadingTexts[textIndex];
+                    textIndex++;
+                } else {
+                    clearInterval(textInterval);
+                }
+            }, 800);
+            
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                document.getElementById('loadingScreen').style.transform = 'scale(0.95)';
+                document.getElementById('loadingScreen').style.transition = 'all 0.5s ease-in-out';
+                
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'block';
+                    document.getElementById('mainApp').style.opacity = '0';
+                    document.getElementById('mainApp').style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        document.getElementById('mainApp').style.transition = 'all 0.5s ease-out';
+                        document.getElementById('mainApp').style.opacity = '1';
+                        document.getElementById('mainApp').style.transform = 'translateY(0)';
+                        
+                        // Initialize main app after loading
+                        initializeApp();
+                    }, 50);
+                }, 500);
+            }, 4000);
+        }
+        
+        // Initialize main app
         function initializeApp() {
-            console.log('ChannelGift Market инициализирован');
-            
-            setTimeout(() => {
-                loadInitialChannels();
-            }, 1200);
-        }
-        
-        function loadInitialChannels() {
             showMarket();
         }
         
-        // Start loading process when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeApp();
-            hideLoadingScreen();
-        });
-        
         // База данных всех подарков с вариациями для тестирования групп
-        const allChannels = [
-            {id: 1, name: "МОДНЫЕ ПОДАРКИ", desc: "Стильные подарки", price: "2.12", subscribers: "11.5K", new: false, listed: true, category: "fashion", rarity: 1, popular: true, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-            {id: 2, name: "ВИНТАЖ КОЛЛЕКЦИЯ", desc: "Винтажные вещи", price: "2.90", subscribers: "3.1K", new: false, listed: true, category: "objects", rarity: 1, popular: false, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-            {id: 3, name: "МИЛЫЕ ПИТОМЦЫ", desc: "Подарки с животными", price: "3.23", subscribers: "2.9K", new: false, listed: true, category: "animals", rarity: 1, popular: true, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-            {id: 4, name: "УЮТНЫЙ ДОМ", desc: "Домашние подарки", price: "3.56", subscribers: "2.8K", new: false, listed: false, category: "objects", rarity: 1, popular: false, image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
-            {id: 5, name: "ФИТНЕС ЗОНА", desc: "Спортивные подарки", price: "3.89", subscribers: "2.7K", new: false, listed: true, category: "sports", rarity: 1, popular: true, image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
-            {id: 6, name: "ТЕХ ГАДЖЕТЫ", desc: "Технические новинки", price: "4.12", subscribers: "2.6K", new: false, listed: true, category: "objects", rarity: 1, popular: false, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
-            {id: 7, name: "ПРАЗДНИЧНАЯ МАГИЯ", desc: "Подарки для праздников", price: "4.45", subscribers: "2.5K", new: false, listed: false, category: "holidays", rarity: 1, popular: true, image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
-            {id: 8, name: "СЛАДКИЕ РАДОСТИ", desc: "Сладкие подарки", price: "4.78", subscribers: "2.4K", new: false, listed: true, category: "food", rarity: 1, popular: false, image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
-            {id: 9, name: "ЖЕНСКИЙ ДЕНЬ", desc: "8 марта подарки", price: "5.12", subscribers: "2.3K", new: false, listed: false, category: "holidays", rarity: 1, popular: false, image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"},
-            {id: 10, name: "ПРЕМИУМ ТЕХ", desc: "Дорогая техника", price: "5.45", subscribers: "2.2K", new: false, listed: true, category: "objects", rarity: 2, popular: true, image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
-            {id: 11, name: "КУХНЯ ПРО", desc: "Кухонная техника", price: "5.89", subscribers: "2.1K", new: false, listed: false, category: "objects", rarity: 2, popular: false, image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
-            {id: 12, name: "ТАЛИСМАНЫ УДАЧИ", desc: "Подарки на удачу", price: "6.34", subscribers: "2.0K", new: false, listed: true, category: "symbols", rarity: 2, popular: true, image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"},
-            {id: 13, name: "МИСТИЧЕСКАЯ СИЛА", desc: "Загадочные подарки", price: "6.78", subscribers: "1.8K", new: false, listed: false, category: "symbols", rarity: 2, popular: false, image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
-            {id: 14, name: "СВЯЩЕННЫЕ МЕСТА", desc: "Религиозные подарки", price: "7.23", subscribers: "1.7K", new: false, listed: true, category: "symbols", rarity: 2, popular: false, image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
-            {id: 15, name: "УЛИЧНАЯ ЕДА", desc: "Вкусные подарки", price: "7.89", subscribers: "1.6K", new: false, listed: true, category: "food", rarity: 2, popular: true, image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
-            {id: 16, name: "ЗАБАВНЫЕ ШТУЧКИ", desc: "Прикольные подарки", price: "8.67", subscribers: "1.5K", new: false, listed: false, category: "misc", rarity: 2, popular: false, image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
-            {id: 17, name: "ЦАРСТВО ЖИВОТНЫХ", desc: "Подарки с животными", price: "9.45", subscribers: "1.4K", new: false, listed: true, category: "animals", rarity: 2, popular: true, image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
-            {id: 18, name: "СТРОИТЕЛЬСТВО", desc: "Строительные подарки", price: "10.78", subscribers: "1.3K", new: false, listed: false, category: "objects", rarity: 2, popular: false, image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
-            {id: 19, name: "КОСМИЧЕСКИЕ ПУТЕШЕСТВИЯ", desc: "Космические подарки", price: "12.34", subscribers: "1.2K", new: false, listed: true, category: "objects", rarity: 3, popular: true, image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
-            {id: 20, name: "ПАСХАЛЬНАЯ РАДОСТЬ", desc: "Пасхальные подарки", price: "13.67", subscribers: "1.1K", new: false, listed: true, category: "holidays", rarity: 3, popular: false, image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"},
-            {id: 21, name: "ПУШИСТЫЕ ДРУЗЬЯ", desc: "Мягкие игрушки", price: "15.43", subscribers: "967", new: false, listed: false, category: "animals", rarity: 3, popular: true, image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
-            {id: 22, name: "ДЕНЬ ТРУДА", desc: "1 мая подарки", price: "17.89", subscribers: "856", new: false, listed: true, category: "holidays", rarity: 3, popular: false, image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"},
-            {id: 23, name: "ЧЕМПИОНЫ", desc: "Спортивные награды", price: "19.56", subscribers: "745", new: false, listed: true, category: "sports", rarity: 3, popular: true, image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
-            {id: 24, name: "ГОРОДСКИЕ ПТИЦЫ", desc: "Подарки с птицами", price: "22.78", subscribers: "634", new: false, listed: false, category: "animals", rarity: 3, popular: false, image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
-            {id: 25, name: "ЗВЕЗДНЫЙ", desc: "Звездные подарки", price: "25.34", subscribers: "512", new: false, listed: true, category: "symbols", rarity: 3, popular: true, image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
-            {id: 26, name: "РАЙ МОРОЖЕНОГО", desc: "Мороженое подарки", price: "28.67", subscribers: "423", new: false, listed: true, category: "food", rarity: 4, popular: false, image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
-            {id: 27, name: "ЗАМОРОЖЕННЫЕ ЛАКОМСТВА", desc: "Ледяные подарки", price: "32.45", subscribers: "345", new: false, listed: false, category: "food", rarity: 4, popular: true, image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
-            {id: 28, name: "МАСТЕР РЕМЕСЛА", desc: "Ремесленные подарки", price: "38.90", subscribers: "267", new: true, listed: true, category: "misc", rarity: 4, popular: false, image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
-            {id: 29, name: "ЗОЛОТАЯ РОСКОШЬ", desc: "Дорогие подарки", price: "45.78", subscribers: "203", new: true, listed: true, category: "misc", rarity: 4, popular: true, image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
-            {id: 30, name: "СИМВОЛ СВОБОДЫ", desc: "Патриотические подарки", price: "54.67", subscribers: "156", new: true, listed: true, category: "symbols", rarity: 5, popular: true, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
-            {id: 31, name: "СТАТУЯ СВОБОДЫ", desc: "Американские подарки", price: "65.43", subscribers: "112", new: true, listed: true, category: "symbols", rarity: 5, popular: false, image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"},
-            {id: 32, name: "ФАКЕЛ НАДЕЖДЫ", desc: "Вдохновляющие подарки", price: "76.89", subscribers: "89", new: true, listed: true, category: "symbols", rarity: 5, popular: true, image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"},
-            {id: 33, name: "ЗАПАДНОЕ ПОБЕРЕЖЬЕ", desc: "Калифорнийские подарки", price: "87.32", subscribers: "67", new: true, listed: true, category: "symbols", rarity: 5, popular: false, image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
-            {id: 34, name: "КУЛЬТУРА ЛОУРАЙДЕРОВ", desc: "Автомобильные подарки", price: "98.45", subscribers: "23", new: true, listed: true, category: "entertainment", rarity: 5, popular: true, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
-            {id: 35, name: "ПРЕМИУМ ДЫМ", desc: "Элитные курительные", price: "134.56", subscribers: "45", new: true, listed: true, category: "entertainment", rarity: 5, popular: false, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
-            {id: 36, name: "КОЛЛЕКЦИЯ СВЭГА", desc: "Стильные аксессуары", price: "156.78", subscribers: "34", new: true, listed: true, category: "fashion", rarity: 5, popular: true, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
-            {id: 37, name: "ЛЕГЕНДАРНЫЙ КАНАЛ", desc: "Эксклюзивная коллекция", price: "208.354", subscribers: "15", new: true, listed: true, category: "entertainment", rarity: 5, popular: true, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+        const allGifts = [
+            {id: 1, name: "HEELS", desc: "High heels", price: "2.12", count: "11500", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+            {id: 2, name: "BUTTON", desc: "Simple button", price: "2.90", count: "3056", new: false, listed: true, category: "objects", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+            {id: 3, name: "CATS", desc: "Cute cats", price: "3.23", count: "2945", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            {id: 4, name: "SOCKS", desc: "Warm socks", price: "3.56", count: "2834", new: false, listed: false, category: "fashion", rarity: 1, image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+            {id: 5, name: "BICEPS", desc: "Strong muscles", price: "3.89", count: "2723", new: false, listed: true, category: "sports", rarity: 1, image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
+            {id: 6, name: "LAMP", desc: "Table lamp", price: "4.12", count: "2612", new: false, listed: true, category: "objects", rarity: 1, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+            {id: 7, name: "BOUQUET", desc: "Flower bouquet", price: "4.45", count: "2501", new: false, listed: false, category: "holidays", rarity: 1, image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
+            {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", price: "4.78", count: "2390", new: false, listed: true, category: "food", rarity: 1, image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
+            {id: 9, name: "MARCH 8", desc: "Women's day", price: "5.12", count: "2289", new: false, listed: false, category: "holidays", rarity: 1, image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"},
+            {id: 10, name: "DYSON", desc: "Powerful vacuum", price: "5.45", count: "2178", new: false, listed: true, category: "objects", rarity: 2, image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+            {id: 11, name: "BOILER", desc: "Steam boiler", price: "5.89", count: "2067", new: false, listed: false, category: "objects", rarity: 2, image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
+            {id: 12, name: "CLOVER", desc: "Lucky clover", price: "6.34", count: "1956", new: false, listed: true, category: "symbols", rarity: 2, image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"},
+            {id: 13, name: "AMULET", desc: "Protective amulet", price: "6.78", count: "1845", new: false, listed: false, category: "symbols", rarity: 2, image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+            {id: 14, name: "MOSQUE", desc: "Beautiful mosque", price: "7.23", count: "1734", new: false, listed: true, category: "symbols", rarity: 2, image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
+            {id: 15, name: "DOSHIK", desc: "Instant noodles", price: "7.89", count: "1623", new: false, listed: true, category: "food", rarity: 2, image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+            {id: 16, name: "POOP", desc: "Funny poop", price: "8.67", count: "1512", new: false, listed: false, category: "misc", rarity: 2, image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
+            {id: 17, name: "MONKEY", desc: "Playful monkey", price: "9.45", count: "1401", new: false, listed: true, category: "animals", rarity: 2, image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+            {id: 18, name: "BRICK", desc: "Building brick", price: "10.78", count: "1290", new: false, listed: false, category: "objects", rarity: 2, image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
+            {id: 19, name: "ROCKET", desc: "Space rocket", price: "12.34", count: "1189", new: false, listed: true, category: "objects", rarity: 3, image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
+            {id: 20, name: "EASTER", desc: "Easter holiday", price: "13.67", count: "1078", new: false, listed: true, category: "holidays", rarity: 3, image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"},
+            {id: 21, name: "RABBIT", desc: "Fluffy rabbit", price: "15.43", count: "967", new: false, listed: false, category: "animals", rarity: 3, image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+            {id: 22, name: "1 MAY", desc: "Labor day", price: "17.89", count: "856", new: false, listed: true, category: "holidays", rarity: 3, image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"},
+            {id: 23, name: "MEDAL", desc: "Gold medal", price: "19.56", count: "745", new: false, listed: true, category: "sports", rarity: 3, image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+            {id: 24, name: "PIGEON", desc: "City pigeon", price: "22.78", count: "634", new: false, listed: false, category: "animals", rarity: 3, image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
+            {id: 25, name: "STAR", desc: "Bright star", price: "25.34", count: "512", new: false, listed: true, category: "symbols", rarity: 3, image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
+            {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", price: "28.67", count: "423", new: false, listed: true, category: "food", rarity: 4, image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
+            {id: 27, name: "ESKIMO", desc: "Eskimo ice cream", price: "32.45", count: "345", new: false, listed: false, category: "food", rarity: 4, image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
+            {id: 28, name: "PLUMBER", desc: "Plumber", price: "38.90", count: "267", new: true, listed: true, category: "misc", rarity: 4, image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
+            {id: 29, name: "NIPPLE", desc: "Golden nipple", price: "45.78", count: "203", new: true, listed: true, category: "misc", rarity: 4, image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
+            {id: 30, name: "EAGLE", desc: "Symbol of freedom", price: "54.67", count: "156", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
+            {id: 31, name: "STATUE", desc: "Statue of Liberty", price: "65.43", count: "112", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"},
+            {id: 32, name: "TORCH", desc: "Torch of freedom", price: "76.89", count: "89", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"},
+            {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", price: "87.32", count: "67", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
+            {id: 34, name: "LOW RIDER", desc: "Cool car", price: "98.45", count: "23", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
+            {id: 35, name: "SNOOP CIGAR", desc: "Elite cigar", price: "134.56", count: "45", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
+            {id: 36, name: "SWAG BAG", desc: "Stylish bag", price: "156.78", count: "34", new: true, listed: true, category: "fashion", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+            {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", price: "208.354", count: "15", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
             
-            // Дополнительные варианты для тестирования групп
-            {id: 38, name: "ЛЕГЕНДАРНЫЙ КАНАЛ", desc: "Эксклюзивная коллекция - вариант 2", price: "180.25", subscribers: "8", new: true, listed: true, category: "entertainment", rarity: 5, popular: true, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
-            {id: 39, name: "ЛЕГЕНДАРНЫЙ КАНАЛ", desc: "Эксклюзивная коллекция - вариант 3", price: "220.15", subscribers: "5", new: true, listed: true, category: "entertainment", rarity: 5, popular: true, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+            // Додаткові варіації для тестування груп
+            {id: 38, name: "SNOOP DOGG", desc: "Legendary rapper - variant 2", price: "180.25", count: "8", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+            {id: 39, name: "SNOOP DOGG", desc: "Legendary rapper - variant 3", price: "220.15", count: "5", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
             
-            {id: 40, name: "ПРЕМИУМ ДЫМ", desc: "Элитные курительные - вариант 2", price: "145.20", subscribers: "25", new: true, listed: true, category: "entertainment", rarity: 5, popular: false, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
+            {id: 40, name: "SNOOP CIGAR", desc: "Elite cigar - variant 2", price: "145.20", count: "25", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
             
-            {id: 41, name: "МИЛЫЕ ПИТОМЦЫ", desc: "Подарки с животными - вариант 2", price: "3.45", subscribers: "2.5K", new: false, listed: true, category: "animals", rarity: 1, popular: true, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-            {id: 42, name: "МИЛЫЕ ПИТОМЦЫ", desc: "Подарки с животными - вариант 3", price: "3.67", subscribers: "2.2K", new: false, listed: true, category: "animals", rarity: 1, popular: true, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"}
+            {id: 41, name: "CATS", desc: "Cute cats - variant 2", price: "3.45", count: "2500", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            {id: 42, name: "CATS", desc: "Cute cats - variant 3", price: "3.67", count: "2200", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            
+            {id: 43, name: "HEELS", desc: "High heels - variant 2", price: "2.34", count: "10800", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+            
+            {id: 44, name: "EAGLE", desc: "Symbol of freedom - variant 2", price: "58.90", count: "140", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
+            {id: 45, name: "EAGLE", desc: "Symbol of freedom - variant 3", price: "62.15", count: "120", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"}
         ];
         
         let currentView = 'market';
         let selectedFilter = null;
-        let tempSelectedChannel = null;
+        let tempSelectedGift = null;
         let currentFilters = {
-            channelType: '',
+            giftType: '',
             sort: 'recent'
         };
         
@@ -1277,170 +1453,146 @@ async def miniapp():
             }
         }
         
-        // Применение фильтров в Маркете
+        // Применение фильтров в Market
         function applyMarketFilters() {
             if (selectedFilter) {
-                applyChannelNameFilter();
+                applyGiftNameFilter();
                 return;
             }
             
-            const channelTypeFilter = document.getElementById('channelTypeFilter').value;
+            const giftTypeFilter = document.getElementById('giftTypeFilter').value;
             const sortFilter = document.getElementById('sortFilter').value;
             
-            currentFilters.channelType = channelTypeFilter;
+            currentFilters.giftType = giftTypeFilter;
             currentFilters.sort = sortFilter;
             
-            let filteredChannels = allChannels.filter(channel => channel.listed);
+            let filteredGifts = allGifts.filter(gift => gift.listed);
             
-            // Фильтр по типу канала
-            if (channelTypeFilter) {
-                filteredChannels = filteredChannels.filter(channel => channel.category === channelTypeFilter);
+            if (giftTypeFilter) {
+                filteredGifts = filteredGifts.filter(gift => gift.category === giftTypeFilter);
             }
             
-            // Сортировка
             switch (sortFilter) {
                 case 'recent':
-                    filteredChannels.sort((a, b) => b.new - a.new || b.id - a.id);
+                    filteredGifts.sort((a, b) => b.new - a.new || b.id - a.id);
                     break;
                 case 'price_asc':
-                    filteredChannels.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    filteredGifts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
                     break;
                 case 'price_desc':
-                    filteredChannels.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    filteredGifts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
                     break;
                 case 'rarity':
-                    filteredChannels.sort((a, b) => b.rarity - a.rarity);
-                    break;
-                case 'popular':
-                    filteredChannels.sort((a, b) => b.popular - a.popular);
+                    filteredGifts.sort((a, b) => b.rarity - a.rarity);
                     break;
             }
             
-            renderGroupedChannels(filteredChannels);
+            renderGroupedGifts(filteredGifts);
         }
         
         // Очистка фильтров
         function clearFilters() {
-            document.getElementById('channelTypeFilter').value = '';
+            document.getElementById('giftTypeFilter').value = '';
             document.getElementById('sortFilter').value = 'recent';
             selectedFilter = null;
             currentFilters = {
-                channelType: '',
+                giftType: '',
                 sort: 'recent'
             };
             
             if (currentView === 'market') {
                 applyMarketFilters();
-            } else if (currentView === 'catalog') {
-                showCatalog();
             }
         }
         
-        // Показать только listed каналы в Маркете
+        // Показать только listed подарки в Market
         function showMarket() {
             document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyMarketFilters();
         }
         
-        // Показать Мои каналы
+        // Показать My Channel
         function showMyChannel() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
-            const grid = document.getElementById('channelsGrid');
+            const grid = document.getElementById('giftsGrid');
             grid.innerHTML = `
                 <div class="channel-header">
-                    <div class="channel-title-header">Мои каналы</div>
-                    <button class="add-ad-btn" onclick="createAd()" title="Добавить канал">+</button>
+                    <div class="channel-title">Мои объявления</div>
+                    <button class="add-ad-btn" onclick="createAd()" title="Добавить объявление">+</button>
                 </div>
                 <div class="empty-channel">
-                    <div class="empty-icon">📺</div>
-                    <div class="empty-title">Нет каналов</div>
-                    <div class="empty-subtitle">Создайте ваше первое объявление о продаже канала</div>
-                    <button class="create-ad-btn" onclick="createAd()">Добавить канал</button>
+                    <div class="empty-icon">📦</div>
+                    <div class="empty-title">Нет объявлений</div>
+                    <div class="empty-subtitle">Создайте ваше первое объявление</div>
+                    <button class="create-ad-btn" onclick="createAd()">Добавить объявление</button>
                 </div>
             `;
         }
         
-        function openChannelModal() {
-            const modal = document.getElementById('channelModal');
-            const optionsList = document.getElementById('channelOptionsList');
+        function openGiftModal() {
+            const modal = document.getElementById('giftModal');
+            const optionsList = document.getElementById('giftOptionsList');
             
-            // Создаем список всех уникальных каналов
-            const channelGroups = {};
-            allChannels.forEach(channel => {
-                if (!channelGroups[channel.name]) {
-                    channelGroups[channel.name] = {
-                        name: channel.name,
-                        image: channel.image,
-                        new: channel.new
+            const giftGroups = {};
+            allGifts.forEach(gift => {
+                if (!giftGroups[gift.name]) {
+                    giftGroups[gift.name] = {
+                        name: gift.name,
+                        image: gift.image,
+                        new: gift.new
                     };
                 }
             });
             
-            const uniqueChannels = Object.values(channelGroups);
-            
-            // Добавляем опцию "Все каналы"
-            const allChannelsOption = {
-                name: 'Все каналы',
+            const uniqueGifts = Object.values(giftGroups);
+            const allGiftsOption = {
+                name: 'Все подарки',
                 image: '',
                 new: false,
                 isAll: true
             };
             
-            const options = [allChannelsOption, ...uniqueChannels];
+            const options = [allGiftsOption, ...uniqueGifts];
             
-            optionsList.innerHTML = options.map(channel => `
-                <div class="channel-option ${(!selectedFilter && channel.isAll) || selectedFilter === channel.name ? 'selected' : ''}" 
-                     onclick="selectModalOption('${channel.isAll ? '' : channel.name}', this)">
-                    <div class="channel-option-radio"></div>
-                    ${channel.isAll ? '' : `<div class="channel-option-image" style="background-image: url('${channel.image}')"></div>`}
-                    <div class="channel-option-name">${channel.name}</div>
+            optionsList.innerHTML = options.map(gift => `
+                <div class="gift-option ${(!selectedFilter && gift.isAll) || selectedFilter === gift.name ? 'selected' : ''}" 
+                     onclick="selectModalOption('${gift.isAll ? '' : gift.name}', this)">
+                    <div class="gift-option-radio"></div>
+                    ${gift.isAll ? '' : `<div class="gift-option-image" style="background-image: url('${gift.image}')"></div>`}
+                    <div class="gift-option-name">${gift.name}</div>
                 </div>
             `).join('');
             
-            // Устанавливаем текущий выбор
-            tempSelectedChannel = selectedFilter;
-            
+            tempSelectedGift = selectedFilter;
             modal.classList.add('show');
         }
         
-        function closeChannelModal() {
-            const modal = document.getElementById('channelModal');
-            modal.classList.remove('show');
-            tempSelectedChannel = null;
+        function closeGiftModal() {
+            document.getElementById('giftModal').classList.remove('show');
+            tempSelectedGift = null;
         }
         
-        function selectModalOption(channelName, element) {
-            // Убираем выделение с предыдущего элемента
-            document.querySelectorAll('.channel-option').forEach(opt => opt.classList.remove('selected'));
-            
-            // Выделяем текущий элемент
+        function selectModalOption(giftName, element) {
+            document.querySelectorAll('.gift-option').forEach(opt => opt.classList.remove('selected'));
             element.classList.add('selected');
-            
-            // Сохраняем временный выбор
-            tempSelectedChannel = channelName === '' ? null : channelName;
+            tempSelectedGift = giftName === '' ? null : giftName;
         }
         
-        function selectModalChannel() {
-            // Применяем выбор
-            selectedFilter = tempSelectedChannel;
-            
-            // Закрываем модальное окно
-            closeChannelModal();
-            
-            // Переключаемся на Каталог и применяем фильтр
+        function selectModalGift() {
+            selectedFilter = tempSelectedGift;
+            closeGiftModal();
             currentView = 'catalog';
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab')[1].classList.add('active');
-            
             showCatalog();
         }
         
-        function filterModalChannels() {
+        function filterModalGifts() {
             const query = document.getElementById('modalSearchBox').value.toLowerCase();
-            const options = document.querySelectorAll('.channel-option');
+            const options = document.querySelectorAll('.gift-option');
             
             options.forEach(option => {
-                const name = option.querySelector('.channel-option-name').textContent.toLowerCase();
+                const name = option.querySelector('.gift-option-name').textContent.toLowerCase();
                 if (name.includes(query)) {
                     option.style.display = 'flex';
                 } else {
@@ -1449,114 +1601,101 @@ async def miniapp():
             });
         }
         
-        // Применение фильтра по названию канала
-        function applyChannelNameFilter() {
+        function applyGiftNameFilter() {
             if (!selectedFilter) {
                 applyFilters();
                 return;
             }
             
-            let filteredChannels = allChannels.filter(channel => channel.listed && channel.name === selectedFilter);
+            let filteredGifts = allGifts.filter(gift => gift.listed && gift.name === selectedFilter);
             
-            // Применяем сортировку
             switch (currentFilters.sort) {
                 case 'recent':
-                    filteredChannels.sort((a, b) => b.new - a.new || b.id - a.id);
+                    filteredGifts.sort((a, b) => b.new - a.new || b.id - a.id);
                     break;
                 case 'price_asc':
-                    filteredChannels.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    filteredGifts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
                     break;
                 case 'price_desc':
-                    filteredChannels.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    filteredGifts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
                     break;
                 case 'rarity':
-                    filteredChannels.sort((a, b) => b.rarity - a.rarity);
-                    break;
-                case 'popular':
-                    filteredChannels.sort((a, b) => b.popular - a.popular);
+                    filteredGifts.sort((a, b) => b.rarity - a.rarity);
                     break;
             }
             
-            renderChannels(filteredChannels);
+            renderGifts(filteredGifts);
         }
         
-        // Показать каталог - с выборочным показом каналов
         function showCatalog() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
             
             if (selectedFilter) {
-                // Показываем только выбранный тип канала
-                const filteredChannels = allChannels.filter(channel => channel.name === selectedFilter);
-                const sortedChannels = filteredChannels.sort((a, b) => b.id - a.id);
-                renderCatalogChannels(sortedChannels);
+                const filteredGifts = allGifts.filter(gift => gift.name === selectedFilter);
+                const sortedGifts = filteredGifts.sort((a, b) => b.id - a.id);
+                renderCatalogGifts(sortedGifts);
             } else {
-                // Показываем все каналы
-                const sortedChannels = [...allChannels].sort((a, b) => b.id - a.id);
-                renderCatalogChannels(sortedChannels);
+                const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
+                renderCatalogGifts(sortedGifts);
             }
         }
         
-        // Рендер каналов в Каталоге
-        function renderCatalogChannels(channels) {
-            const grid = document.getElementById('channelsGrid');
+        function renderCatalogGifts(gifts) {
+            const grid = document.getElementById('giftsGrid');
             
-            if (channels.length === 0) {
+            if (gifts.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
-                        <div style="font-size: 16px; margin-bottom: 8px;">Каналы не найдены</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
                         <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
                     </div>
                 `;
                 return;
             }
             
-            grid.innerHTML = channels.map(channel => `
-                <div class="channel-card-catalog" onclick="selectChannel(${channel.id})">
-                    ${channel.new ? '<span class="new-badge">NEW</span>' : ''}
-                    ${channel.popular ? '<span class="hot-badge">HOT</span>' : ''}
-                    <div class="channel-image-catalog" style="background-image: url('${channel.image}')"></div>
-                    <div class="channel-name-catalog">${channel.name}</div>
+            grid.innerHTML = gifts.map(gift => `
+                <div class="gift-card-catalog" onclick="selectGift(${gift.id})">
+                    <div class="gift-id">#${gift.id}</div>
+                    <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
+                    <div class="gift-name-catalog">${gift.name}</div>
                 </div>
             `).join('');
         }
         
-        // Выбор канала в каталоге
-        function selectChannel(id) {
-            const channel = allChannels.find(c => c.id === id);
-            openChannelDetail(id);
+        function selectGift(id) {
+            const gift = allGifts.find(g => g.id === id);
+            tg.showAlert(`Выбран подарок #${id}: ${gift.name}`);
         }
         
-        // Группируем каналы по названию
-        function groupChannelsByName(channels) {
+        function groupGiftsByName(gifts) {
             const groups = {};
-            channels.forEach(channel => {
-                if (!groups[channel.name]) {
-                    groups[channel.name] = [];
+            gifts.forEach(gift => {
+                if (!groups[gift.name]) {
+                    groups[gift.name] = [];
                 }
-                groups[channel.name].push(channel);
+                groups[gift.name].push(gift);
             });
             return Object.values(groups);
         }
         
-        // Рендер сгруппированных каналов
-        function renderGroupedChannels(channels) {
-            const grid = document.getElementById('channelsGrid');
+        function renderGroupedGifts(gifts) {
+            const grid = document.getElementById('giftsGrid');
             
-            if (channels.length === 0) {
+            if (gifts.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
-                        <div style="font-size: 16px; margin-bottom: 8px;">Каналы не найдены</div>
-                        <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
+                        <div style="font-size: 14px;">Попробуйте изменить фильтры или поисковый запрос</div>
                     </div>
                 `;
                 return;
             }
             
-            const groupedChannels = groupChannelsByName(channels);
+            const groupedGifts = groupGiftsByName(gifts);
             
-            grid.innerHTML = groupedChannels.map(group => {
+            grid.innerHTML = groupedGifts.map(group => {
                 const count = group.length;
-                const firstChannel = group[0];
+                const firstGift = group[0];
                 
                 let imageClass = 'single';
                 let containerClass = 'single';
@@ -1568,57 +1707,28 @@ async def miniapp():
                     containerClass = 'triple';
                 }
                 
-                const imagesToShow = group.slice(0, 3); // Показываем максимум 3 изображения
+                const imagesToShow = group.slice(0, 3);
                 
                 return `
-                    <div class="channel-group-card" onclick="openChannelGroupDetail('${firstChannel.name}')">
-                        <div class="channel-group-count">${count}</div>
-                        <div class="channel-group-images ${containerClass}">
-                            ${imagesToShow.map(channel => `
-                                <div class="channel-group-image ${imageClass}" style="background-image: url('${channel.image}')"></div>
+                    <div class="gift-group-card" onclick="openGiftGroupDetail('${firstGift.name}')">
+                        <div class="gift-group-count">${count}</div>
+                        <div class="gift-group-images ${containerClass}">
+                            ${imagesToShow.map(gift => `
+                                <div class="gift-group-image ${imageClass}" style="background-image: url('${gift.image}')"></div>
                             `).join('')}
                         </div>
-                        <div class="channel-group-title">${firstChannel.name}</div>
-                        <button class="price-btn" onclick="event.stopPropagation(); showChannelGroupPrices('${firstChannel.name}')">
-                            Цена в TON
+                        <div class="gift-group-title">${firstGift.name}</div>
+                        <button class="price-btn" onclick="event.stopPropagation(); showGiftGroupPrices('${firstGift.name}')">
+                            Ціна в TON
                         </button>
                     </div>
                 `;
             }).join('');
         }
         
-        // Рендер обычных каналов (без группировки)
-        function renderChannels(channels) {
-            const grid = document.getElementById('channelsGrid');
-            
-            if (channels.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <div style="font-size: 16px; margin-bottom: 8px;">Каналы не найдены</div>
-                        <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
-                    </div>
-                `;
-                return;
-            }
-            
-            grid.innerHTML = channels.map(channel => `
-                <div class="channel-card-catalog" onclick="openChannelDetail(${channel.id})">
-                    ${channel.new ? '<span class="new-badge">NEW</span>' : ''}
-                    ${channel.popular ? '<span class="hot-badge">HOT</span>' : ''}
-                    <div class="channel-image-catalog" style="background-image: url('${channel.image}')"></div>
-                    <div class="channel-name-catalog">${channel.name}</div>
-                    <div class="price-btn" style="margin-top: 10px; font-size: 12px;">
-                        ${channel.price} ▼ (${channel.subscribers})
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        // Переключение вкладок
         function switchTab(tab) {
             currentView = tab;
             
-            // Обновляем активную вкладку
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             
             if (tab === 'market') {
@@ -1633,79 +1743,72 @@ async def miniapp():
             }
         }
         
-        // Открыть детали группы каналов
-        function openChannelGroupDetail(channelName) {
-            const channelsInGroup = allChannels.filter(channel => channel.name === channelName);
-            if (channelsInGroup.length === 1) {
-                // Если один канал, открываем обычное модальное окно
-                openChannelDetail(channelsInGroup[0].id);
+        function openGiftGroupDetail(giftName) {
+            const giftsInGroup = allGifts.filter(gift => gift.name === giftName);
+            if (giftsInGroup.length === 1) {
+                openGiftDetail(giftsInGroup[0].id);
             } else {
-                // Если несколько, показываем список (пока просто alert)
-                tg.showAlert(`Группа ${channelName}: ${channelsInGroup.length} каналов`);
+                tg.showAlert(`Группа ${giftName}: ${giftsInGroup.length} подарков`);
             }
         }
         
-        // Показать цены группы каналов
-        function showChannelGroupPrices(channelName) {
-            const channelsInGroup = allChannels.filter(channel => channel.name === channelName && channel.listed);
-            const prices = channelsInGroup.map(channel => `${channel.price} ▼ (${channel.subscribers})`).join(', ');
-            tg.showAlert(`Цены ${channelName}: ${prices}`);
+        function showGiftGroupPrices(giftName) {
+            const giftsInGroup = allGifts.filter(gift => gift.name === giftName && gift.listed);
+            const prices = giftsInGroup.map(gift => `${gift.price} ▼ (${gift.count})`).join(', ');
+            tg.showAlert(`Цены ${giftName}: ${prices}`);
         }
         
-        // Создаем переменную для текущего канала
-        let currentChannelDetail = null;
-        function openChannelDetail(channelId) {
-            const channel = allChannels.find(c => c.id === channelId);
-            if (!channel) return;
+        let currentGiftDetail = null;
+        function openGiftDetail(giftId) {
+            const gift = allGifts.find(g => g.id === giftId);
+            if (!gift) return;
             
-            currentChannelDetail = channel;
+            currentGiftDetail = gift;
             
-            document.getElementById('channelDetailImage').style.backgroundImage = `url('${channel.image}')`;
-            document.getElementById('channelDetailTitle').textContent = channel.name;
-            document.getElementById('channelDetailId').textContent = `#${channel.id}`;
-            document.getElementById('channelDetailPriceText').textContent = channel.price;
-            document.getElementById('channelDetailSubscribers').textContent = `(${channel.subscribers})`;
+            document.getElementById('giftDetailImage').style.backgroundImage = `url('${gift.image}')`;
+            document.getElementById('giftDetailTitle').textContent = gift.name;
+            document.getElementById('giftDetailId').textContent = `#${gift.id}`;
+            document.getElementById('giftDetailPriceText').textContent = gift.price;
+            document.getElementById('giftDetailCount').textContent = `(${gift.count})`;
             
-            document.getElementById('channelDetailModal').classList.add('show');
+            document.getElementById('giftDetailModal').classList.add('show');
         }
         
-        // Закрыть детали канала
-        function closeChannelDetail() {
-            document.getElementById('channelDetailModal').classList.remove('show');
-            currentChannelDetail = null;
+        function closeGiftDetail() {
+            document.getElementById('giftDetailModal').classList.remove('show');
+            currentGiftDetail = null;
         }
         
-        // Купить канал из детального просмотра
-        function buyChannelFromDetail() {
-            if (currentChannelDetail) {
-                buyChannel(currentChannelDetail.id);
-                closeChannelDetail();
+        function buyGiftFromDetail() {
+            if (currentGiftDetail) {
+                buyGift(currentGiftDetail.id);
+                closeGiftDetail();
             }
         }
         
-        // Покупка канала
-        function buyChannel(id) {
-            const channel = allChannels.find(c => c.id === id);
-            tg.showAlert(`Покупаем канал #${id}: ${channel.name} за ${channel.price} ▼`);
+        function buyGift(id) {
+            const gift = allGifts.find(g => g.id === id);
+            tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} ▼`);
         }
         
-        // Функция для создания объявления
         function createAd() {
-            tg.showAlert('Создание объявления о продаже канала - функция в разработке');
+            tg.showAlert('Создание объявления');
         }
         
-        // Функции кошелька
         function connectWallet() {
-            tg.showAlert('Подключение TON кошелька');
+            tg.showAlert('Подключение к TON кошельку...');
+        }
+        
+        function addBalance() {
+            tg.showAlert('Пополнение баланса');
         }
         
         function withdrawBalance() {
             tg.showAlert('Вывод средств');
         }
         
-        function addBalance() {
-            tg.showAlert('Пополнение баланса');
-        }
+        // Start loading when page loads
+        window.addEventListener('load', startLoading);
         
         // Убираем главную кнопку Telegram
         tg.MainButton.hide();
@@ -1714,9 +1817,6 @@ async def miniapp():
         if (tg.colorScheme === 'dark') {
             document.body.style.background = '#0f0f1a';
         }
-        
-        // Telegram WebApp готов
-        tg.ready();
     </script>
 </body>
 </html>
@@ -1727,21 +1827,20 @@ async def start(message: types.Message):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[[
             InlineKeyboardButton(
-                text="🚀 Открыть GiftRoom Market",
+                text="Открыть GiftRoom Market",
                 web_app=WebAppInfo(url=WEBAPP_URL)
             )
         ]]
     )
     
     await message.answer(
-        f"Привет {message.from_user.first_name}! 👋\n\n"
-        f"Добро пожаловать в GiftRoom Market! 🎁\n\n"
-        f"🔥 45 уникальных подарков\n"
-        f"💎 Редкие и эксклюзивные коллекции\n"
-        f"⚡ Мгновенные транзакции в TON\n"
-        f"🎯 Фильтры по категориям и ценам\n"
-        f"📈 Популярные и новые подарки\n\n"
-        f"Нажми кнопку чтобы открыть магазин подарков:",
+        f"Привет {message.from_user.first_name}!\n\n"
+        f"Добро пожаловать в GiftRoom Market!\n"
+        f"🎁 37 уникальных подарков\n"
+        f"🔍 Поиск по ID и названию\n"
+        f"💎 Редкие и обычные подарки\n"
+        f"🔧 Фильтры по типу и цене\n\n"
+        f"Нажми кнопку чтобы открыть каталог:",
         reply_markup=keyboard
     )
 
@@ -1758,7 +1857,7 @@ if __name__ == "__main__":
     bot_thread.daemon = True
     bot_thread.start()
     
-    print("🎁 GiftRoom Market запущен!")
+    print("🎁 GiftRoom Market з My Channel запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
