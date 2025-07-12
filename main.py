@@ -1,4 +1,8 @@
-# main.py - FastAPI приложение для GiftRoom Market с My Channel
+.gifts-grid.my-channel-grid {
+            display: block;
+            margin: -20px -20px 0 -20px;
+            padding: 0;
+        }# main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -512,15 +516,13 @@ async def miniapp():
         
         .gifts-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
         
-        .gifts-grid.my-channel-grid {
+        .gifts-grid.catalog-grid {
             display: block;
-            margin: -20px -20px 0 -20px;
-            padding: 0;
         }
         
         .gift-group-card {
@@ -668,10 +670,10 @@ async def miniapp():
         .gift-card-catalog {
             background: #2a2a3e;
             border-radius: 15px;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             transition: all 0.3s ease;
-            min-height: 180px;
+            min-height: 160px;
             position: relative;
             cursor: pointer;
             border: 2px solid transparent;
@@ -704,11 +706,11 @@ async def miniapp():
         }
         
         .gift-image-catalog {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            margin: 5px auto 12px;
+            border-radius: 10px;
+            margin: 5px auto 10px;
             background-size: cover;
             background-position: center;
             border: 2px solid rgba(255,255,255,0.2);
@@ -717,40 +719,40 @@ async def miniapp():
         
         .gift-name-catalog {
             color: white;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
-            line-height: 1.2;
-            margin-bottom: 8px;
+            line-height: 1.1;
+            margin-bottom: 6px;
         }
         
         .gift-price-catalog {
             background: rgba(0,0,0,0.3);
             color: white;
-            padding: 6px 10px;
-            border-radius: 15px;
-            font-size: 12px;
+            padding: 5px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            margin-bottom: 8px;
+            gap: 3px;
+            margin-bottom: 6px;
         }
         
         .gift-price-catalog .ton-icon {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
         }
         
         .gift-rarity-badge {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 6px;
+            right: 6px;
             background: rgba(0,0,0,0.7);
             color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 8px;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 6px;
             font-weight: 600;
         }
         
@@ -762,7 +764,7 @@ async def miniapp():
         
         .gift-count-catalog {
             color: rgba(255,255,255,0.7);
-            font-size: 11px;
+            font-size: 10px;
         }
         
         /* My Channel WOW Styles */
@@ -1984,9 +1986,9 @@ async def miniapp():
                 const sortedGifts = filteredGifts.sort((a, b) => b.id - a.id);
                 renderCatalogGifts(sortedGifts);
             } else {
-                // Сортуємо всі подарки за ID: найбільші ID зверху
+                // Показуємо групи подарків як в Market, але відсортовані за ID
                 const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
-                renderCatalogGifts(sortedGifts);
+                renderGroupedGifts(sortedGifts);
             }
         }
         
