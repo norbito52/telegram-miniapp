@@ -1,4 +1,4 @@
- # main.py - FastAPI приложение для GiftRoom Market с My Channel
+# main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -688,81 +688,304 @@ async def miniapp():
             line-height: 1.2;
         }
         
-        /* My Channel Styles - в стиле старого интерфейса */
-        .channel-header {
+        /* My Channel WOW Styles */
+        .my-channel-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .my-channel-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="4"/></g></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .channel-header-new {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
         }
         
-        .channel-title {
+        .channel-title-new {
             color: white;
-            font-size: 20px;
-            font-weight: 500;
-        }
-        
-        .add-ad-btn {
-            background: #3d5afe;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            width: 40px;
-            height: 40px;
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 10px;
+        }
+        
+        .channel-icon {
+            font-size: 28px;
+            animation: channelPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes channelPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .add-channel-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-channel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.6);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
             transition: all 0.3s ease;
         }
         
-        .add-ad-btn:hover {
-            background: #2c47e8;
-            transform: scale(1.05);
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.25);
         }
         
-        .empty-channel {
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .empty-state-new {
             text-align: center;
-            padding: 40px;
-            color: #8b8b8b;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
         }
         
-        .empty-icon {
-            font-size: 48px;
+        .empty-icon-new {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .empty-title-new {
+            font-size: 20px;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .empty-subtitle-new {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        
+        .create-channel-btn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(78,205,196,0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .create-channel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(78,205,196,0.6);
+        }
+        
+        .channels-list {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .channel-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .channel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .channel-card:hover::before {
+            left: 100%;
+        }
+        
+        .channel-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 15px;
         }
         
-        .empty-title {
+        .channel-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .channel-details h3 {
+            color: white;
             font-size: 16px;
-            color: #ffffff;
-            margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
         
-        .empty-subtitle {
-            font-size: 14px;
-            color: #8b8b8b;
-            margin-bottom: 25px;
-            line-height: 1.3;
+        .channel-details p {
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            margin: 0;
         }
         
-        .create-ad-btn {
-            background: #3d5afe;
+        .channel-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .channel-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+        }
+        
+        .channel-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            background: rgba(255,255,255,0.2);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
         
-        .create-ad-btn:hover {
-            background: #2c47e8;
-            transform: translateY(-1px);
+        .action-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .floating-add-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255,107,107,0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: floatingPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes floatingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .floating-add-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 12px 30px rgba(255,107,107,0.6);
         }
         
         .bottom-nav {
@@ -1184,7 +1407,7 @@ async def miniapp():
         </div>
         
         <div class="app-name">GiftRoom</div>
-        <div class="app-subtitle">Магазин подарков в Telegram</div>
+        <div class="app-subtitle">Магазин Telegram каналов с подарками</div>
         
         <div class="gift-icons">
             <div class="gift-icon">🎁</div>
@@ -1205,7 +1428,7 @@ async def miniapp():
     <div class="main-app" id="mainApp">
         <div class="header">
             <h1>GiftRoom Market</h1>
-            <div class="subtitle">Магазин подарков в Telegram</div>
+            <div class="subtitle">Магазин Telegram каналов с подарками</div>
             
             <div class="wallet-section">
                 <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
@@ -1511,20 +1734,54 @@ async def miniapp():
             applyMarketFilters();
         }
         
-        // Показать My Channel
+        // Показать My Channel с WOW дизайном
         function showMyChannel() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
             const grid = document.getElementById('giftsGrid');
             grid.innerHTML = `
-                <div class="channel-header">
-                    <div class="channel-title">Мои объявления</div>
-                    <button class="add-ad-btn" onclick="createAd()" title="Добавить объявление">+</button>
+                <div class="my-channel-container">
+                    <div class="channel-header-new">
+                        <div class="channel-title-new">
+                            <span class="channel-icon">📺</span>
+                            Мои каналы
+                        </div>
+                        <button class="add-channel-btn" onclick="createChannel()">
+                            <span>+</span>
+                            Добавить
+                        </button>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Каналов</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Подписчиков</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Доход TON</div>
+                        </div>
+                    </div>
+                    
+                    <div class="empty-state-new">
+                        <div class="empty-icon-new">🚀</div>
+                        <div class="empty-title-new">Создайте свой первый канал!</div>
+                        <div class="empty-subtitle-new">
+                            Начните продавать подарки через Telegram канал<br>
+                            и зарабатывайте TON каждый день
+                        </div>
+                        <button class="create-channel-btn" onclick="createChannel()">
+                            <span>📺</span>
+                            Создать канал
+                        </button>
+                    </div>
                 </div>
-                <div class="empty-channel">
-                    <div class="empty-icon">📦</div>
-                    <div class="empty-title">Нет объявлений</div>
-                    <div class="empty-subtitle">Создайте ваше первое объявление</div>
-                    <button class="create-ad-btn" onclick="createAd()">Добавить объявление</button>
+                
+                <div class="floating-add-btn" onclick="createChannel()" title="Добавить канал">
+                    +
                 </div>
             `;
         }
@@ -1791,8 +2048,12 @@ async def miniapp():
             tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} ▼`);
         }
         
+        function createChannel() {
+            tg.showAlert('Создание Telegram канала для продажи подарков');
+        }
+        
         function createAd() {
-            tg.showAlert('Создание объявления');
+            createChannel();
         }
         
         function connectWallet() {
@@ -1836,11 +2097,11 @@ async def start(message: types.Message):
     await message.answer(
         f"Привет {message.from_user.first_name}!\n\n"
         f"Добро пожаловать в GiftRoom Market!\n"
+        f"📺 Магазин Telegram каналов с подарками\n"
         f"🎁 37 уникальных подарков\n"
-        f"🔍 Поиск по ID и названию\n"
-        f"💎 Редкие и обычные подарки\n"
-        f"🔧 Фильтры по типу и цене\n\n"
-        f"Нажми кнопку чтобы открыть каталог:",
+        f"💎 Создавай каналы и продавай подарки\n"
+        f"💰 Зарабатывай TON с каждой продажи\n\n"
+        f"Нажми кнопку чтобы открыть магазин:",
         reply_markup=keyboard
     )
 
