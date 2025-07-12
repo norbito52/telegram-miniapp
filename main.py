@@ -690,13 +690,13 @@ async def miniapp():
         
         /* My Channel WOW Styles */
         .my-channel-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
             position: relative;
             overflow: hidden;
-            min-height: calc(100vh - 200px);
+            min-height: calc(100vh - 140px);
         }
         
         .my-channel-container::before {
@@ -706,8 +706,8 @@ async def miniapp():
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="4"/></g></svg>') repeat;
-            opacity: 0.3;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.02"><circle cx="30" cy="30" r="4"/></g></svg>') repeat;
+            opacity: 0.5;
         }
         
         .channel-header-new {
@@ -717,13 +717,14 @@ async def miniapp():
             margin-bottom: 25px;
             position: relative;
             z-index: 2;
+            padding-top: 20px;
         }
         
         .channel-title-new {
             color: white;
-            font-size: 22px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-size: 20px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -740,24 +741,24 @@ async def miniapp():
         }
         
         .add-channel-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            background: linear-gradient(45deg, #4299e1, #3182ce);
             color: white;
             border: none;
-            padding: 12px 15px;
-            border-radius: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+            box-shadow: 0 2px 8px rgba(66,153,225,0.3);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .add-channel-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255,107,107,0.6);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(66,153,225,0.4);
         }
         
         .stats-grid {
@@ -770,18 +771,18 @@ async def miniapp():
         }
         
         .stat-card {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 15px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.3s ease;
         }
         
         .stat-card:hover {
-            transform: translateY(-3px);
-            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.12);
         }
         
         .stat-number {
@@ -800,14 +801,14 @@ async def miniapp():
         
         .empty-state-new {
             text-align: center;
-            padding: 60px 20px 80px;
+            padding: 40px 20px;
             position: relative;
             z-index: 2;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 400px;
+            flex: 1;
         }
         
         .empty-icon-new {
@@ -822,40 +823,40 @@ async def miniapp():
         }
         
         .empty-title-new {
-            font-size: 24px;
+            font-size: 22px;
             color: white;
-            margin-bottom: 15px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         
         .empty-subtitle-new {
-            font-size: 16px;
-            color: rgba(255,255,255,0.85);
-            margin-bottom: 40px;
-            line-height: 1.5;
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 30px;
+            line-height: 1.4;
             max-width: 280px;
         }
         
         .create-channel-btn {
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            background: linear-gradient(45deg, #4299e1, #3182ce);
             color: white;
             border: none;
-            padding: 18px 30px;
-            border-radius: 30px;
+            padding: 15px 25px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            box-shadow: 0 6px 20px rgba(78,205,196,0.4);
+            box-shadow: 0 4px 15px rgba(66,153,225,0.3);
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         
         .create-channel-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(78,205,196,0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66,153,225,0.4);
         }
         
         .channels-list {
