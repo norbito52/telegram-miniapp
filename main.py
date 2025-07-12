@@ -1008,18 +1008,18 @@ async def miniapp():
             background: linear-gradient(45deg, #4CAF50, #45a049);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
+            padding: 10px 16px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            width: 100%;
-            margin: 20px;
+            width: calc(100% - 40px);
+            margin: 15px 20px 20px 20px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .buy-channel-btn:hover {
@@ -1367,40 +1367,47 @@ async def miniapp():
                 return;
             }
             
-            grid.innerHTML = channelsToRender.map(channel => `
-                <div class="channel-listing-card" onclick="openGiftsModal(${channel.id})">
-                    <div class="channel-header">
-                        <div class="channel-avatar">${channel.avatar}</div>
-                        <div class="channel-info">
-                            <h3>${channel.name}</h3>
-                            <p>от ${channel.owner}</p>
+            grid.innerHTML = channelsToRender.map(channel => {
+                // Находим подарок с наибольшим количеством
+                const mostPopularGift = channel.gifts.reduce((prev, current) => 
+                    parseInt(prev.count) > parseInt(current.count) ? prev : current
+                );
+                
+                return `
+                    <div class="channel-listing-card" onclick="openGiftsModal(${channel.id})">
+                        <div class="channel-header">
+                            <div class="channel-avatar" style="background-image: url('${mostPopularGift.image}'); background-size: cover; background-position: center;"></div>
+                            <div class="channel-info">
+                                <h3>${channel.name}</h3>
+                                <p>от ${channel.owner}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="channel-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">👥</span>
+                                <span>${channel.subscribers}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🎁</span>
+                                <span>${channel.gifts.length}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="channel-description">${channel.description}</div>
+                        
+                        <div class="channel-price-section">
+                            <div class="price-display">
+                                <div class="ton-icon"></div>
+                                <span>${channel.price} TON</span>
+                            </div>
+                            <button class="view-gifts-btn" onclick="event.stopPropagation(); openGiftsModal(${channel.id})">
+                                Смотреть подарки
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="channel-stats">
-                        <div class="stat-item">
-                            <span class="stat-icon">👥</span>
-                            <span>${channel.subscribers}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-icon">🎁</span>
-                            <span>${channel.gifts.length}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="channel-description">${channel.description}</div>
-                    
-                    <div class="channel-price-section">
-                        <div class="price-display">
-                            <div class="ton-icon"></div>
-                            <span>${channel.price} TON</span>
-                        </div>
-                        <button class="view-gifts-btn" onclick="event.stopPropagation(); openGiftsModal(${channel.id})">
-                            Смотреть подарки
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
         function showMarket() {
