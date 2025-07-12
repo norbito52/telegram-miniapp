@@ -646,8 +646,13 @@ async def miniapp():
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
             font-size: 12px;
+        }
+        
+        .price-btn .ton-icon {
+            width: 16px;
+            height: 16px;
         }
         
         .price-btn:hover {
@@ -1409,7 +1414,12 @@ async def miniapp():
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
+        }
+        
+        .gift-detail-price .ton-icon {
+            width: 20px;
+            height: 20px;
         }
     </style>
 </head>
@@ -1537,9 +1547,7 @@ async def miniapp():
                     <!-- Описание будет добавлено позже -->
                 </div>
                 <button class="gift-detail-price" id="giftDetailPrice" onclick="buyGiftFromDetail()">
-                    <span id="giftDetailPriceText"></span>
-                    <span class="triangle-icon">▼</span>
-                    <span id="giftDetailCount"></span>
+                    <!-- Контент буде додано через JavaScript -->
                 </button>
             </div>
         </div>
@@ -1993,7 +2001,8 @@ async def miniapp():
                         </div>
                         <div class="gift-group-title">${firstGift.name}</div>
                         <button class="price-btn" onclick="event.stopPropagation(); showGiftGroupPrices('${firstGift.name}')">
-                            Ціна в TON
+                            <div class="ton-icon"></div>
+                            <span>${firstGift.price}</span>
                         </button>
                     </div>
                 `;
@@ -2028,7 +2037,7 @@ async def miniapp():
         
         function showGiftGroupPrices(giftName) {
             const giftsInGroup = allGifts.filter(gift => gift.name === giftName && gift.listed);
-            const prices = giftsInGroup.map(gift => `${gift.price} ▼ (${gift.count})`).join(', ');
+            const prices = giftsInGroup.map(gift => `${gift.price} TON (${gift.count})`).join(', ');
             tg.showAlert(`Цены ${giftName}: ${prices}`);
         }
         
@@ -2042,8 +2051,14 @@ async def miniapp():
             document.getElementById('giftDetailImage').style.backgroundImage = `url('${gift.image}')`;
             document.getElementById('giftDetailTitle').textContent = gift.name;
             document.getElementById('giftDetailId').textContent = `#${gift.id}`;
-            document.getElementById('giftDetailPriceText').textContent = gift.price;
-            document.getElementById('giftDetailCount').textContent = `(${gift.count})`;
+            
+            // Оновлюємо кнопку ціни з TON іконкою
+            const priceBtn = document.getElementById('giftDetailPrice');
+            priceBtn.innerHTML = `
+                <div class="ton-icon"></div>
+                <span>${gift.price} TON</span>
+                <span>(${gift.count})</span>
+            `;
             
             document.getElementById('giftDetailModal').classList.add('show');
         }
@@ -2062,7 +2077,7 @@ async def miniapp():
         
         function buyGift(id) {
             const gift = allGifts.find(g => g.id === id);
-            tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} ▼`);
+            tg.showAlert(`Покупаем подарок #${id}: ${gift.name} за ${gift.price} TON`);
         }
         
         function createChannel() {
