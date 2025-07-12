@@ -1,4 +1,4 @@
-# main.py - FastAPI приложение для GiftRoom Market - Маркетплейс каналов
+# main.py - FastAPI приложение для GiftRoom Market - Маркетплейс каналов с подарками
 import asyncio
 import threading
 import os
@@ -503,15 +503,21 @@ async def miniapp():
             transform: scale(1.1);
         }
         
-        .channels-grid {
+        .gifts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
         
-        /* Channel Card Styles */
-        .channel-card {
+        .gifts-grid.my-channel-grid {
+            display: block;
+            margin: -20px -20px 0 -20px;
+            padding: 0;
+        }
+        
+        /* Channel listing card styles */
+        .channel-listing-card {
             background: linear-gradient(135deg, #2a2a3e 0%, #363654 100%);
             border-radius: 18px;
             padding: 20px;
@@ -520,9 +526,10 @@ async def miniapp():
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            min-height: 200px;
         }
         
-        .channel-card::before {
+        .channel-listing-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -533,11 +540,11 @@ async def miniapp():
             transition: left 0.5s ease;
         }
         
-        .channel-card:hover::before {
+        .channel-listing-card:hover::before {
             left: 100%;
         }
         
-        .channel-card:hover {
+        .channel-listing-card:hover {
             transform: translateY(-5px);
             border-color: #3d5afe;
             box-shadow: 0 10px 30px rgba(61, 90, 254, 0.3);
@@ -546,7 +553,7 @@ async def miniapp():
         .channel-header {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 15px;
         }
         
@@ -564,57 +571,52 @@ async def miniapp():
         
         .channel-info h3 {
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             line-height: 1.2;
         }
         
         .channel-info p {
             color: rgba(255,255,255,0.7);
-            font-size: 13px;
+            font-size: 12px;
             margin: 0;
         }
         
         .channel-stats {
             display: flex;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             color: rgba(255,255,255,0.8);
-            font-size: 12px;
+            font-size: 11px;
         }
         
         .stat-icon {
-            font-size: 14px;
+            font-size: 12px;
         }
         
-        .channel-tags {
-            display: flex;
-            gap: 6px;
+        .channel-description {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            line-height: 1.4;
             margin-bottom: 15px;
-            flex-wrap: wrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
-        .tag {
-            background: rgba(61, 90, 254, 0.2);
-            color: #64B5F6;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-        
-        .channel-price {
+        .channel-price-section {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 15px;
+            margin-top: auto;
         }
         
         .price-display {
@@ -626,32 +628,34 @@ async def miniapp():
             font-weight: 600;
         }
         
-        .buy-btn {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
+        .view-gifts-btn {
+            background: linear-gradient(45deg, #3d5afe, #2c47e8);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 8px 12px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
         
-        .buy-btn:hover {
+        .view-gifts-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 4px 12px rgba(61, 90, 254, 0.4);
         }
         
-        /* My Channel Styles */
+        /* My Channel WOW Styles */
         .my-channel-container {
             background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             border-radius: 0;
-            padding: 20px;
-            margin: -20px -20px 0 -20px;
+            padding: 20px 20px 20px 20px;
+            margin: 0;
             position: relative;
             overflow: hidden;
             min-height: calc(100vh - 140px);
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .my-channel-container::before {
@@ -672,6 +676,7 @@ async def miniapp():
             margin-bottom: 25px;
             position: relative;
             z-index: 2;
+            padding-top: 20px;
         }
         
         .channel-title-new {
@@ -698,7 +703,7 @@ async def miniapp():
             background: linear-gradient(45deg, #4299e1, #3182ce);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px 12px;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
@@ -758,6 +763,11 @@ async def miniapp():
             padding: 40px 20px;
             position: relative;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
         }
         
         .empty-icon-new {
@@ -785,8 +795,6 @@ async def miniapp():
             margin-bottom: 30px;
             line-height: 1.4;
             max-width: 280px;
-            margin-left: auto;
-            margin-right: auto;
         }
         
         .create-channel-btn {
@@ -810,115 +818,9 @@ async def miniapp():
             box-shadow: 0 6px 20px rgba(66,153,225,0.4);
         }
         
-        /* Add Channel Form */
-        .add-channel-form {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 18px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            z-index: 2;
-            margin-bottom: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .form-input {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            padding: 12px 15px;
-            color: white;
-            width: 100%;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #3d5afe;
-            background: rgba(255,255,255,0.15);
-        }
-        
-        .form-input::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-        
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        .form-select {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            padding: 12px 15px;
-            color: white;
-            width: 100%;
-            font-size: 14px;
-        }
-        
-        .form-select option {
-            background: #2a2a3e;
-            color: white;
-        }
-        
-        .form-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 25px;
-        }
-        
-        .btn-cancel {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            flex: 1;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-cancel:hover {
-            background: rgba(255,255,255,0.3);
-        }
-        
-        .btn-submit {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            flex: 2;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-submit:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
-        }
-        
         .floating-add-btn {
             position: fixed;
-            bottom: 30px;
+            bottom: 80px;
             right: 20px;
             width: 60px;
             height: 60px;
@@ -963,12 +865,166 @@ async def miniapp():
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .channel-card {
+        .channel-listing-card {
             animation: fadeIn 0.6s ease-out;
         }
         
         .filters-hidden {
             display: none;
+        }
+        
+        /* Gifts Modal */
+        .gifts-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .gifts-modal.show {
+            display: block;
+        }
+        
+        .gifts-modal-content {
+            background: #1a1a2e;
+            margin: 0;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .gifts-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            position: sticky;
+            top: 0;
+            background: #1a1a2e;
+            z-index: 10;
+        }
+        
+        .gifts-modal-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .gifts-modal-close {
+            background: none;
+            border: none;
+            color: #8b8b8b;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .gifts-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .gift-card {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            min-height: 180px;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .gift-card:hover {
+            transform: translateY(-2px);
+            border-color: #3d5afe;
+        }
+        
+        .gift-image {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin: 0 auto 10px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #3a3a5c;
+        }
+        
+        .gift-title {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        
+        .gift-description {
+            color: #8b8b8b;
+            font-size: 10px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .gift-rarity {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 8px;
+            padding: 2px 5px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .gift-rarity.rarity-1 { background: #6b7280; }
+        .gift-rarity.rarity-2 { background: #3b82f6; }
+        .gift-rarity.rarity-3 { background: #8b5cf6; }
+        .gift-rarity.rarity-4 { background: #ef4444; }
+        .gift-rarity.rarity-5 { background: #f59e0b; }
+        
+        .gift-count {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .buy-channel-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+            margin: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .buy-channel-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
         }
     </style>
 </head>
@@ -985,9 +1041,9 @@ async def miniapp():
         <div class="app-subtitle">Маркетплейс Telegram каналов с подарками</div>
         
         <div class="gift-icons">
-            <div class="gift-icon">📺</div>
+            <div class="gift-icon">🎁</div>
             <div class="gift-icon">💎</div>
-            <div class="gift-icon">💰</div>
+            <div class="gift-icon">🏆</div>
         </div>
         
         <div class="progress-container">
@@ -995,7 +1051,7 @@ async def miniapp():
         </div>
         
         <div class="loading-text">
-            <span class="loading-dots">Загрузка каналов</span>
+            <span class="loading-dots">Загрузка подарков</span>
         </div>
     </div>
 
@@ -1049,8 +1105,27 @@ async def miniapp():
             </div>
         </div>
         
-        <div class="channels-grid" id="channelsGrid">
+        <div class="gifts-grid" id="giftsGrid">
             <div class="loading">Загрузка каналов...</div>
+        </div>
+        
+        <!-- Gifts Modal -->
+        <div class="gifts-modal" id="giftsModal">
+            <div class="gifts-modal-content">
+                <div class="gifts-modal-header">
+                    <div class="gifts-modal-title" id="modalChannelName">Подарки канала</div>
+                    <button class="gifts-modal-close" onclick="closeGiftsModal()">✕</button>
+                </div>
+                
+                <div class="gifts-modal-grid" id="giftsModalGrid">
+                    <!-- Подарки будут загружены здесь -->
+                </div>
+                
+                <button class="buy-channel-btn" id="buyChannelBtn" onclick="buyChannelFromModal()">
+                    <div class="ton-icon"></div>
+                    <span>Купить канал за 0.00 TON</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1058,77 +1133,97 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // База данных каналов (демо-данные)
-        let channels = [
+        // База данных каналов с подарками
+        const channelListings = [
             {
                 id: 1,
                 name: "Fashion Style 👠",
-                description: "Эксклюзивные подарки модной тематики",
+                description: "Эксклюзивные подарки модной тематики - обувь, аксессуары и стильные предметы",
                 subscribers: 1250,
                 posts: 45,
-                category: "fashion",
+                category: "fashion", 
                 price: 25.50,
                 owner: "Maria Fashion",
                 avatar: "👗",
-                tags: ["мода", "стиль", "обувь"],
-                dateAdded: new Date('2024-01-15')
+                dateAdded: new Date('2024-01-15'),
+                gifts: [
+                    {id: 1, name: "HEELS", desc: "High heels", count: "11500", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+                    {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", rarity: 1, image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"}
+                ]
             },
             {
                 id: 2,
                 name: "Cat Lovers 🐱",
-                description: "Милые подарки для любителей котиков",
+                description: "Милые подарки для любителей котиков и других животных",
                 subscribers: 890,
                 posts: 32,
                 category: "animals",
                 price: 15.25,
                 owner: "CatMom",
                 avatar: "🐱",
-                tags: ["котики", "животные", "мило"],
-                dateAdded: new Date('2024-01-20')
+                dateAdded: new Date('2024-01-20'),
+                gifts: [
+                    {id: 3, name: "CATS", desc: "Cute cats", count: "2945", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+                    {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", rarity: 2, image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", rarity: 3, image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"}
+                ]
             },
             {
                 id: 3,
                 name: "Tech Store 🔌",
-                description: "Технические подарки и гаджеты",
+                description: "Технические подарки и современные гаджеты",
                 subscribers: 2100,
                 posts: 67,
                 category: "tech",
                 price: 45.00,
                 owner: "TechGuru",
                 avatar: "⚡",
-                tags: ["техника", "гаджеты", "инновации"],
-                dateAdded: new Date('2024-01-10')
+                dateAdded: new Date('2024-01-10'),
+                gifts: [
+                    {id: 6, name: "LAMP", desc: "Table lamp", count: "2612", rarity: 1, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+                    {id: 10, name: "DYSON", desc: "Powerful vacuum", count: "2178", rarity: 2, image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+                    {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", rarity: 3, image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"}
+                ]
             },
             {
                 id: 4,
                 name: "Sweet Treats 🧁",
-                description: "Сладкие подарки и десерты",
+                description: "Сладкие подарки и десерты для сладкоежек",
                 subscribers: 756,
                 posts: 28,
                 category: "food",
                 price: 18.75,
-                owner: "SweetChef",
+                owner: "SweetChef", 
                 avatar: "🍰",
-                tags: ["сладости", "десерты", "выпечка"],
-                dateAdded: new Date('2024-01-25')
+                dateAdded: new Date('2024-01-25'),
+                gifts: [
+                    {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", count: "2390", rarity: 1, image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
+                    {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", rarity: 2, image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+                    {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", rarity: 4, image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"}
+                ]
             },
             {
                 id: 5,
-                name: "Space Explorer 🚀",
-                description: "Космические подарки и артефакты",
+                name: "Hip Hop Central 🎤",
+                description: "Эксклюзивные подарки в стиле хип-хоп культуры",
                 subscribers: 1890,
                 posts: 54,
                 category: "entertainment",
                 price: 67.30,
                 owner: "SpaceMan",
                 avatar: "🌌",
-                tags: ["космос", "наука", "футуристика"],
-                dateAdded: new Date('2024-01-12')
+                dateAdded: new Date('2024-01-12'),
+                gifts: [
+                    {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", count: "67", rarity: 5, image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
+                    {id: 34, name: "LOW RIDER", desc: "Cool car", count: "23", rarity: 5, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
+                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"}
+                ]
             }
         ];
         
         let currentView = 'market';
-        let showAddForm = false;
+        let currentChannelModal = null;
         let currentFilters = {
             search: '',
             category: '',
@@ -1163,7 +1258,7 @@ async def miniapp():
             startParticles();
             
             const loadingTexts = [
-                'Загрузка каналов',
+                'Загрузка подарков',
                 'Подключение к TON',
                 'Синхронизация данных',
                 'Подготовка интерфейса',
@@ -1216,7 +1311,7 @@ async def miniapp():
             currentFilters.category = categoryFilter;
             currentFilters.sort = sortFilter;
             
-            let filteredChannels = [...channels];
+            let filteredChannels = [...channelListings];
             
             // Поиск по названию и описанию
             if (searchValue) {
@@ -1248,7 +1343,7 @@ async def miniapp():
                     break;
             }
             
-            renderChannels(filteredChannels);
+            renderChannelListings(filteredChannels);
         }
         
         function clearFilters() {
@@ -1256,11 +1351,11 @@ async def miniapp():
             document.getElementById('categoryFilter').value = '';
             document.getElementById('sortFilter').value = 'recent';
             currentFilters = { search: '', category: '', sort: 'recent' };
-            renderChannels(channels);
+            renderChannelListings(channelListings);
         }
         
-        function renderChannels(channelsToRender) {
-            const grid = document.getElementById('channelsGrid');
+        function renderChannelListings(channelsToRender) {
+            const grid = document.getElementById('giftsGrid');
             
             if (channelsToRender.length === 0) {
                 grid.innerHTML = `
@@ -1273,7 +1368,7 @@ async def miniapp():
             }
             
             grid.innerHTML = channelsToRender.map(channel => `
-                <div class="channel-card" onclick="viewChannel(${channel.id})">
+                <div class="channel-listing-card" onclick="openGiftsModal(${channel.id})">
                     <div class="channel-header">
                         <div class="channel-avatar">${channel.avatar}</div>
                         <div class="channel-info">
@@ -1288,24 +1383,20 @@ async def miniapp():
                             <span>${channel.subscribers}</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-icon">📝</span>
-                            <span>${channel.posts}</span>
+                            <span class="stat-icon">🎁</span>
+                            <span>${channel.gifts.length}</span>
                         </div>
                     </div>
                     
-                    <div class="channel-tags">
-                        ${channel.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                    </div>
+                    <div class="channel-description">${channel.description}</div>
                     
-                    <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 15px;">${channel.description}</p>
-                    
-                    <div class="channel-price">
+                    <div class="channel-price-section">
                         <div class="price-display">
                             <div class="ton-icon"></div>
                             <span>${channel.price} TON</span>
                         </div>
-                        <button class="buy-btn" onclick="event.stopPropagation(); buyChannel(${channel.id})">
-                            Купить
+                        <button class="view-gifts-btn" onclick="event.stopPropagation(); openGiftsModal(${channel.id})">
+                            Смотреть подарки
                         </button>
                     </div>
                 </div>
@@ -1314,23 +1405,13 @@ async def miniapp():
         
         function showMarket() {
             document.getElementById('filtersSection').classList.remove('filters-hidden');
-            renderChannels(channels);
+            renderChannelListings(channelListings);
         }
         
         function showMyChannel() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
-            const grid = document.getElementById('channelsGrid');
-            
-            if (showAddForm) {
-                renderAddChannelForm();
-            } else {
-                // Показываем пустое состояние или мои каналы
-                renderMyChannels();
-            }
-        }
-        
-        function renderMyChannels() {
-            const grid = document.getElementById('channelsGrid');
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid my-channel-grid';
             grid.innerHTML = `
                 <div class="my-channel-container">
                     <div class="channel-header-new">
@@ -1338,9 +1419,9 @@ async def miniapp():
                             <span class="channel-icon">📺</span>
                             Мои каналы
                         </div>
-                        <button class="add-channel-btn" onclick="showAddChannelForm()">
+                        <button class="add-channel-btn" onclick="createChannel()">
                             <span>+</span>
-                            Добавить канал
+                            Добавить
                         </button>
                     </div>
                     
@@ -1360,173 +1441,75 @@ async def miniapp():
                     </div>
                     
                     <div class="empty-state-new">
-                        <div class="empty-icon-new">📺</div>
-                        <div class="empty-title-new">Добавьте свой первый канал!</div>
+                        <div class="empty-icon-new">🚀</div>
+                        <div class="empty-title-new">Создайте свой первый канал!</div>
                         <div class="empty-subtitle-new">
-                            Начните продавать доступ к своему Telegram каналу 
-                            с эксклюзивными подарками и зарабатывайте TON
+                            Начните продавать подарки через Telegram канал
+                            и зарабатывайте TON каждый день
                         </div>
-                        <button class="create-channel-btn" onclick="showAddChannelForm()">
+                        <button class="create-channel-btn" onclick="createChannel()">
                             <span>📺</span>
                             Создать канал
                         </button>
                     </div>
                 </div>
-                
-                <button class="floating-add-btn" onclick="showAddChannelForm()">+</button>
             `;
         }
         
-        function renderAddChannelForm() {
-            const grid = document.getElementById('channelsGrid');
-            grid.innerHTML = `
-                <div class="my-channel-container">
-                    <div class="channel-header-new">
-                        <div class="channel-title-new">
-                            <span class="channel-icon">➕</span>
-                            Добавить канал
-                        </div>
-                        <button class="add-channel-btn" onclick="hideAddChannelForm()">
-                            <span>←</span>
-                            Назад
-                        </button>
-                    </div>
-                    
-                    <div class="add-channel-form">
-                        <div class="form-group">
-                            <label class="form-label">Название канала</label>
-                            <input type="text" class="form-input" id="channelName" placeholder="Например: Fashion Style 👠">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Описание</label>
-                            <textarea class="form-input form-textarea" id="channelDesc" placeholder="Расскажите о подарках в вашем канале..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Категория</label>
-                            <select class="form-select" id="channelCategory">
-                                <option value="">Выберите категорию</option>
-                                <option value="fashion">Мода</option>
-                                <option value="food">Еда</option>
-                                <option value="animals">Животные</option>
-                                <option value="tech">Технологии</option>
-                                <option value="entertainment">Развлечения</option>
-                                <option value="sports">Спорт</option>
-                                <option value="misc">Разное</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Цена (TON)</label>
-                            <input type="number" class="form-input" id="channelPrice" placeholder="0.00" step="0.01" min="0">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Количество подписчиков</label>
-                            <input type="number" class="form-input" id="channelSubs" placeholder="Например: 1000" min="0">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Ссылка на канал</label>
-                            <input type="text" class="form-input" id="channelLink" placeholder="@your_channel или t.me/your_channel">
-                        </div>
-                        
-                        <div class="form-buttons">
-                            <button class="btn-cancel" onclick="hideAddChannelForm()">Отмена</button>
-                            <button class="btn-submit" onclick="submitChannel()">Добавить канал</button>
-                        </div>
-                    </div>
+        function openGiftsModal(channelId) {
+            const channel = channelListings.find(c => c.id === channelId);
+            if (!channel) return;
+            
+            currentChannelModal = channel;
+            
+            document.getElementById('modalChannelName').textContent = `Подарки канала ${channel.name}`;
+            document.getElementById('buyChannelBtn').innerHTML = `
+                <div class="ton-icon"></div>
+                <span>Купить канал за ${channel.price} TON</span>
+            `;
+            
+            const giftsGrid = document.getElementById('giftsModalGrid');
+            const rarityNames = {
+                1: 'Common',
+                2: 'Rare', 
+                3: 'Epic',
+                4: 'Legendary',
+                5: 'Mythic'
+            };
+            
+            giftsGrid.innerHTML = channel.gifts.map(gift => `
+                <div class="gift-card">
+                    <div class="gift-rarity rarity-${gift.rarity}">${rarityNames[gift.rarity]}</div>
+                    <div class="gift-image" style="background-image: url('${gift.image}')"></div>
+                    <div class="gift-title">${gift.name}</div>
+                    <div class="gift-description">${gift.desc}</div>
+                    <div class="gift-count">${gift.count} шт</div>
                 </div>
-            `;
-        }
-        
-        function showAddChannelForm() {
-            showAddForm = true;
-            renderAddChannelForm();
-        }
-        
-        function hideAddChannelForm() {
-            showAddForm = false;
-            renderMyChannels();
-        }
-        
-        function submitChannel() {
-            const name = document.getElementById('channelName').value.trim();
-            const description = document.getElementById('channelDesc').value.trim();
-            const category = document.getElementById('channelCategory').value;
-            const price = parseFloat(document.getElementById('channelPrice').value);
-            const subscribers = parseInt(document.getElementById('channelSubs').value);
-            const link = document.getElementById('channelLink').value.trim();
+            `).join('');
             
-            if (!name || !description || !category || !price || !subscribers || !link) {
-                tg.showAlert('Пожалуйста, заполните все поля');
-                return;
+            document.getElementById('giftsModal').classList.add('show');
+        }
+        
+        function closeGiftsModal() {
+            document.getElementById('giftsModal').classList.remove('show');
+            currentChannelModal = null;
+        }
+        
+        function buyChannelFromModal() {
+            if (currentChannelModal) {
+                tg.showAlert(`Покупка канала: ${currentChannelModal.name}\\nЦена: ${currentChannelModal.price} TON\\n\\nДля завершения покупки подключите TON кошелек`);
+                closeGiftsModal();
             }
-            
-            // Создаем новый канал
-            const newChannel = {
-                id: channels.length + 1,
-                name: name,
-                description: description,
-                subscribers: subscribers,
-                posts: Math.floor(Math.random() * 50) + 10, // Случайное количество постов
-                category: category,
-                price: price,
-                owner: "Вы", // В реальном приложении это будет имя пользователя
-                avatar: getRandomAvatar(category),
-                tags: getTagsForCategory(category),
-                dateAdded: new Date()
-            };
-            
-            channels.unshift(newChannel); // Добавляем в начало массива
-            
-            tg.showAlert('Канал успешно добавлен!');
-            hideAddChannelForm();
-            
-            // Переключаемся на маркет, чтобы показать добавленный канал
-            setTimeout(() => {
-                switchTab('market');
-            }, 1000);
-        }
-        
-        function getRandomAvatar(category) {
-            const avatars = {
-                fashion: ['👗', '👠', '💄', '👜'],
-                food: ['🍰', '🧁', '🍕', '🍔'],
-                animals: ['🐱', '🐶', '🐰', '🦊'],
-                tech: ['⚡', '💻', '📱', '🔌'],
-                entertainment: ['🎬', '🎮', '🎵', '🎨'],
-                sports: ['⚽', '🏀', '🏆', '🥇'],
-                misc: ['⭐', '💎', '🔥', '✨']
-            };
-            
-            const categoryAvatars = avatars[category] || avatars.misc;
-            return categoryAvatars[Math.floor(Math.random() * categoryAvatars.length)];
-        }
-        
-        function getTagsForCategory(category) {
-            const tags = {
-                fashion: ['мода', 'стиль', 'одежда'],
-                food: ['еда', 'рецепты', 'кулинария'],
-                animals: ['животные', 'питомцы', 'милота'],
-                tech: ['технологии', 'гаджеты', 'инновации'],
-                entertainment: ['развлечения', 'фильмы', 'игры'],
-                sports: ['спорт', 'фитнес', 'здоровье'],
-                misc: ['разное', 'интересное', 'полезное']
-            };
-            
-            return tags[category] || tags.misc;
         }
         
         function switchTab(tab) {
             currentView = tab;
-            showAddForm = false;
             
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             
             if (tab === 'market') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('giftsGrid').className = 'gifts-grid';
                 showMarket();
             } else if (tab === 'my-channel') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
@@ -1534,14 +1517,8 @@ async def miniapp():
             }
         }
         
-        function viewChannel(id) {
-            const channel = channels.find(c => c.id === id);
-            tg.showAlert(`Просмотр канала: ${channel.name}\\n\\nОписание: ${channel.description}\\n\\nПодписчики: ${channel.subscribers}\\nЦена: ${channel.price} TON`);
-        }
-        
-        function buyChannel(id) {
-            const channel = channels.find(c => c.id === id);
-            tg.showAlert(`Покупка канала: ${channel.name}\\nЦена: ${channel.price} TON\\n\\nДля завершения покупки подключите TON кошелек`);
+        function createChannel() {
+            tg.showAlert('Создание Telegram канала для продажи подарков');
         }
         
         function connectWallet() {
@@ -1586,10 +1563,10 @@ async def start(message: types.Message):
         f"Привет {message.from_user.first_name}!\n\n"
         f"Добро пожаловать в GiftRoom Market!\n"
         f"📺 Маркетплейс Telegram каналов с подарками\n"
-        f"💰 Продавайте доступ к своим каналам\n"
-        f"🎁 Покупайте эксклюзивные каналы с подарками\n"
-        f"💎 Зарабатывайте TON с каждой продажи\n\n"
-        f"Нажми кнопку чтобы открыть маркетплейс:",
+        f"🎁 37 уникальных подарков\n"
+        f"💎 Создавай каналы и продавай подарки\n"
+        f"💰 Зарабатывай TON с каждой продажи\n\n"
+        f"Нажми кнопку чтобы открыть магазин:",
         reply_markup=keyboard
     )
 
@@ -1606,7 +1583,7 @@ if __name__ == "__main__":
     bot_thread.daemon = True
     bot_thread.start()
     
-    print("🎁 GiftRoom Market - Маркетплейс каналов запущен!")
+    print("🎁 GiftRoom Market з My Channel запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
