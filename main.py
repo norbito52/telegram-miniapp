@@ -670,33 +670,99 @@ async def miniapp():
             border-radius: 15px;
             padding: 15px;
             text-align: center;
-            transition: transform 0.3s ease;
-            min-height: 140px;
+            transition: all 0.3s ease;
+            min-height: 180px;
             position: relative;
             cursor: pointer;
+            border: 2px solid transparent;
         }
         
         .gift-card-catalog:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            border-color: #3d5afe;
+            box-shadow: 0 8px 25px rgba(61, 90, 254, 0.3);
+        }
+        
+        .gift-card-catalog.rarity-1 {
+            background: linear-gradient(135deg, #2a2a3e 0%, #363654 100%);
+        }
+        
+        .gift-card-catalog.rarity-2 {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
+        
+        .gift-card-catalog.rarity-3 {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+        }
+        
+        .gift-card-catalog.rarity-4 {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+        
+        .gift-card-catalog.rarity-5 {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
         
         .gift-image-catalog {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            margin: 10px auto 15px;
+            border-radius: 12px;
+            margin: 5px auto 12px;
             background-size: cover;
             background-position: center;
-            border: 2px solid #3a3a5c;
+            border: 2px solid rgba(255,255,255,0.2);
+            position: relative;
         }
         
         .gift-name-catalog {
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             text-transform: uppercase;
             line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        
+        .gift-price-catalog {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        
+        .gift-price-catalog .ton-icon {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .gift-rarity-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .gift-rarity-badge.rarity-1 { background: #6b7280; }
+        .gift-rarity-badge.rarity-2 { background: #3b82f6; }
+        .gift-rarity-badge.rarity-3 { background: #8b5cf6; }
+        .gift-rarity-badge.rarity-4 { background: #ef4444; }
+        .gift-rarity-badge.rarity-5 { background: #f59e0b; }
+        
+        .gift-count-catalog {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
         }
         
         /* My Channel WOW Styles */
@@ -1914,9 +1980,11 @@ async def miniapp():
             
             if (selectedFilter) {
                 const filteredGifts = allGifts.filter(gift => gift.name === selectedFilter);
+                // Сортуємо за ID: найбільші ID зверху (які були знизу)
                 const sortedGifts = filteredGifts.sort((a, b) => b.id - a.id);
                 renderCatalogGifts(sortedGifts);
             } else {
+                // Сортуємо всі подарки за ID: найбільші ID зверху
                 const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
                 renderCatalogGifts(sortedGifts);
             }
