@@ -696,6 +696,7 @@ async def miniapp():
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
+            min-height: calc(100vh - 200px);
         }
         
         .my-channel-container::before {
@@ -799,14 +800,19 @@ async def miniapp():
         
         .empty-state-new {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px 80px;
             position: relative;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
         }
         
         .empty-icon-new {
-            font-size: 60px;
-            margin-bottom: 20px;
+            font-size: 80px;
+            margin-bottom: 25px;
             animation: float 3s ease-in-out infinite;
         }
         
@@ -816,39 +822,40 @@ async def miniapp():
         }
         
         .empty-title-new {
-            font-size: 20px;
+            font-size: 24px;
             color: white;
-            margin-bottom: 10px;
-            font-weight: 600;
+            margin-bottom: 15px;
+            font-weight: 700;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         
         .empty-subtitle-new {
-            font-size: 14px;
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 30px;
-            line-height: 1.4;
+            font-size: 16px;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 40px;
+            line-height: 1.5;
+            max-width: 280px;
         }
         
         .create-channel-btn {
             background: linear-gradient(45deg, #4ecdc4, #44a08d);
             color: white;
             border: none;
-            padding: 15px 25px;
-            border-radius: 25px;
+            padding: 18px 30px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(78,205,196,0.4);
+            box-shadow: 0 6px 20px rgba(78,205,196,0.4);
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .create-channel-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(78,205,196,0.6);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(78,205,196,0.6);
         }
         
         .channels-list {
@@ -1770,7 +1777,7 @@ async def miniapp():
                         <div class="empty-icon-new">🚀</div>
                         <div class="empty-title-new">Создайте свой первый канал!</div>
                         <div class="empty-subtitle-new">
-                            Начните продавать подарки через Telegram канал<br>
+                            Начните продавать подарки через Telegram канал
                             и зарабатывайте TON каждый день
                         </div>
                         <button class="create-channel-btn" onclick="createChannel()">
@@ -1778,10 +1785,6 @@ async def miniapp():
                             Создать канал
                         </button>
                     </div>
-                </div>
-                
-                <div class="floating-add-btn" onclick="createChannel()" title="Добавить канал">
-                    +
                 </div>
             `;
         }
