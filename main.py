@@ -517,6 +517,12 @@ async def miniapp():
             margin-bottom: 20px;
         }
         
+        .gifts-grid.my-channel-grid {
+            display: block;
+            margin: -20px;
+            padding: 0;
+        }
+        
         .gift-group-card {
             background: #2a2a3e;
             border-radius: 15px;
@@ -691,12 +697,15 @@ async def miniapp():
         /* My Channel WOW Styles */
         .my-channel-container {
             background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-            border-radius: 15px;
+            border-radius: 0;
             padding: 20px;
-            margin: -20px -20px 20px -20px;
+            margin: 0;
             position: relative;
             overflow: hidden;
             min-height: calc(100vh - 140px);
+            width: 100vw;
+            margin-left: -20px;
+            margin-right: -20px;
         }
         
         .my-channel-container::before {
@@ -1738,6 +1747,8 @@ async def miniapp():
         
         // Показать только listed подарки в Market
         function showMarket() {
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
             document.getElementById('filtersSection').classList.remove('filters-hidden');
             applyMarketFilters();
         }
@@ -1746,6 +1757,7 @@ async def miniapp():
         function showMyChannel() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
             const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid my-channel-grid';
             grid.innerHTML = `
                 <div class="my-channel-container">
                     <div class="channel-header-new">
@@ -1889,6 +1901,8 @@ async def miniapp():
         }
         
         function showCatalog() {
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
             document.getElementById('filtersSection').classList.add('filters-hidden');
             
             if (selectedFilter) {
