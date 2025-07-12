@@ -1,4 +1,4 @@
-# main.py - FastAPI приложение для ChannelGift Market - торговля Telegram каналами с подарками
+ # main.py - FastAPI приложение для ChannelGift Market - торговля Telegram каналами с подарками
 import asyncio
 import threading
 import os
@@ -1083,8 +1083,8 @@ async def miniapp():
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-logo">🚀</div>
-        <div class="loading-title">ChannelGift</div>
-        <div class="loading-subtitle">Маркетплейс Telegram каналов с подарками</div>
+        <div class="loading-title">GiftRoom</div>
+        <div class="loading-subtitle">Магазин подарунків в Telegram</div>
         
         <div class="channel-loader">
             <div class="channel-box"></div>
@@ -1096,18 +1096,18 @@ async def miniapp():
             <div class="progress-bar"></div>
         </div>
         
-        <div class="loading-text">Загрузка каналов...</div>
+        <div class="loading-text">Завантаження подарунків...</div>
     </div>
 
     <!-- Main App -->
     <div class="main-app" id="mainApp">
         <div style="padding: 20px;">
             <div class="header">
-                <h1>ChannelGift Market</h1>
-                <div class="subtitle">Покупайте и продавайте Telegram каналы с подарками</div>
+                <h1>GiftRoom Market</h1>
+                <div class="subtitle">Магазин подарунків в Telegram</div>
                 
                 <div class="wallet-section">
-                    <button class="wallet-connect-btn" onclick="connectWallet()">Подключить TON кошелек</button>
+                    <button class="wallet-connect-btn" onclick="connectWallet()">TON гаманець</button>
                     <div class="balance-section">
                         <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
                         <div class="balance-display">
@@ -1121,8 +1121,8 @@ async def miniapp():
             
             <div class="tabs">
                 <div class="tab active" onclick="switchTab('market')">Маркет</div>
-                <div class="tab" onclick="openChannelModal()">Каталог</div>
-                <div class="tab" onclick="switchTab('my-channel')">Мои каналы</div>
+                <div class="tab" onclick="openChannelModal()">Колекції</div>
+                <div class="tab" onclick="switchTab('my-channel')">Мої канали</div>
             </div>
             
             <!-- Фильтры (показываются только в Маркете) -->
@@ -1747,7 +1747,7 @@ async def start(message: types.Message):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[[
             InlineKeyboardButton(
-                text="🚀 Открыть ChannelGift Market",
+                text="🚀 Открыть GiftRoom Market",
                 web_app=WebAppInfo(url=WEBAPP_URL)
             )
         ]]
@@ -1755,13 +1755,13 @@ async def start(message: types.Message):
     
     await message.answer(
         f"Привет {message.from_user.first_name}! 👋\n\n"
-        f"Добро пожаловать в ChannelGift Market! 🎁\n\n"
-        f"🔥 37 уникальных каналов с подарками\n"
-        f"💎 Покупка и продажа каналов\n"
+        f"Добро пожаловать в GiftRoom Market! 🎁\n\n"
+        f"🔥 45 уникальных подарков\n"
+        f"💎 Редкие и эксклюзивные коллекции\n"
         f"⚡ Мгновенные транзакции в TON\n"
         f"🎯 Фильтры по категориям и ценам\n"
-        f"📈 Популярные и редкие коллекции\n\n"
-        f"Нажми кнопку чтобы открыть маркетплейс:",
+        f"📈 Популярные и новые подарки\n\n"
+        f"Нажми кнопку чтобы открыть магазин подарков:",
         reply_markup=keyboard
     )
 
@@ -1778,7 +1778,7 @@ if __name__ == "__main__":
     bot_thread.daemon = True
     bot_thread.start()
     
-    print("🚀 ChannelGift Market запущен!")
+    print("🎁 GiftRoom Market запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
