@@ -1,8 +1,4 @@
-.gifts-grid.my-channel-grid {
-            display: block;
-            margin: -20px -20px 0 -20px;
-            padding: 0;
-        }# main.py - FastAPI приложение для GiftRoom Market с My Channel
+# main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -457,7 +453,7 @@ async def miniapp():
             color: #8b8b8b;
         }
         
-        /* Фильтры */
+        /* Фільтри */
         .filters-section {
             margin-bottom: 20px;
         }
@@ -523,6 +519,12 @@ async def miniapp():
         
         .gifts-grid.catalog-grid {
             display: block;
+        }
+        
+        .gifts-grid.my-channel-grid {
+            display: block;
+            margin: -20px -20px 0 -20px;
+            padding: 0;
         }
         
         .gift-group-card {
@@ -1543,7 +1545,7 @@ async def miniapp():
             <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
         </div>
         
-        <!-- Фильтры (показываются только в Market) -->
+        <!-- Фільтри (показываются только в Market) -->
         <div class="filters-section" id="filtersSection">
             <div class="filter-row">
                 <select class="filter-select" id="giftTypeFilter" onchange="applyFilters()">
@@ -1698,7 +1700,7 @@ async def miniapp():
             showMarket();
         }
         
-        // База данных всех подарков с вариациями для тестирования групп
+        // База данных всех подарков - 37 штук
         const allGifts = [
             {id: 1, name: "HEELS", desc: "High heels", price: "2.12", count: "11500", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
             {id: 2, name: "BUTTON", desc: "Simple button", price: "2.90", count: "3056", new: false, listed: true, category: "objects", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
@@ -1736,21 +1738,7 @@ async def miniapp():
             {id: 34, name: "LOW RIDER", desc: "Cool car", price: "98.45", count: "23", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
             {id: 35, name: "SNOOP CIGAR", desc: "Elite cigar", price: "134.56", count: "45", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
             {id: 36, name: "SWAG BAG", desc: "Stylish bag", price: "156.78", count: "34", new: true, listed: true, category: "fashion", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
-            {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", price: "208.354", count: "15", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
-            
-            // Додаткові варіації для тестування груп
-            {id: 38, name: "SNOOP DOGG", desc: "Legendary rapper - variant 2", price: "180.25", count: "8", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
-            {id: 39, name: "SNOOP DOGG", desc: "Legendary rapper - variant 3", price: "220.15", count: "5", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
-            
-            {id: 40, name: "SNOOP CIGAR", desc: "Elite cigar - variant 2", price: "145.20", count: "25", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
-            
-            {id: 41, name: "CATS", desc: "Cute cats - variant 2", price: "3.45", count: "2500", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-            {id: 42, name: "CATS", desc: "Cute cats - variant 3", price: "3.67", count: "2200", new: false, listed: true, category: "animals", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-            
-            {id: 43, name: "HEELS", desc: "High heels - variant 2", price: "2.34", count: "10800", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-            
-            {id: 44, name: "EAGLE", desc: "Symbol of freedom - variant 2", price: "58.90", count: "140", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
-            {id: 45, name: "EAGLE", desc: "Symbol of freedom - variant 3", price: "62.15", count: "120", new: true, listed: true, category: "symbols", rarity: 5, image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"}
+            {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", price: "208.354", count: "15", new: true, listed: true, category: "entertainment", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"}
         ];
         
         let currentView = 'market';
@@ -1982,16 +1970,15 @@ async def miniapp():
             
             if (selectedFilter) {
                 const filteredGifts = allGifts.filter(gift => gift.name === selectedFilter);
-                // Сортуємо за ID: найбільші ID зверху (які були знизу)
                 const sortedGifts = filteredGifts.sort((a, b) => b.id - a.id);
                 renderCatalogGifts(sortedGifts);
             } else {
-                // Показуємо групи подарків як в Market, але відсортовані за ID
                 const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
                 renderGroupedGifts(sortedGifts);
             }
         }
         
+        // Рендер подарків в Collections (як на оригінальному скріншоті)
         function renderCatalogGifts(gifts) {
             const grid = document.getElementById('giftsGrid');
             
@@ -2005,13 +1992,29 @@ async def miniapp():
                 return;
             }
             
-            grid.innerHTML = gifts.map(gift => `
-                <div class="gift-card-catalog" onclick="selectGift(${gift.id})">
-                    <div class="gift-id">#${gift.id}</div>
-                    <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
-                    <div class="gift-name-catalog">${gift.name}</div>
-                </div>
-            `).join('');
+            grid.innerHTML = gifts.map(gift => {
+                const rarityNames = {
+                    1: 'Common',
+                    2: 'Rare', 
+                    3: 'Epic',
+                    4: 'Legendary',
+                    5: 'Mythic'
+                };
+                
+                return `
+                    <div class="gift-card-catalog rarity-${gift.rarity}" onclick="selectGift(${gift.id})">
+                        <div class="gift-rarity-badge rarity-${gift.rarity}">${rarityNames[gift.rarity]}</div>
+                        <div class="gift-id">#${gift.id}</div>
+                        <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
+                        <div class="gift-name-catalog">${gift.name}</div>
+                        <div class="gift-price-catalog">
+                            <div class="ton-icon"></div>
+                            <span>${gift.price}</span>
+                        </div>
+                        <div class="gift-count-catalog">${gift.count} шт</div>
+                    </div>
+                `;
+            }).join('');
         }
         
         function selectGift(id) {
@@ -2122,7 +2125,6 @@ async def miniapp():
             document.getElementById('giftDetailTitle').textContent = gift.name;
             document.getElementById('giftDetailId').textContent = `#${gift.id}`;
             
-            // Оновлюємо кнопку ціни з TON іконкою
             const priceBtn = document.getElementById('giftDetailPrice');
             priceBtn.innerHTML = `
                 <div class="ton-icon"></div>
