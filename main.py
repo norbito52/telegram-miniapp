@@ -512,12 +512,7 @@ async def miniapp():
         }
         
         .channel-group-image::before {
-            content: '📺';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 20px;
+            display: none;
         }
         
         .channel-group-image.single {
@@ -599,12 +594,7 @@ async def miniapp():
         }
         
         .channel-image-catalog::before {
-            content: '📺';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 30px;
+            display: none;
         }
         
         .channel-name-catalog {
@@ -900,12 +890,7 @@ async def miniapp():
         }
         
         .channel-option-image::before {
-            content: '📺';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
+            display: none;
         }
         
         .channel-option-name {
@@ -1025,12 +1010,7 @@ async def miniapp():
         }
         
         .channel-detail-image::before {
-            content: '📺';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px;
+            display: none;
         }
         
         .channel-detail-title {
@@ -1096,7 +1076,7 @@ async def miniapp():
             <div class="progress-bar"></div>
         </div>
         
-        <div class="loading-text">Завантаження подарунків...</div>
+        <div class="loading-text">Загрузка подарков...</div>
     </div>
 
     <!-- Main App -->
@@ -1120,9 +1100,9 @@ async def miniapp():
             </div>
             
             <div class="tabs">
-                <div class="tab active" onclick="switchTab('market')">Маркет</div>
-                <div class="tab" onclick="openChannelModal()">Колекції</div>
-                <div class="tab" onclick="switchTab('my-channel')">Мої канали</div>
+                <div class="tab active" onclick="switchTab('market')">Market</div>
+                <div class="tab" onclick="openChannelModal()">Collections</div>
+                <div class="tab" onclick="switchTab('my-channel')">My Channel</div>
             </div>
             
             <!-- Фильтры (показываются только в Маркете) -->
@@ -1154,7 +1134,7 @@ async def miniapp():
             </div>
             
             <div class="channels-grid" id="channelsGrid">
-                <div class="loading">Загрузка каналов...</div>
+                <div class="loading">Загрузка подарков...</div>
             </div>
         </div>
     </div>
@@ -1232,7 +1212,7 @@ async def miniapp():
             hideLoadingScreen();
         });
         
-        // База данных всех каналов с подарками
+        // База данных всех подарков с вариациями для тестирования групп
         const allChannels = [
             {id: 1, name: "МОДНЫЕ ПОДАРКИ", desc: "Стильные подарки", price: "2.12", subscribers: "11.5K", new: false, listed: true, category: "fashion", rarity: 1, popular: true, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
             {id: 2, name: "ВИНТАЖ КОЛЛЕКЦИЯ", desc: "Винтажные вещи", price: "2.90", subscribers: "3.1K", new: false, listed: true, category: "objects", rarity: 1, popular: false, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
