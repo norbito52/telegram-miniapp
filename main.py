@@ -519,7 +519,7 @@ async def miniapp():
         
         .gifts-grid.my-channel-grid {
             display: block;
-            margin: -20px;
+            margin: -20px -20px 0 -20px;
             padding: 0;
         }
         
@@ -698,14 +698,13 @@ async def miniapp():
         .my-channel-container {
             background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             border-radius: 0;
-            padding: 20px;
+            padding: 20px 20px 20px 20px;
             margin: 0;
             position: relative;
             overflow: hidden;
             min-height: calc(100vh - 140px);
-            width: 100vw;
-            margin-left: -20px;
-            margin-right: -20px;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .my-channel-container::before {
