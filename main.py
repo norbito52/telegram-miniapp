@@ -1,4 +1,7 @@
-# main.py - FastAPI приложение для GiftRoom Market с My Channel
+.gift-detail-price .ton-icon {
+            width: 20px;
+            height: 20px;
+        }# main.py - FastAPI приложение для GiftRoom Market с My Channel
 import asyncio
 import threading
 import os
@@ -1487,9 +1490,12 @@ async def miniapp():
             gap: 8px;
         }
         
-        .gift-detail-price .ton-icon {
-            width: 20px;
-            height: 20px;
+        /* Стиль для сетки подарков канала */
+        .channel-gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -1700,7 +1706,69 @@ async def miniapp():
             showMarket();
         }
         
-        // База данных всех подарков - 37 штук
+        // База данных каналов с подарками
+        const channels = [
+            {
+                id: 1,
+                name: "GiftMaster",
+                gifts: [1, 2, 3],
+                price: "50 TON"
+            },
+            {
+                id: 2,
+                name: "LuxuryGifts",
+                gifts: [30, 31],
+                price: "120 TON"
+            },
+            {
+                id: 3,
+                name: "CheapDeals",
+                gifts: [1, 3, 5, 8, 10],
+                price: "25 TON"
+            },
+            {
+                id: 4,
+                name: "PremiumStore",
+                gifts: [35, 36, 37],
+                price: "200 TON"
+            },
+            {
+                id: 5,
+                name: "FashionHub",
+                gifts: [1, 4],
+                price: "30 TON"
+            },
+            {
+                id: 6,
+                name: "AnimalLovers",
+                gifts: [3, 17, 21, 24],
+                price: "45 TON"
+            },
+            {
+                id: 7,
+                name: "SportZone",
+                gifts: [5, 23],
+                price: "35 TON"
+            },
+            {
+                id: 8,
+                name: "HolidaySpecial",
+                gifts: [7, 9, 20, 22],
+                price: "60 TON"
+            },
+            {
+                id: 9,
+                name: "TechStore",
+                gifts: [6, 10, 19],
+                price: "40 TON"
+            },
+            {
+                id: 10,
+                name: "EliteCollection",
+                gifts: [37],
+                price: "250 TON"
+            }
+        ];
         const allGifts = [
             {id: 1, name: "HEELS", desc: "High heels", price: "2.12", count: "11500", new: false, listed: true, category: "fashion", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
             {id: 2, name: "BUTTON", desc: "Simple button", price: "2.90", count: "3056", new: false, listed: true, category: "objects", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
@@ -1756,48 +1824,60 @@ async def miniapp():
             }
         }
         
-        // Применение фильтров в Market
+        // Применение фильтров в Market (теперь для каналов)
         function applyMarketFilters() {
-            if (selectedFilter) {
-                applyGiftNameFilter();
-                return;
-            }
-            
             const giftTypeFilter = document.getElementById('giftTypeFilter').value;
             const sortFilter = document.getElementById('sortFilter').value;
             
             currentFilters.giftType = giftTypeFilter;
             currentFilters.sort = sortFilter;
             
-            let filteredGifts = allGifts.filter(gift => gift.listed);
+            let filteredChannels = [...channels];
             
+            // Фильтр по типу подарка (фильтруем каналы у которых есть подарки нужного типа)
             if (giftTypeFilter) {
-                filteredGifts = filteredGifts.filter(gift => gift.category === giftTypeFilter);
+                filteredChannels = filteredChannels.filter(channel => {
+                    return channel.gifts.some(giftId => {
+                        const gift = allGifts.find(g => g.id === giftId);
+                        return gift && gift.category === giftTypeFilter;
+                    });
+                });
             }
             
+            // Сортировка каналов
             switch (sortFilter) {
                 case 'recent':
-                    filteredGifts.sort((a, b) => b.new - a.new || b.id - a.id);
+                    filteredChannels.sort((a, b) => b.id - a.id);
                     break;
                 case 'price_asc':
-                    filteredGifts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    filteredChannels.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
                     break;
                 case 'price_desc':
-                    filteredGifts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    filteredChannels.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
                     break;
                 case 'rarity':
-                    filteredGifts.sort((a, b) => b.rarity - a.rarity);
+                    // Сортировка по максимальной редкости подарков в канале
+                    filteredChannels.sort((a, b) => {
+                        const maxRarityA = Math.max(...a.gifts.map(giftId => {
+                            const gift = allGifts.find(g => g.id === giftId);
+                            return gift ? gift.rarity : 0;
+                        }));
+                        const maxRarityB = Math.max(...b.gifts.map(giftId => {
+                            const gift = allGifts.find(g => g.id === giftId);
+                            return gift ? gift.rarity : 0;
+                        }));
+                        return maxRarityB - maxRarityA;
+                    });
                     break;
             }
             
-            renderGroupedGifts(filteredGifts);
+            renderChannels(filteredChannels);
         }
         
         // Очистка фильтров
         function clearFilters() {
             document.getElementById('giftTypeFilter').value = '';
             document.getElementById('sortFilter').value = 'recent';
-            selectedFilter = null;
             currentFilters = {
                 giftType: '',
                 sort: 'recent'
@@ -1808,7 +1888,7 @@ async def miniapp():
             }
         }
         
-        // Показать только listed подарки в Market
+        // Показать только каналы в Market
         function showMarket() {
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid';
@@ -1974,7 +2054,7 @@ async def miniapp():
                 renderCatalogGifts(sortedGifts);
             } else {
                 const sortedGifts = [...allGifts].sort((a, b) => b.id - a.id);
-                renderGroupedGifts(sortedGifts);
+                renderCatalogGifts(sortedGifts);
             }
         }
         
@@ -2033,25 +2113,27 @@ async def miniapp():
             return Object.values(groups);
         }
         
-        function renderGroupedGifts(gifts) {
+        // Рендер каналов в Market
+        function renderChannels(channelsList) {
             const grid = document.getElementById('giftsGrid');
             
-            if (gifts.length === 0) {
+            if (channelsList.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
-                        <div style="font-size: 16px; margin-bottom: 8px;">Подарки не найдены</div>
-                        <div style="font-size: 14px;">Попробуйте изменить фильтры или поисковый запрос</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">Каналы не найдены</div>
+                        <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
                     </div>
                 `;
                 return;
             }
             
-            const groupedGifts = groupGiftsByName(gifts);
-            
-            grid.innerHTML = groupedGifts.map(group => {
-                const count = group.length;
-                const firstGift = group[0];
+            grid.innerHTML = channelsList.map(channel => {
+                // Получаем подарки канала (максимум 3 для показа)
+                const channelGifts = channel.gifts.slice(0, 3).map(giftId => 
+                    allGifts.find(g => g.id === giftId)
+                ).filter(gift => gift);
                 
+                const count = channel.gifts.length;
                 let imageClass = 'single';
                 let containerClass = 'single';
                 if (count === 2) {
@@ -2062,20 +2144,18 @@ async def miniapp():
                     containerClass = 'triple';
                 }
                 
-                const imagesToShow = group.slice(0, 3);
-                
                 return `
-                    <div class="gift-group-card" onclick="openGiftGroupDetail('${firstGift.name}')">
+                    <div class="gift-group-card" onclick="openChannelDetail(${channel.id})">
                         <div class="gift-group-count">${count}</div>
                         <div class="gift-group-images ${containerClass}">
-                            ${imagesToShow.map(gift => `
+                            ${channelGifts.map(gift => `
                                 <div class="gift-group-image ${imageClass}" style="background-image: url('${gift.image}')"></div>
                             `).join('')}
                         </div>
-                        <div class="gift-group-title">${firstGift.name}</div>
-                        <button class="price-btn" onclick="event.stopPropagation(); showGiftGroupPrices('${firstGift.name}')">
+                        <div class="gift-group-title">${channel.name}</div>
+                        <button class="price-btn" onclick="event.stopPropagation(); showChannelPrice(${channel.id})">
                             <div class="ton-icon"></div>
-                            <span>${firstGift.price}</span>
+                            <span>${channel.price}</span>
                         </button>
                     </div>
                 `;
@@ -2099,19 +2179,62 @@ async def miniapp():
             }
         }
         
-        function openGiftGroupDetail(giftName) {
-            const giftsInGroup = allGifts.filter(gift => gift.name === giftName);
-            if (giftsInGroup.length === 1) {
-                openGiftDetail(giftsInGroup[0].id);
+        // Показать детали канала
+        function openChannelDetail(channelId) {
+            const channel = channels.find(c => c.id === channelId);
+            if (!channel) return;
+            
+            // Получаем все подарки канала
+            const channelGifts = channel.gifts.map(giftId => 
+                allGifts.find(g => g.id === giftId)
+            ).filter(gift => gift);
+            
+            let giftsHtml = '';
+            if (channelGifts.length <= 3) {
+                // Показываем подарки в одну линию
+                giftsHtml = channelGifts.map(gift => `
+                    <div class="gift-card-catalog rarity-${gift.rarity}" onclick="selectGift(${gift.id})">
+                        <div class="gift-rarity-badge rarity-${gift.rarity}">
+                            ${gift.rarity === 1 ? 'Common' : gift.rarity === 2 ? 'Rare' : gift.rarity === 3 ? 'Epic' : gift.rarity === 4 ? 'Legendary' : 'Mythic'}
+                        </div>
+                        <div class="gift-id">#${gift.id}</div>
+                        <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
+                        <div class="gift-name-catalog">${gift.name}</div>
+                        <div class="gift-price-catalog">
+                            <div class="ton-icon"></div>
+                            <span>${gift.price}</span>
+                        </div>
+                        <div class="gift-count-catalog">${gift.count} шт</div>
+                    </div>
+                `).join('');
             } else {
-                tg.showAlert(`Группа ${giftName}: ${giftsInGroup.length} подарков`);
+                // Показываем все подарки в сетке
+                giftsHtml = `<div class="channel-gifts-grid">${channelGifts.map(gift => `
+                    <div class="gift-card-catalog rarity-${gift.rarity}" onclick="selectGift(${gift.id})">
+                        <div class="gift-rarity-badge rarity-${gift.rarity}">
+                            ${gift.rarity === 1 ? 'Common' : gift.rarity === 2 ? 'Rare' : gift.rarity === 3 ? 'Epic' : gift.rarity === 4 ? 'Legendary' : 'Mythic'}
+                        </div>
+                        <div class="gift-id">#${gift.id}</div>
+                        <div class="gift-image-catalog" style="background-image: url('${gift.image}')"></div>
+                        <div class="gift-name-catalog">${gift.name}</div>
+                        <div class="gift-price-catalog">
+                            <div class="ton-icon"></div>
+                            <span>${gift.price}</span>
+                        </div>
+                        <div class="gift-count-catalog">${gift.count} шт</div>
+                    </div>
+                `).join('')}</div>`;
             }
+            
+            tg.showAlert(`Канал: ${channel.name}\nПодарков: ${channelGifts.length}\nЦена: ${channel.price}`);
         }
         
-        function showGiftGroupPrices(giftName) {
-            const giftsInGroup = allGifts.filter(gift => gift.name === giftName && gift.listed);
-            const prices = giftsInGroup.map(gift => `${gift.price} TON (${gift.count})`).join(', ');
-            tg.showAlert(`Цены ${giftName}: ${prices}`);
+        // Показать цену канала
+        function showChannelPrice(channelId) {
+            const channel = channels.find(c => c.id === channelId);
+            if (channel) {
+                tg.showAlert(`Канал ${channel.name}: ${channel.price}`);
+            }
         }
         
         let currentGiftDetail = null;
