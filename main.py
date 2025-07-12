@@ -516,133 +516,74 @@ async def miniapp():
             padding: 0;
         }
         
-        /* Channel listing card styles */
-        .channel-listing-card {
-            background: linear-gradient(135deg, #2a2a3e 0%, #363654 100%);
-            border-radius: 18px;
-            padding: 20px;
-            border: 2px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            min-height: 200px;
-        }
-        
-        .channel-listing-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .channel-listing-card:hover::before {
-            left: 100%;
-        }
-        
-        .channel-listing-card:hover {
-            transform: translateY(-5px);
-            border-color: #3d5afe;
-            box-shadow: 0 10px 30px rgba(61, 90, 254, 0.3);
-        }
-        
-        .channel-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        .channel-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #ff9a9e, #fecfef, #ffecd2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        .channel-info h3 {
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            line-height: 1.2;
-        }
-        
-        .channel-info p {
-            color: rgba(255,255,255,0.7);
-            font-size: 12px;
-            margin: 0;
-        }
-        
-        .channel-stats {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: rgba(255,255,255,0.8);
-            font-size: 11px;
-        }
-        
-        .stat-icon {
-            font-size: 12px;
-        }
-        
-        .channel-description {
-            color: rgba(255,255,255,0.8);
-            font-size: 12px;
-            line-height: 1.4;
-            margin-bottom: 15px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .channel-price-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: auto;
-        }
-        
-        .price-display {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .view-gifts-btn {
-            background: linear-gradient(45deg, #3d5afe, #2c47e8);
-            color: white;
-            border: none;
-            padding: 8px 12px;
+        /* Gift card main styles for Market */
+        .gift-card-main {
+            background: #2a2a3e;
             border-radius: 15px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
+            padding: 12px;
+            text-align: center;
             transition: all 0.3s ease;
+            min-height: 160px;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
         }
         
-        .view-gifts-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(61, 90, 254, 0.4);
+        .gift-card-main:hover {
+            transform: translateY(-3px);
+            border-color: #3d5afe;
+            box-shadow: 0 8px 25px rgba(61, 90, 254, 0.3);
+        }
+        
+        .gift-image-main {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin: 5px auto 10px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+        
+        .gift-name-main {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+        
+        .gift-channel-name {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .gift-price-main {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            padding: 5px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 6px;
+        }
+        
+        .gift-price-main .ton-icon {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .gift-count-main {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
         }
         
         /* My Channel WOW Styles */
@@ -1373,38 +1314,25 @@ async def miniapp():
                     parseInt(prev.count) > parseInt(current.count) ? prev : current
                 );
                 
+                const rarityNames = {
+                    1: 'Common',
+                    2: 'Rare', 
+                    3: 'Epic',
+                    4: 'Legendary',
+                    5: 'Mythic'
+                };
+                
                 return `
-                    <div class="channel-listing-card" onclick="openGiftsModal(${channel.id})">
-                        <div class="channel-header">
-                            <div class="channel-avatar" style="background-image: url('${mostPopularGift.image}'); background-size: cover; background-position: center;"></div>
-                            <div class="channel-info">
-                                <h3>${channel.name}</h3>
-                                <p>от ${channel.owner}</p>
-                            </div>
+                    <div class="gift-card-main" onclick="openGiftsModal(${channel.id})">
+                        <div class="gift-rarity-badge rarity-${mostPopularGift.rarity}">${rarityNames[mostPopularGift.rarity]}</div>
+                        <div class="gift-image-main" style="background-image: url('${mostPopularGift.image}')"></div>
+                        <div class="gift-name-main">${mostPopularGift.name}</div>
+                        <div class="gift-channel-name">${channel.name}</div>
+                        <div class="gift-price-main">
+                            <div class="ton-icon"></div>
+                            <span>${channel.price} TON</span>
                         </div>
-                        
-                        <div class="channel-stats">
-                            <div class="stat-item">
-                                <span class="stat-icon">👥</span>
-                                <span>${channel.subscribers}</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-icon">🎁</span>
-                                <span>${channel.gifts.length}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="channel-description">${channel.description}</div>
-                        
-                        <div class="channel-price-section">
-                            <div class="price-display">
-                                <div class="ton-icon"></div>
-                                <span>${channel.price} TON</span>
-                            </div>
-                            <button class="view-gifts-btn" onclick="event.stopPropagation(); openGiftsModal(${channel.id})">
-                                Смотреть подарки
-                            </button>
-                        </div>
+                        <div class="gift-count-main">${mostPopularGift.count} шт</div>
                     </div>
                 `;
             }).join('');
