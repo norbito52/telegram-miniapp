@@ -510,6 +510,91 @@ async def miniapp():
             margin-bottom: 20px;
         }
         
+        /* Gifts Filter List Styles */
+        .gifts-filter-grid {
+            display: block;
+            margin-bottom: 20px;
+        }
+        
+        .gift-filter-item {
+            display: flex;
+            align-items: center;
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .gift-filter-item:hover {
+            background: #3a3a5c;
+            border-color: #3d5afe;
+        }
+        
+        .gift-filter-checkbox {
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            border: 2px solid #4a4a6a;
+            border-radius: 4px;
+            margin-right: 15px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .gift-filter-image {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-right: 15px;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        
+        .gift-filter-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .gift-filter-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        
+        .gift-filter-stats {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .gift-filter-price {
+            color: #64B5F6;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .gift-filter-count {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        
+        .gift-filter-badge {
+            background: #4CAF50;
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
         .gifts-grid.my-channel-grid {
             display: block;
             margin: -20px -20px 0 -20px;
@@ -999,7 +1084,7 @@ async def miniapp():
         
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
-            <div class="tab" onclick="switchTab('collections')">Все категории</div>
+            <div class="tab" onclick="switchTab('filter')">Фільтр</div>
             <div class="tab" onclick="switchTab('my-channel')">Мої канали</div>
         </div>
         
@@ -1287,7 +1372,7 @@ async def miniapp():
             renderChannelListings(filteredChannels);
         }
         
-        function showAllGiftsCollection() {
+        function showGiftsFilter() {
             // Собираем все уникальные подарки из всех каналов
             const allGifts = new Map();
             
@@ -1310,21 +1395,28 @@ async def miniapp():
             });
             
             const giftsArray = Array.from(allGifts.values());
-            renderGiftsCollection(giftsArray);
+            renderGiftsFilterList(giftsArray);
         }
         
-        function renderGiftsCollection(gifts) {
+        function renderGiftsFilterList(gifts) {
             const grid = document.getElementById('giftsGrid');
             
+            // Сортируем подарки по общему количеству (от большего к меньшему)
+            gifts.sort((a, b) => b.totalCount - a.totalCount);
+            
             grid.innerHTML = gifts.map(gift => `
-                <div class="gift-card-main" onclick="selectGiftFilter(${gift.id})">
-                    <div class="gift-image-main" style="background-image: url('${gift.image}')"></div>
-                    <div class="gift-name-main">${gift.name}</div>
-                    <div class="gift-channel-name">${gift.channels.length} каналов</div>
-                    <div class="gift-price-main">
-                        <span style="color: #64B5F6;">Всего:</span>
+                <div class="gift-filter-item" onclick="selectGiftFilter(${gift.id})">
+                    <div class="gift-filter-checkbox">
+                        <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
                     </div>
-                    <div class="gift-count-main">${gift.totalCount} шт</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">${gift.name}</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-price">${gift.totalCount} ▽</span>
+                            <span class="gift-filter-count">(${gift.channels.length} 🎁)</span>
+                        </div>
+                    </div>
+                    <div class="gift-filter-badge">NEW!</div>
                 </div>
             `).join('');
         }
@@ -1398,9 +1490,36 @@ async def miniapp():
             renderChannelListings(channelListings);
         }
         
-        function showCollections() {
+        
+        function showGiftsFilter() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
-            showAllGiftsCollection();
+            showAllGiftsFilter();
+        }
+        
+        function showAllGiftsFilter() {
+            // Собираем все уникальные подарки из всех каналов
+            const allGifts = new Map();
+            
+            channelListings.forEach(channel => {
+                channel.gifts.forEach(gift => {
+                    if (!allGifts.has(gift.id)) {
+                        allGifts.set(gift.id, {
+                            ...gift,
+                            totalCount: parseInt(gift.count),
+                            channels: [channel.id]
+                        });
+                    } else {
+                        const existing = allGifts.get(gift.id);
+                        existing.totalCount += parseInt(gift.count);
+                        if (!existing.channels.includes(channel.id)) {
+                            existing.channels.push(channel.id);
+                        }
+                    }
+                });
+            });
+            
+            const giftsArray = Array.from(allGifts.values());
+            renderGiftsFilterList(giftsArray);
         }
         
         function showMyChannel() {
@@ -1498,10 +1617,10 @@ async def miniapp():
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('giftsGrid').className = 'gifts-grid';
                 showMarket();
-            } else if (tab === 'collections') {
+            } else if (tab === 'filter') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
-                document.getElementById('giftsGrid').className = 'gifts-grid';
-                showCollections();
+                document.getElementById('giftsGrid').className = 'gifts-filter-grid';
+                showGiftsFilter();
             } else if (tab === 'my-channel') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
                 showMyChannel();
