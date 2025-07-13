@@ -1017,6 +1017,7 @@ async def miniapp():
         
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
+            <div class="tab" onclick="switchTab('collections')">Все категории</div>
             <div class="tab" onclick="switchTab('my-channel')">Мої канали</div>
         </div>
         
@@ -1074,7 +1075,7 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // База данных каналов с подарками
+        // База данных каналов с подарками (расширенная версия)
         const channelListings = [
             {
                 id: 1,
@@ -1090,7 +1091,8 @@ async def miniapp():
                 gifts: [
                     {id: 1, name: "HEELS", desc: "High heels", count: "11500", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
                     {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", rarity: 1, image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
-                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"}
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "356", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"}
                 ]
             },
             {
@@ -1107,7 +1109,8 @@ async def miniapp():
                 gifts: [
                     {id: 3, name: "CATS", desc: "Cute cats", count: "2945", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
                     {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", rarity: 2, image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
-                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", rarity: 3, image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"}
+                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", rarity: 3, image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+                    {id: 1, name: "HEELS", desc: "High heels", count: "250", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"}
                 ]
             },
             {
@@ -1124,7 +1127,8 @@ async def miniapp():
                 gifts: [
                     {id: 6, name: "LAMP", desc: "Table lamp", count: "2612", rarity: 1, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
                     {id: 10, name: "DYSON", desc: "Powerful vacuum", count: "2178", rarity: 2, image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
-                    {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", rarity: 3, image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"}
+                    {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", rarity: 3, image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "890", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"}
                 ]
             },
             {
@@ -1141,7 +1145,8 @@ async def miniapp():
                 gifts: [
                     {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", count: "2390", rarity: 1, image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
                     {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", rarity: 2, image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
-                    {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", rarity: 4, image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"}
+                    {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", rarity: 4, image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
+                    {id: 3, name: "CATS", desc: "Cute cats", count: "150", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"}
                 ]
             },
             {
@@ -1158,13 +1163,32 @@ async def miniapp():
                 gifts: [
                     {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", count: "67", rarity: 5, image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
                     {id: 34, name: "LOW RIDER", desc: "Cool car", count: "23", rarity: 5, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
-                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"}
+                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "89", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"}
+                ]
+            },
+            {
+                id: 6,
+                name: "Button Collectors 🔘",
+                description: "Редкие и уникальные кнопки для коллекционеров",
+                subscribers: 456,
+                posts: 23,
+                category: "misc",
+                price: 12.50,
+                owner: "ButtonMaster",
+                avatar: "🔘",
+                dateAdded: new Date('2024-01-28'),
+                gifts: [
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "5600", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+                    {id: 6, name: "LAMP", desc: "Table lamp", count: "234", rarity: 1, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+                    {id: 5, name: "BICEPS", desc: "Strong muscles", count: "567", rarity: 1, image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"}
                 ]
             }
         ];
         
         let currentView = 'market';
         let currentChannelModal = null;
+        let selectedGiftFilter = null;
         let currentFilters = {
             search: '',
             category: '',
@@ -1242,7 +1266,6 @@ async def miniapp():
             showMarket();
         }
         
-        // Применение фильтров
         function applyFilters() {
             const searchValue = document.getElementById('searchBox').value.toLowerCase();
             const categoryFilter = document.getElementById('categoryFilter').value;
@@ -1251,6 +1274,12 @@ async def miniapp():
             currentFilters.search = searchValue;
             currentFilters.category = categoryFilter;
             currentFilters.sort = sortFilter;
+            
+            // Если выбран конкретный подарок - показываем каналы с этим подарком
+            if (selectedGiftFilter) {
+                showChannelsWithGift(selectedGiftFilter);
+                return;
+            }
             
             let filteredChannels = [...channelListings];
             
@@ -1287,10 +1316,83 @@ async def miniapp():
             renderChannelListings(filteredChannels);
         }
         
+        function showAllGiftsCollection() {
+            // Собираем все уникальные подарки из всех каналов
+            const allGifts = new Map();
+            
+            channelListings.forEach(channel => {
+                channel.gifts.forEach(gift => {
+                    if (!allGifts.has(gift.id)) {
+                        allGifts.set(gift.id, {
+                            ...gift,
+                            totalCount: parseInt(gift.count),
+                            channels: [channel.id]
+                        });
+                    } else {
+                        const existing = allGifts.get(gift.id);
+                        existing.totalCount += parseInt(gift.count);
+                        if (!existing.channels.includes(channel.id)) {
+                            existing.channels.push(channel.id);
+                        }
+                    }
+                });
+            });
+            
+            const giftsArray = Array.from(allGifts.values());
+            renderGiftsCollection(giftsArray);
+        }
+        
+        function renderGiftsCollection(gifts) {
+            const grid = document.getElementById('giftsGrid');
+            
+            const rarityNames = {
+                1: 'Common',
+                2: 'Rare', 
+                3: 'Epic',
+                4: 'Legendary',
+                5: 'Mythic'
+            };
+            
+            grid.innerHTML = gifts.map(gift => `
+                <div class="gift-card-main" onclick="selectGiftFilter(${gift.id})">
+                    <div class="gift-rarity-badge rarity-${gift.rarity}">${rarityNames[gift.rarity]}</div>
+                    <div class="gift-image-main" style="background-image: url('${gift.image}')"></div>
+                    <div class="gift-name-main">${gift.name}</div>
+                    <div class="gift-channel-name">${gift.channels.length} каналов</div>
+                    <div class="gift-price-main">
+                        <span style="color: #64B5F6;">Всего:</span>
+                    </div>
+                    <div class="gift-count-main">${gift.totalCount} шт</div>
+                </div>
+            `).join('');
+        }
+        
+        function selectGiftFilter(giftId) {
+            selectedGiftFilter = giftId;
+            showChannelsWithGift(giftId);
+        }
+        
+        function showChannelsWithGift(giftId) {
+            // Находим все каналы с этим подарком
+            const channelsWithGift = channelListings.filter(channel => 
+                channel.gifts.some(gift => gift.id === giftId)
+            );
+            
+            // Сортируем по приоритету (у кого больше количества этого подарка)
+            channelsWithGift.sort((a, b) => {
+                const aGift = a.gifts.find(gift => gift.id === giftId);
+                const bGift = b.gifts.find(gift => gift.id === giftId);
+                return parseInt(bGift.count) - parseInt(aGift.count);
+            });
+            
+            renderChannelListings(channelsWithGift);
+        }
+        
         function clearFilters() {
             document.getElementById('searchBox').value = '';
             document.getElementById('categoryFilter').value = '';
             document.getElementById('sortFilter').value = 'recent';
+            selectedGiftFilter = null;
             currentFilters = { search: '', category: '', sort: 'recent' };
             renderChannelListings(channelListings);
         }
@@ -1340,7 +1442,13 @@ async def miniapp():
         
         function showMarket() {
             document.getElementById('filtersSection').classList.remove('filters-hidden');
+            selectedGiftFilter = null;
             renderChannelListings(channelListings);
+        }
+        
+        function showCollections() {
+            document.getElementById('filtersSection').classList.add('filters-hidden');
+            showAllGiftsCollection();
         }
         
         function showMyChannel() {
@@ -1446,8 +1554,12 @@ async def miniapp():
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('giftsGrid').className = 'gifts-grid';
                 showMarket();
-            } else if (tab === 'my-channel') {
+            } else if (tab === 'collections') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('giftsGrid').className = 'gifts-grid';
+                showCollections();
+            } else if (tab === 'my-channel') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
                 showMyChannel();
             }
         }
