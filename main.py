@@ -484,55 +484,7 @@ async def miniapp():
             color: #8b8b8b;
         }
         
-        /* Фільтри */
-        .filters-section {
-            margin-bottom: 20px;
-        }
-        
-        .filter-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        
-        .filter-select {
-            background: #2a2a3e;
-            border: none;
-            padding: 10px 12px;
-            border-radius: 8px;
-            color: white;
-            font-size: 13px;
-            flex: 1;
-        }
-        
-        .filter-select option {
-            background: #2a2a3e;
-            color: white;
-        }
-        
-        .clear-filters-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-            margin-left: 8px;
-        }
-        
-        .clear-filters-btn:hover {
-            background: #ff3742;
-            transform: scale(1.1);
-        }
+        /* Фільтри видалені - стилі не потрібні */
         
         .gifts-grid {
             display: grid;
@@ -1124,30 +1076,7 @@ async def miniapp():
             <div class="category-tab" onclick="switchCategory('new')">Нові</div>
         </div>
         
-        <!-- Фільтри (показываются только в Market) -->
-        <div class="filters-section" id="filtersSection">
-            <div class="filter-row">
-                <select class="filter-select" id="categoryFilter" onchange="applyFilters()">
-                    <option value="">Все категории</option>
-                    <option value="fashion">Мода</option>
-                    <option value="food">Еда</option>
-                    <option value="animals">Животные</option>
-                    <option value="tech">Технологии</option>
-                    <option value="entertainment">Развлечения</option>
-                    <option value="sports">Спорт</option>
-                    <option value="misc">Разное</option>
-                </select>
-                
-                <select class="filter-select" id="sortFilter" onchange="applyFilters()">
-                    <option value="recent">Новые</option>
-                    <option value="price_asc">Цена: мин → макс</option>
-                    <option value="price_desc">Цена: макс → мин</option>
-                    <option value="subscribers">По подписчикам</option>
-                </select>
-                
-                <button class="clear-filters-btn" onclick="clearFilters()" title="Очистить фильтры">✕</button>
-            </div>
-        </div>
+        <!-- Фільтри видалені -->
         
         <div class="gifts-grid" id="giftsGrid">
             <div class="loading">Загрузка каналов...</div>
@@ -1532,8 +1461,6 @@ async def miniapp():
         }
         
         function clearFilters() {
-            document.getElementById('categoryFilter').value = '';
-            document.getElementById('sortFilter').value = 'recent';
             selectedGiftFilter = null;
             currentFilters = { search: '', category: '', sort: 'recent' };
             renderChannelListings(channelListings);
@@ -1572,7 +1499,6 @@ async def miniapp():
         }
         
         function showMarket() {
-            document.getElementById('filtersSection').classList.remove('filters-hidden');
             document.getElementById('giftsGrid').className = 'gifts-grid';
             selectedGiftFilter = null;
             
@@ -1584,7 +1510,6 @@ async def miniapp():
         }
         
         function showMyChannels() {
-            document.getElementById('filtersSection').classList.add('filters-hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
             grid.innerHTML = `
