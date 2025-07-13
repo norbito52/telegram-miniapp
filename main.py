@@ -425,6 +425,10 @@ async def miniapp():
             margin-bottom: 20px;
         }
         
+        .category-tabs.hidden {
+            display: none;
+        }
+        
         .category-tab {
             background: #2a2a3e;
             color: #8b8b8b;
@@ -1499,6 +1503,7 @@ async def miniapp():
         }
         
         function showMarket() {
+            document.querySelector('.category-tabs').classList.remove('hidden');
             document.getElementById('giftsGrid').className = 'gifts-grid';
             selectedGiftFilter = null;
             
@@ -1510,6 +1515,7 @@ async def miniapp():
         }
         
         function showMyChannels() {
+            document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
             grid.innerHTML = `
