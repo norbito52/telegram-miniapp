@@ -526,9 +526,27 @@ async def miniapp():
             background: transparent;
             border: 2px solid #4a4a6a;
             border-radius: 4px;
-            margin-right: 15px;
+            margin-right: 20px;
             position: relative;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gift-filter-checkbox.checked {
+            background: #3d5afe;
+            border-color: #3d5afe;
+        }
+        
+        .gift-filter-checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
         }
         
         .gift-filter-image {
@@ -1277,6 +1295,7 @@ async def miniapp():
         let currentCategory = 'all';
         let currentChannelModal = null;
         let selectedGiftFilter = null;
+        let selectedGifts = new Set(); // Набір вибраних підарунків
         let currentFilters = {
             search: '',
             category: '',
@@ -1427,10 +1446,9 @@ async def miniapp():
             const newGiftIds = [1, 2, 3, 4, 5]; // Snoop Dogg, Swag Bag, Snoop Cigar, Low Rider, Westside Sign
             
             grid.innerHTML = gifts.map(gift => `
-                <div class="gift-filter-item" onclick="selectGiftFilter(${gift.id})">
-                    <div class="gift-filter-checkbox">
-                        <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
-                    </div>
+                <div class="gift-filter-item" onclick="selectGiftForFilter(${gift.id})">
+                    <div class="gift-filter-checkbox ${selectedGifts.has(gift.id) ? 'checked' : ''}" onclick="event.stopPropagation(); toggleGiftSelection(${gift.id})"></div>
+                    <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">${gift.name}</div>
                         <div class="gift-filter-stats">
@@ -1441,6 +1459,41 @@ async def miniapp():
                     ${newGiftIds.includes(gift.id) ? '<div class="gift-filter-badge">NEW!</div>' : ''}
                 </div>
             `).join('');
+        }
+        
+        function toggleGiftSelection(giftId) {
+            if (selectedGifts.has(giftId)) {
+                selectedGifts.delete(giftId);
+            } else {
+                selectedGifts.add(giftId);
+            }
+            
+            // Оновлюємо відображення
+            if (currentCategory === 'new') {
+                showAllGiftsFilter();
+            } else if (currentCategory === 'all') {
+                applyGiftFilter();
+            }
+        }
+        
+        function selectGiftForFilter(giftId) {
+            // Ця функція замінює стару selectGiftFilter
+            selectedGiftFilter = giftId;
+            showChannelsWithGift(giftId);
+        }
+        
+        function applyGiftFilter() {
+            // Показуємо канали які мають вибрані підарунки
+            if (selectedGifts.size === 0) {
+                renderChannelListings(channelListings);
+                return;
+            }
+            
+            const filteredChannels = channelListings.filter(channel => {
+                return channel.gifts.some(gift => selectedGifts.has(gift.id));
+            });
+            
+            renderChannelListings(filteredChannels);
         }
         
         function selectGiftFilter(giftId) {
@@ -1508,7 +1561,7 @@ async def miniapp():
             selectedGiftFilter = null;
             
             if (currentCategory === 'all') {
-                renderChannelListings(channelListings);
+                applyGiftFilter();
             } else if (currentCategory === 'new') {
                 showAllGiftsFilter();
             }
@@ -1603,7 +1656,7 @@ async def miniapp():
                 document.querySelectorAll('.category-tab')[0].classList.add('active');
                 if (currentView === 'market') {
                     document.getElementById('giftsGrid').className = 'gifts-grid';
-                    renderChannelListings(channelListings);
+                    applyGiftFilter();
                 }
             } else if (category === 'new') {
                 document.querySelectorAll('.category-tab')[1].classList.add('active');
