@@ -1588,8 +1588,8 @@ async def miniapp():
             
             const giftsArray = Array.from(allGifts.values());
             
-            // Сортируем в зворотньому порядку по ID
-            giftsArray.sort((a, b) => b.id - a.id);
+            // Сортируем в прямому порядку по ID (від 1 до 37)
+            giftsArray.sort((a, b) => a.id - b.id);
             
             renderGiftsFilterList(giftsArray);
         }
