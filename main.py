@@ -1005,7 +1005,6 @@ async def miniapp():
         
         <!-- Фільтри (показываются только в Market) -->
         <div class="filters-section" id="filtersSection">
-            <input type="text" class="search-box" placeholder="Поиск каналов..." id="searchBox" onkeyup="applyFilters()">
             <div class="filter-row">
                 <select class="filter-select" id="categoryFilter" onchange="applyFilters()">
                     <option value="">Все категории</option>
@@ -1249,11 +1248,10 @@ async def miniapp():
         }
         
         function applyFilters() {
-            const searchValue = document.getElementById('searchBox').value.toLowerCase();
             const categoryFilter = document.getElementById('categoryFilter').value;
             const sortFilter = document.getElementById('sortFilter').value;
             
-            currentFilters.search = searchValue;
+            currentFilters.search = '';
             currentFilters.category = categoryFilter;
             currentFilters.sort = sortFilter;
             
@@ -1264,15 +1262,6 @@ async def miniapp():
             }
             
             let filteredChannels = [...channelListings];
-            
-            // Поиск по названию и описанию
-            if (searchValue) {
-                filteredChannels = filteredChannels.filter(channel => 
-                    channel.name.toLowerCase().includes(searchValue) ||
-                    channel.description.toLowerCase().includes(searchValue) ||
-                    channel.owner.toLowerCase().includes(searchValue)
-                );
-            }
             
             // Фильтр по категории
             if (categoryFilter) {
@@ -1362,7 +1351,6 @@ async def miniapp():
         }
         
         function clearFilters() {
-            document.getElementById('searchBox').value = '';
             document.getElementById('categoryFilter').value = '';
             document.getElementById('sortFilter').value = 'recent';
             selectedGiftFilter = null;
