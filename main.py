@@ -1588,11 +1588,11 @@ async def miniapp():
         }
         
         function applyGiftFilter() {
-            let channelsToShow = channelListings;
+            let channelsToShow = [...channelListings]; // Копія масиву
             
             // Фільтруємо за вибраними підарунками
             if (selectedGifts.size > 0) {
-                channelsToShow = channelListings.filter(channel => {
+                channelsToShow = channelsToShow.filter(channel => {
                     return channel.gifts.some(gift => selectedGifts.has(gift.id));
                 });
             }
@@ -1603,7 +1603,7 @@ async def miniapp():
             } else if (currentSorting === 'cheap') {
                 channelsToShow.sort((a, b) => a.price - b.price); // дешеві → дорогі
             }
-            // Якщо currentSorting === 'all', залишаємо оригінальний порядок
+            // Якщо currentSorting === 'all', залишаємо оригінальний порядок (не сортуємо)
             
             renderChannelListings(channelsToShow);
         }
