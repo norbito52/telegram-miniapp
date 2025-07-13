@@ -433,13 +433,15 @@ async def miniapp():
             background: #2a2a3e;
             color: #8b8b8b;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .category-tab.active {
@@ -1321,7 +1323,7 @@ async def miniapp():
         let currentChannelModal = null;
         let selectedGiftFilter = null;
         let selectedGifts = new Set(); // Набір вибраних підарунків
-        let currentSorting = 'expensive'; // 'expensive' або 'cheap'
+        let currentSorting = 'all'; // 'all', 'expensive' або 'cheap'
         let currentFilters = {
             search: '',
             category: '',
@@ -1509,13 +1511,24 @@ async def miniapp():
             
             const grid = document.getElementById('giftsGrid');
             grid.innerHTML = `
+                <div class="gift-filter-item" onclick="applySorting('all')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'all' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">📋</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Всі</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Показати всі канали</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="gift-filter-item" onclick="applySorting('expensive')">
                     <div class="gift-filter-checkbox ${currentSorting === 'expensive' ? 'checked' : ''}"></div>
                     <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">💰</div>
                     <div class="gift-filter-info">
-                        <div class="gift-filter-name">Від дорогих до дешевих</div>
+                        <div class="gift-filter-name">Дорогі → Дешеві</div>
                         <div class="gift-filter-stats">
-                            <span class="gift-filter-count">Спочатку дорожчі канали</span>
+                            <span class="gift-filter-count">Спочатку дорожчі</span>
                         </div>
                     </div>
                 </div>
@@ -1524,9 +1537,9 @@ async def miniapp():
                     <div class="gift-filter-checkbox ${currentSorting === 'cheap' ? 'checked' : ''}"></div>
                     <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">💸</div>
                     <div class="gift-filter-info">
-                        <div class="gift-filter-name">Від дешевих до дорогих</div>
+                        <div class="gift-filter-name">Дешеві → Дорогі</div>
                         <div class="gift-filter-stats">
-                            <span class="gift-filter-count">Спочатку дешевші канали</span>
+                            <span class="gift-filter-count">Спочатку дешевші</span>
                         </div>
                     </div>
                 </div>
@@ -1543,7 +1556,7 @@ async def miniapp():
         
         function updateClearButton() {
             const clearBtn = document.querySelector('.clear-selection-btn');
-            const hasSelections = selectedGifts.size > 0 || currentSorting !== 'expensive';
+            const hasSelections = selectedGifts.size > 0 || currentSorting !== 'all';
             
             if (hasSelections) {
                 clearBtn.style.display = 'flex';
@@ -1554,7 +1567,7 @@ async def miniapp():
         
         function clearAllSelections() {
             selectedGifts.clear();
-            currentSorting = 'expensive';
+            currentSorting = 'all';
             
             updateClearButton();
             
@@ -1587,9 +1600,10 @@ async def miniapp():
             // Сортуємо за ціною
             if (currentSorting === 'expensive') {
                 channelsToShow.sort((a, b) => b.price - a.price); // дорогі → дешеві
-            } else {
+            } else if (currentSorting === 'cheap') {
                 channelsToShow.sort((a, b) => a.price - b.price); // дешеві → дорогі
             }
+            // Якщо currentSorting === 'all', залишаємо оригінальний порядок
             
             renderChannelListings(channelsToShow);
         }
