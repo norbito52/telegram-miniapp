@@ -418,6 +418,37 @@ async def miniapp():
             padding: 4px;
         }
         
+        /* Category Tabs Styles */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .category-tab {
+            background: #2a2a3e;
+            color: #8b8b8b;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .category-tab.active {
+            background: #3d5afe;
+            color: white;
+            border-color: #3d5afe;
+        }
+        
+        .category-tab:hover:not(.active) {
+            background: #3a3a5c;
+            color: white;
+        }
+        
         .tab {
             flex: 1;
             padding: 12px;
@@ -1084,8 +1115,13 @@ async def miniapp():
         
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
-            <div class="tab" onclick="switchTab('collections')">Все категории</div>
-            <div class="tab" onclick="switchTab('my-channel')">Мої канали</div>
+            <div class="tab" onclick="switchTab('my-channels')">Мої канали</div>
+        </div>
+        
+        <!-- Нижні кнопки категорій -->
+        <div class="category-tabs">
+            <div class="category-tab active" onclick="switchCategory('all')">Всі категорії</div>
+            <div class="category-tab" onclick="switchCategory('new')">Нові</div>
         </div>
         
         <!-- Фільтри (показываются только в Market) -->
@@ -1305,6 +1341,7 @@ async def miniapp():
         ];
         
         let currentView = 'market';
+        let currentCategory = 'all';
         let currentChannelModal = null;
         let selectedGiftFilter = null;
         let currentFilters = {
@@ -1536,43 +1573,17 @@ async def miniapp():
         
         function showMarket() {
             document.getElementById('filtersSection').classList.remove('filters-hidden');
+            document.getElementById('giftsGrid').className = 'gifts-grid';
             selectedGiftFilter = null;
-            renderChannelListings(channelListings);
-        }
-        
-        
-        function showCollections() {
-            document.getElementById('filtersSection').classList.add('filters-hidden');
-            showAllGiftsFilter();
-        }
-        
-        function showAllGiftsFilter() {
-            // Собираем все уникальные подарки из всех каналов
-            const allGifts = new Map();
             
-            channelListings.forEach(channel => {
-                channel.gifts.forEach(gift => {
-                    if (!allGifts.has(gift.id)) {
-                        allGifts.set(gift.id, {
-                            ...gift,
-                            totalCount: parseInt(gift.count),
-                            channels: [channel.id]
-                        });
-                    } else {
-                        const existing = allGifts.get(gift.id);
-                        existing.totalCount += parseInt(gift.count);
-                        if (!existing.channels.includes(channel.id)) {
-                            existing.channels.push(channel.id);
-                        }
-                    }
-                });
-            });
-            
-            const giftsArray = Array.from(allGifts.values());
-            renderGiftsFilterList(giftsArray);
+            if (currentCategory === 'all') {
+                renderChannelListings(channelListings);
+            } else if (currentCategory === 'new') {
+                showAllGiftsFilter();
+            }
         }
         
-        function showMyChannel() {
+        function showMyChannels() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
@@ -1620,6 +1631,52 @@ async def miniapp():
             `;
         }
         
+        function showAllGiftsFilter() {
+            document.getElementById('giftsGrid').className = 'gifts-filter-grid';
+            
+            // Собираем все уникальные подарки из всех каналов
+            const allGifts = new Map();
+            
+            channelListings.forEach(channel => {
+                channel.gifts.forEach(gift => {
+                    if (!allGifts.has(gift.id)) {
+                        allGifts.set(gift.id, {
+                            ...gift,
+                            totalCount: parseInt(gift.count),
+                            channels: [channel.id]
+                        });
+                    } else {
+                        const existing = allGifts.get(gift.id);
+                        existing.totalCount += parseInt(gift.count);
+                        if (!existing.channels.includes(channel.id)) {
+                            existing.channels.push(channel.id);
+                        }
+                    }
+                });
+            });
+            
+            const giftsArray = Array.from(allGifts.values());
+            renderGiftsFilterList(giftsArray);
+        }
+        
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            
+            if (category === 'all') {
+                document.querySelectorAll('.category-tab')[0].classList.add('active');
+                if (currentView === 'market') {
+                    renderChannelListings(channelListings);
+                }
+            } else if (category === 'new') {
+                document.querySelectorAll('.category-tab')[1].classList.add('active');
+                if (currentView === 'market') {
+                    showAllGiftsFilter();
+                }
+            }
+        }
+        
         function openGiftsModal(channelId) {
             const channel = channelListings.find(c => c.id === channelId);
             if (!channel) return;
@@ -1665,15 +1722,10 @@ async def miniapp():
             
             if (tab === 'market') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
-                document.getElementById('giftsGrid').className = 'gifts-grid';
                 showMarket();
-            } else if (tab === 'collections') {
+            } else if (tab === 'my-channels') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
-                document.getElementById('giftsGrid').className = 'gifts-filter-grid';
-                showAllGiftsFilter();
-            } else if (tab === 'my-channel') {
-                document.querySelectorAll('.tab')[2].classList.add('active');
-                showMyChannel();
+                showMyChannels();
             }
         }
         
