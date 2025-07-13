@@ -453,6 +453,29 @@ async def miniapp():
             color: white;
         }
         
+        .clear-selection-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .clear-selection-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
+        }
+        
         .tab {
             flex: 1;
             padding: 12px;
@@ -1096,6 +1119,10 @@ async def miniapp():
         <div class="category-tabs">
             <div class="category-tab active" onclick="switchCategory('all')">Всі категорії</div>
             <div class="category-tab" onclick="switchCategory('new')">Нові</div>
+            <div class="category-tab" onclick="switchSorting()">
+                <span id="sortingText">💰 Дорогі → Дешеві</span>
+            </div>
+            <div class="clear-selection-btn" onclick="clearAllSelections()" style="display: none;">✕</div>
         </div>
         
         <!-- Фільтри видалені -->
@@ -1296,6 +1323,7 @@ async def miniapp():
         let currentChannelModal = null;
         let selectedGiftFilter = null;
         let selectedGifts = new Set(); // Набір вибраних підарунків
+        let currentSorting = 'expensive'; // 'expensive' або 'cheap'
         let currentFilters = {
             search: '',
             category: '',
@@ -1468,6 +1496,51 @@ async def miniapp():
                 selectedGifts.add(giftId);
             }
             
+            updateClearButton();
+            
+            // Оновлюємо відображення
+            if (currentCategory === 'new') {
+                showAllGiftsFilter();
+            } else if (currentCategory === 'all') {
+                applyGiftFilter();
+            }
+        }
+        
+        function switchSorting() {
+            if (currentSorting === 'expensive') {
+                currentSorting = 'cheap';
+                document.getElementById('sortingText').innerHTML = '💸 Дешеві → Дорогі';
+            } else {
+                currentSorting = 'expensive';
+                document.getElementById('sortingText').innerHTML = '💰 Дорогі → Дешеві';
+            }
+            
+            updateClearButton();
+            
+            // Оновлюємо відображення якщо ми в категорії "всі"
+            if (currentCategory === 'all' && currentView === 'market') {
+                applyGiftFilter();
+            }
+        }
+        
+        function updateClearButton() {
+            const clearBtn = document.querySelector('.clear-selection-btn');
+            const hasSelections = selectedGifts.size > 0 || currentSorting !== 'expensive';
+            
+            if (hasSelections) {
+                clearBtn.style.display = 'flex';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+        }
+        
+        function clearAllSelections() {
+            selectedGifts.clear();
+            currentSorting = 'expensive';
+            document.getElementById('sortingText').innerHTML = '💰 Дорогі → Дешеві';
+            
+            updateClearButton();
+            
             // Оновлюємо відображення
             if (currentCategory === 'new') {
                 showAllGiftsFilter();
@@ -1483,17 +1556,23 @@ async def miniapp():
         }
         
         function applyGiftFilter() {
-            // Показуємо канали які мають вибрані підарунки
-            if (selectedGifts.size === 0) {
-                renderChannelListings(channelListings);
-                return;
+            let channelsToShow = channelListings;
+            
+            // Фільтруємо за вибраними підарунками
+            if (selectedGifts.size > 0) {
+                channelsToShow = channelListings.filter(channel => {
+                    return channel.gifts.some(gift => selectedGifts.has(gift.id));
+                });
             }
             
-            const filteredChannels = channelListings.filter(channel => {
-                return channel.gifts.some(gift => selectedGifts.has(gift.id));
-            });
+            // Сортуємо за ціною
+            if (currentSorting === 'expensive') {
+                channelsToShow.sort((a, b) => b.price - a.price); // дорогі → дешеві
+            } else {
+                channelsToShow.sort((a, b) => a.price - b.price); // дешеві → дорогі
+            }
             
-            renderChannelListings(filteredChannels);
+            renderChannelListings(channelsToShow);
         }
         
         function selectGiftFilter(giftId) {
@@ -1665,6 +1744,8 @@ async def miniapp():
                     showAllGiftsFilter();
                 }
             }
+            
+            updateClearButton();
         }
         
         function openGiftsModal(channelId) {
