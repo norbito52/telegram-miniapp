@@ -28,6 +28,19 @@ async def miniapp():
     <title>GiftRoom Market</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* Hide Render loading screen */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a2e;
+            z-index: 99999;
+            pointer-events: none;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -1327,6 +1340,12 @@ async def miniapp():
         }
         
         function startLoading() {
+            // Приховуємо Render екран
+            if (document.body) {
+                document.body.style.background = '#1a1a2e';
+                document.body.style.overflow = 'hidden';
+            }
+            
             startParticles();
             
             const loadingTexts = [
@@ -1357,6 +1376,7 @@ async def miniapp():
                     document.getElementById('mainApp').style.display = 'block';
                     document.getElementById('mainApp').style.opacity = '0';
                     document.getElementById('mainApp').style.transform = 'translateY(20px)';
+                    document.body.style.overflow = 'auto';
                     
                     setTimeout(() => {
                         document.getElementById('mainApp').style.transition = 'all 0.5s ease-out';
@@ -1735,8 +1755,17 @@ async def miniapp():
             tg.showAlert('Вывод средств');
         }
         
-        // Start loading when page loads
-        window.addEventListener('load', startLoading);
+        // Start loading immediately when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            startLoading();
+        });
+        
+        // Also start on window load as backup
+        window.addEventListener('load', function() {
+            if (document.getElementById('loadingScreen').style.display !== 'none') {
+                startLoading();
+            }
+        });
         
         // Убираем главную кнопку Telegram
         tg.MainButton.hide();
