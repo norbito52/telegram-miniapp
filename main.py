@@ -1084,7 +1084,7 @@ async def miniapp():
         
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
-            <div class="tab" onclick="switchTab('filter')">Фільтр</div>
+            <div class="tab" onclick="switchTab('collections')">Все категории</div>
             <div class="tab" onclick="switchTab('my-channel')">Мої канали</div>
         </div>
         
@@ -1479,12 +1479,12 @@ async def miniapp():
         }
         
         function showChannelsWithGift(giftId) {
-            // Находим все каналы с этим подарком
+            // Находим все каналы где этот подарок является ПЕРВЫМ (главным)
             const channelsWithGift = channelListings.filter(channel => 
-                channel.gifts.some(gift => gift.id === giftId)
+                channel.gifts.length > 0 && channel.gifts[0].id === giftId
             );
             
-            // Сортируем по приоритету (у кого больше количества этого подарка)
+            // Сортируем по количеству этого подарка (у кого больше)
             channelsWithGift.sort((a, b) => {
                 const aGift = a.gifts.find(gift => gift.id === giftId);
                 const bGift = b.gifts.find(gift => gift.id === giftId);
@@ -1509,28 +1509,26 @@ async def miniapp():
                 grid.innerHTML = `
                     <div class="empty-state">
                         <div style="font-size: 18px; margin-bottom: 10px;">Каналы не найдены</div>
-                        <div style="font-size: 14px;">Попробуйте изменить параметры поиска</div>
+                        <div style="font-size: 14px;">Этот подарок не является главным ни в одном канале</div>
                     </div>
                 `;
                 return;
             }
             
             grid.innerHTML = channelsToRender.map(channel => {
-                // Находим подарок с наибольшим количеством
-                const mostPopularGift = channel.gifts.reduce((prev, current) => 
-                    parseInt(prev.count) > parseInt(current.count) ? prev : current
-                );
+                // Берем ПЕРВЫЙ подарок как главный
+                const mainGift = channel.gifts[0];
                 
                 return `
                     <div class="gift-card-main" onclick="openGiftsModal(${channel.id})">
-                        <div class="gift-image-main" style="background-image: url('${mostPopularGift.image}')"></div>
-                        <div class="gift-name-main">${mostPopularGift.name}</div>
+                        <div class="gift-image-main" style="background-image: url('${mainGift.image}')"></div>
+                        <div class="gift-name-main">${mainGift.name}</div>
                         <div class="gift-channel-name">${channel.name}</div>
                         <div class="gift-price-main">
                             <div class="ton-icon"></div>
                             <span>${channel.price} TON</span>
                         </div>
-                        <div class="gift-count-main">${mostPopularGift.count} шт</div>
+                        <div class="gift-count-main">${mainGift.count} шт</div>
                     </div>
                 `;
             }).join('');
@@ -1543,7 +1541,7 @@ async def miniapp():
         }
         
         
-        function showGiftsFilter() {
+        function showCollections() {
             document.getElementById('filtersSection').classList.add('filters-hidden');
             showAllGiftsFilter();
         }
@@ -1669,10 +1667,10 @@ async def miniapp():
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('giftsGrid').className = 'gifts-grid';
                 showMarket();
-            } else if (tab === 'filter') {
+            } else if (tab === 'collections') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 document.getElementById('giftsGrid').className = 'gifts-filter-grid';
-                showGiftsFilter();
+                showAllGiftsFilter();
             } else if (tab === 'my-channel') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
                 showMyChannel();
