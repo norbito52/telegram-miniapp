@@ -1423,8 +1423,8 @@ async def miniapp():
         function renderGiftsFilterList(gifts) {
             const grid = document.getElementById('giftsGrid');
             
-            // Сортируем подарки по общему количеству (от большего к меньшему)
-            gifts.sort((a, b) => b.totalCount - a.totalCount);
+            // ID підарунків які є "новими"
+            const newGiftIds = [1, 2, 3, 4, 5]; // Snoop Dogg, Swag Bag, Snoop Cigar, Low Rider, Westside Sign
             
             grid.innerHTML = gifts.map(gift => `
                 <div class="gift-filter-item" onclick="selectGiftFilter(${gift.id})">
@@ -1438,7 +1438,7 @@ async def miniapp():
                             <span class="gift-filter-count">(${gift.channels.length} 🎁)</span>
                         </div>
                     </div>
-                    <div class="gift-filter-badge">NEW!</div>
+                    ${newGiftIds.includes(gift.id) ? '<div class="gift-filter-badge">NEW!</div>' : ''}
                 </div>
             `).join('');
         }
@@ -1565,35 +1565,30 @@ async def miniapp():
         function showAllGiftsFilter() {
             document.getElementById('giftsGrid').className = 'gifts-filter-grid';
             
-            // Тільки нові підарунки - конкретні ID
-            const newGiftIds = [1, 2, 3, 4, 5]; // Snoop Dogg, Swag Bag, Snoop Cigar, Low Rider, Westside Sign
-            
-            // Собираем тільки нові підарунки з усіх каналів
-            const newGifts = new Map();
+            // Собираем все уникальные подарки из всех каналов
+            const allGifts = new Map();
             
             channelListings.forEach(channel => {
                 channel.gifts.forEach(gift => {
-                    if (newGiftIds.includes(gift.id)) {
-                        if (!newGifts.has(gift.id)) {
-                            newGifts.set(gift.id, {
-                                ...gift,
-                                totalCount: parseInt(gift.count),
-                                channels: [channel.id]
-                            });
-                        } else {
-                            const existing = newGifts.get(gift.id);
-                            existing.totalCount += parseInt(gift.count);
-                            if (!existing.channels.includes(channel.id)) {
-                                existing.channels.push(channel.id);
-                            }
+                    if (!allGifts.has(gift.id)) {
+                        allGifts.set(gift.id, {
+                            ...gift,
+                            totalCount: parseInt(gift.count),
+                            channels: [channel.id]
+                        });
+                    } else {
+                        const existing = allGifts.get(gift.id);
+                        existing.totalCount += parseInt(gift.count);
+                        if (!existing.channels.includes(channel.id)) {
+                            existing.channels.push(channel.id);
                         }
                     }
                 });
             });
             
-            const giftsArray = Array.from(newGifts.values());
+            const giftsArray = Array.from(allGifts.values());
             
-            // Сортируем в зворотньому порядку (від ID 5 до 1)
+            // Сортируем в зворотньому порядку по ID
             giftsArray.sort((a, b) => b.id - a.id);
             
             renderGiftsFilterList(giftsArray);
