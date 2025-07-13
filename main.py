@@ -1,4 +1,4 @@
- # main.py - FastAPI приложение для GiftRoom Market - Маркетплейс каналов с подарками
+# main.py - FastAPI приложение для GiftRoom Market - Маркетплейс каналов с подарками
 import asyncio
 import threading
 import os
@@ -921,24 +921,6 @@ async def miniapp():
             line-height: 1.3;
         }
         
-        .gift-rarity {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            font-size: 8px;
-            padding: 2px 5px;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-        
-        .gift-rarity.rarity-1 { background: #6b7280; }
-        .gift-rarity.rarity-2 { background: #3b82f6; }
-        .gift-rarity.rarity-3 { background: #8b5cf6; }
-        .gift-rarity.rarity-4 { background: #ef4444; }
-        .gift-rarity.rarity-5 { background: #f59e0b; }
-        
         .gift-count {
             color: rgba(255,255,255,0.7);
             font-size: 10px;
@@ -1075,7 +1057,7 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // База данных каналов с подарками (расширенная версия)
+        // База данных каналов с подарками (БЕЗ системы рідкісності)
         const channelListings = [
             {
                 id: 1,
@@ -1089,10 +1071,10 @@ async def miniapp():
                 avatar: "👗",
                 dateAdded: new Date('2024-01-15'),
                 gifts: [
-                    {id: 1, name: "HEELS", desc: "High heels", count: "11500", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-                    {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", rarity: 1, image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
-                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
-                    {id: 2, name: "BUTTON", desc: "Simple button", count: "356", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"}
+                    {id: 1, name: "HEELS", desc: "High heels", count: "11500", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+                    {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "356", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"}
                 ]
             },
             {
@@ -1107,10 +1089,10 @@ async def miniapp():
                 avatar: "🐱",
                 dateAdded: new Date('2024-01-20'),
                 gifts: [
-                    {id: 3, name: "CATS", desc: "Cute cats", count: "2945", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-                    {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", rarity: 2, image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
-                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", rarity: 3, image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
-                    {id: 1, name: "HEELS", desc: "High heels", count: "250", rarity: 1, image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"}
+                    {id: 3, name: "CATS", desc: "Cute cats", count: "2945", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+                    {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+                    {id: 1, name: "HEELS", desc: "High heels", count: "250", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"}
                 ]
             },
             {
@@ -1125,10 +1107,10 @@ async def miniapp():
                 avatar: "⚡",
                 dateAdded: new Date('2024-01-10'),
                 gifts: [
-                    {id: 6, name: "LAMP", desc: "Table lamp", count: "2612", rarity: 1, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
-                    {id: 10, name: "DYSON", desc: "Powerful vacuum", count: "2178", rarity: 2, image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
-                    {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", rarity: 3, image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
-                    {id: 2, name: "BUTTON", desc: "Simple button", count: "890", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"}
+                    {id: 6, name: "LAMP", desc: "Table lamp", count: "2612", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+                    {id: 10, name: "DYSON", desc: "Powerful vacuum", count: "2178", image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+                    {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "890", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"}
                 ]
             },
             {
@@ -1143,10 +1125,10 @@ async def miniapp():
                 avatar: "🍰",
                 dateAdded: new Date('2024-01-25'),
                 gifts: [
-                    {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", count: "2390", rarity: 1, image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
-                    {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", rarity: 2, image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
-                    {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", rarity: 4, image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
-                    {id: 3, name: "CATS", desc: "Cute cats", count: "150", rarity: 1, image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"}
+                    {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", count: "2390", image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
+                    {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+                    {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
+                    {id: 3, name: "CATS", desc: "Cute cats", count: "150", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"}
                 ]
             },
             {
@@ -1161,10 +1143,10 @@ async def miniapp():
                 avatar: "🌌",
                 dateAdded: new Date('2024-01-12'),
                 gifts: [
-                    {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", count: "67", rarity: 5, image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
-                    {id: 34, name: "LOW RIDER", desc: "Cool car", count: "23", rarity: 5, image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
-                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", rarity: 5, image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
-                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "89", rarity: 5, image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"}
+                    {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", count: "67", image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
+                    {id: 34, name: "LOW RIDER", desc: "Cool car", count: "23", image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
+                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "89", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"}
                 ]
             },
             {
@@ -1179,9 +1161,9 @@ async def miniapp():
                 avatar: "🔘",
                 dateAdded: new Date('2024-01-28'),
                 gifts: [
-                    {id: 2, name: "BUTTON", desc: "Simple button", count: "5600", rarity: 1, image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-                    {id: 6, name: "LAMP", desc: "Table lamp", count: "234", rarity: 1, image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
-                    {id: 5, name: "BICEPS", desc: "Strong muscles", count: "567", rarity: 1, image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"}
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "5600", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+                    {id: 6, name: "LAMP", desc: "Table lamp", count: "234", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+                    {id: 5, name: "BICEPS", desc: "Strong muscles", count: "567", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"}
                 ]
             }
         ];
@@ -1345,17 +1327,8 @@ async def miniapp():
         function renderGiftsCollection(gifts) {
             const grid = document.getElementById('giftsGrid');
             
-            const rarityNames = {
-                1: 'Common',
-                2: 'Rare', 
-                3: 'Epic',
-                4: 'Legendary',
-                5: 'Mythic'
-            };
-            
             grid.innerHTML = gifts.map(gift => `
                 <div class="gift-card-main" onclick="selectGiftFilter(${gift.id})">
-                    <div class="gift-rarity-badge rarity-${gift.rarity}">${rarityNames[gift.rarity]}</div>
                     <div class="gift-image-main" style="background-image: url('${gift.image}')"></div>
                     <div class="gift-name-main">${gift.name}</div>
                     <div class="gift-channel-name">${gift.channels.length} каналов</div>
@@ -1416,17 +1389,8 @@ async def miniapp():
                     parseInt(prev.count) > parseInt(current.count) ? prev : current
                 );
                 
-                const rarityNames = {
-                    1: 'Common',
-                    2: 'Rare', 
-                    3: 'Epic',
-                    4: 'Legendary',
-                    5: 'Mythic'
-                };
-                
                 return `
                     <div class="gift-card-main" onclick="openGiftsModal(${channel.id})">
-                        <div class="gift-rarity-badge rarity-${mostPopularGift.rarity}">${rarityNames[mostPopularGift.rarity]}</div>
                         <div class="gift-image-main" style="background-image: url('${mostPopularGift.image}')"></div>
                         <div class="gift-name-main">${mostPopularGift.name}</div>
                         <div class="gift-channel-name">${channel.name}</div>
@@ -1512,17 +1476,9 @@ async def miniapp():
             `;
             
             const giftsGrid = document.getElementById('giftsModalGrid');
-            const rarityNames = {
-                1: 'Common',
-                2: 'Rare', 
-                3: 'Epic',
-                4: 'Legendary',
-                5: 'Mythic'
-            };
             
             giftsGrid.innerHTML = channel.gifts.map(gift => `
                 <div class="gift-card">
-                    <div class="gift-rarity rarity-${gift.rarity}">${rarityNames[gift.rarity]}</div>
                     <div class="gift-image" style="background-image: url('${gift.image}')"></div>
                     <div class="gift-title">${gift.name}</div>
                     <div class="gift-description">${gift.desc}</div>
@@ -1630,7 +1586,7 @@ if __name__ == "__main__":
     bot_thread.daemon = True
     bot_thread.start()
     
-    print("🎁 GiftRoom Market з My Channel запущен!")
+    print("🎁 GiftRoom Market без системы рідкісності запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
