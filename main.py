@@ -1119,9 +1119,7 @@ async def miniapp():
         <div class="category-tabs">
             <div class="category-tab active" onclick="switchCategory('all')">Всі категорії</div>
             <div class="category-tab" onclick="switchCategory('new')">Нові</div>
-            <div class="category-tab" onclick="switchSorting()">
-                <span id="sortingText">💰 Дорогі → Дешеві</span>
-            </div>
+            <div class="category-tab" onclick="switchCategory('sorting')">Сортування</div>
             <div class="clear-selection-btn" onclick="clearAllSelections()" style="display: none;">✕</div>
         </div>
         
@@ -1506,21 +1504,41 @@ async def miniapp():
             }
         }
         
-        function switchSorting() {
-            if (currentSorting === 'expensive') {
-                currentSorting = 'cheap';
-                document.getElementById('sortingText').innerHTML = '💸 Дешеві → Дорогі';
-            } else {
-                currentSorting = 'expensive';
-                document.getElementById('sortingText').innerHTML = '💰 Дорогі → Дешеві';
-            }
+        function showSortingOptions() {
+            document.getElementById('giftsGrid').className = 'gifts-filter-grid';
             
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="gift-filter-item" onclick="applySorting('expensive')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'expensive' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">💰</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Від дорогих до дешевих</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Спочатку дорожчі канали</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="applySorting('cheap')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'cheap' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">💸</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Від дешевих до дорогих</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Спочатку дешевші канали</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function applySorting(sortType) {
+            currentSorting = sortType;
             updateClearButton();
             
-            // Оновлюємо відображення якщо ми в категорії "всі"
-            if (currentCategory === 'all' && currentView === 'market') {
-                applyGiftFilter();
-            }
+            // Оновлюємо відображення опцій сортування
+            showSortingOptions();
         }
         
         function updateClearButton() {
@@ -1537,7 +1555,6 @@ async def miniapp():
         function clearAllSelections() {
             selectedGifts.clear();
             currentSorting = 'expensive';
-            document.getElementById('sortingText').innerHTML = '💰 Дорогі → Дешеві';
             
             updateClearButton();
             
@@ -1546,6 +1563,8 @@ async def miniapp():
                 showAllGiftsFilter();
             } else if (currentCategory === 'all') {
                 applyGiftFilter();
+            } else if (currentCategory === 'sorting') {
+                showSortingOptions();
             }
         }
         
@@ -1742,6 +1761,11 @@ async def miniapp():
                 if (currentView === 'market') {
                     document.getElementById('giftsGrid').className = 'gifts-filter-grid';
                     showAllGiftsFilter();
+                }
+            } else if (category === 'sorting') {
+                document.querySelectorAll('.category-tab')[2].classList.add('active');
+                if (currentView === 'market') {
+                    showSortingOptions();
                 }
             }
             
