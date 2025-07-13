@@ -1598,11 +1598,13 @@ async def miniapp():
             if (category === 'all') {
                 document.querySelectorAll('.category-tab')[0].classList.add('active');
                 if (currentView === 'market') {
+                    document.getElementById('giftsGrid').className = 'gifts-grid';
                     renderChannelListings(channelListings);
                 }
             } else if (category === 'new') {
                 document.querySelectorAll('.category-tab')[1].classList.add('active');
                 if (currentView === 'market') {
+                    document.getElementById('giftsGrid').className = 'gifts-filter-grid';
                     showAllGiftsFilter();
                 }
             }
