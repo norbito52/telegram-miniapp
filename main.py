@@ -731,8 +731,20 @@ async def miniapp():
         }
         
         .empty-ads-icon {
-            font-size: 80px;
             margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .empty-ads-icon img {
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.3));
+            animation: giftFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes giftFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
         }
         
         .empty-ads-title {
@@ -1796,7 +1808,9 @@ async def miniapp():
                         </div>
                         
                         <div class="empty-ads-state">
-                            <div class="empty-ads-icon">📦</div>
+                            <div class="empty-ads-icon">
+                                <img src="https://i.postimg.cc/V6n3QrrX/gift-3d-render-illustration-isolated-transparent-background-106547-7.avif" alt="Gift" style="width: 120px; height: 120px; object-fit: contain;">
+                            </div>
                             <div class="empty-ads-title">Нет объявлений</div>
                             <div class="empty-ads-subtitle">Создайте ваше первое объявление</div>
                             <button class="create-ad-btn" onclick="showCreateAdForm()">Добавить объявление</button>
