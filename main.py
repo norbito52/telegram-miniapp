@@ -924,7 +924,7 @@ async def miniapp():
         
         .create-btn {
             width: 100%;
-            background: #00bfff;
+            background: #3d5afe;
             color: white;
             border: none;
             padding: 15px;
@@ -937,7 +937,7 @@ async def miniapp():
         }
         
         .create-btn:hover {
-            background: #0099cc;
+            background: #5c7cfa;
             transform: translateY(-1px);
         }
         
