@@ -441,14 +441,15 @@ async def miniapp():
         /* Profile Page Styles - ВИПРАВЛЕНО */
         .profile-container {
             background: #0F0F19;
-            padding: 20px;
-            padding-top: 60px;
-            min-height: calc(100vh - 140px);
+            padding: 0;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             width: 100%;
+            position: relative;
+            transform: translateY(-20px);
         }
         
         .profile-avatar-container {
@@ -1973,6 +1974,8 @@ async def miniapp():
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid';
+            grid.style.height = 'calc(100vh - 140px)';
+            grid.style.overflow = 'hidden';
             
             // Получаем данные пользователя из Telegram WebApp
             const user = tg.initDataUnsafe?.user;
