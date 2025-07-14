@@ -1320,13 +1320,8 @@ async def miniapp():
                 </div>
                 
                 <div class="gifts-modal-grid" id="giftsModalGrid">
-                    <!-- Подарки будут загружены здесь -->
+                    <!-- Подарки и кнопка покупки будут загружены здесь -->
                 </div>
-                
-                <button class="buy-channel-btn" id="buyChannelBtn" onclick="buyChannelFromModal()">
-                    <div class="ton-icon"></div>
-                    <span>Купить канал за 0.00 TON</span>
-                </button>
             </div>
         </div>
     </div>
@@ -2052,14 +2047,9 @@ async def miniapp():
                 </div>
             `;
             
-            document.getElementById('buyChannelBtn').innerHTML = `
-                <div class="ton-icon"></div>
-                <span>Купить канал за ${channel.price} TON</span>
-            `;
-            
             const giftsGrid = document.getElementById('giftsModalGrid');
             
-            giftsGrid.innerHTML = channel.gifts.map(gift => {
+            const giftsHtml = channel.gifts.map(gift => {
                 const correctGift = ALL_GIFTS[gift.id];
                 return `
                     <div class="gift-card">
@@ -2072,6 +2062,15 @@ async def miniapp():
                     </div>
                 `;
             }).join('');
+            
+            const buyButtonHtml = `
+                <button class="buy-channel-btn" onclick="buyChannelFromModal()">
+                    <div class="ton-icon"></div>
+                    <span>Купить канал за ${channel.price} TON</span>
+                </button>
+            `;
+            
+            giftsGrid.innerHTML = giftsHtml + buyButtonHtml;
             
             document.getElementById('giftsModal').classList.add('show');
         }
