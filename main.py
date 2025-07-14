@@ -438,18 +438,21 @@ async def miniapp():
             color: #8b8b8b;
         }
         
-        /* Profile Page Styles */
+        /* Profile Page Styles - ВИПРАВЛЕНО */
         .profile-container {
             background: #0F0F19;
             padding: 20px;
             min-height: calc(100vh - 140px);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: 60px;
         }
         
         .profile-avatar-container {
             text-align: center;
+            width: 100%;
         }
         
         .profile-avatar {
