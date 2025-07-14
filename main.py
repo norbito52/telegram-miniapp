@@ -1579,13 +1579,18 @@ async def miniapp():
         
         function showMarket() {
             document.querySelector('.category-tabs').classList.remove('hidden');
-            document.getElementById('giftsGrid').className = 'gifts-grid';
             selectedGiftFilter = null;
             
+            // Відновлюємо поточну категорію без зміни стану
             if (currentCategory === 'all') {
+                document.getElementById('giftsGrid').className = 'gifts-grid';
                 applyGiftFilter();
             } else if (currentCategory === 'new') {
+                document.getElementById('giftsGrid').className = 'gifts-filter-grid';
                 showAllGiftsFilter();
+            } else if (currentCategory === 'sorting') {
+                document.getElementById('giftsGrid').className = 'gifts-filter-grid';
+                showSortingOptions();
             }
         }
         
