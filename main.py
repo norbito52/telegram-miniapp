@@ -1166,60 +1166,61 @@ async def miniapp():
         }
         
         .gifts-modal-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
             padding: 20px;
         }
         
         .gift-card {
             background: #2a2a3e;
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            min-height: 180px;
-            position: relative;
-            cursor: pointer;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
             border: 2px solid transparent;
         }
         
         .gift-card:hover {
-            transform: translateY(-2px);
+            background: #3a3a5c;
             border-color: #3d5afe;
         }
         
         .gift-image {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            margin: 0 auto 10px;
+            border-radius: 8px;
             background-size: cover;
             background-position: center;
             border: 2px solid #3a3a5c;
+            flex-shrink: 0;
+        }
+        
+        .gift-info {
+            flex: 1;
+            min-width: 0;
         }
         
         .gift-title {
             color: white;
-            font-size: 12px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            line-height: 1.2;
-        }
-        
-        .gift-description {
-            color: #8b8b8b;
-            font-size: 10px;
-            margin-bottom: 10px;
-            line-height: 1.3;
         }
         
         .gift-count {
             color: rgba(255,255,255,0.7);
-            font-size: 10px;
-            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .gift-price {
+            color: #64B5F6;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            flex-shrink: 0;
         }
         
         .buy-channel-btn {
@@ -2031,7 +2032,13 @@ async def miniapp():
             
             currentChannelModal = channel;
             
-            document.getElementById('modalChannelName').textContent = `Подарки канала ${channel.name}`;
+            document.getElementById('modalChannelName').innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <div style="font-size: 18px; font-weight: 600;">Подарки канала</div>
+                    <div style="font-size: 16px; color: #64B5F6;">${channel.name}</div>
+                </div>
+            `;
+            
             document.getElementById('buyChannelBtn').innerHTML = `
                 <div class="ton-icon"></div>
                 <span>Купить канал за ${channel.price} TON</span>
@@ -2039,14 +2046,19 @@ async def miniapp():
             
             const giftsGrid = document.getElementById('giftsModalGrid');
             
-            giftsGrid.innerHTML = channel.gifts.map(gift => `
-                <div class="gift-card">
-                    <div class="gift-image" style="background-image: url('${gift.image}')"></div>
-                    <div class="gift-title">${gift.name}</div>
-                    <div class="gift-description">${gift.desc}</div>
-                    <div class="gift-count">${gift.count} шт</div>
-                </div>
-            `).join('');
+            giftsGrid.innerHTML = channel.gifts.map(gift => {
+                const correctGift = ALL_GIFTS[gift.id];
+                return `
+                    <div class="gift-card">
+                        <div class="gift-image" style="background-image: url('${correctGift.image}')"></div>
+                        <div class="gift-info">
+                            <div class="gift-title">${correctGift.name}</div>
+                            <div class="gift-count">${gift.count} шт</div>
+                        </div>
+                        <div class="gift-price">${(Math.random() * 10 + 1).toFixed(1)} TON</div>
+                    </div>
+                `;
+            }).join('');
             
             document.getElementById('giftsModal').classList.add('show');
         }
