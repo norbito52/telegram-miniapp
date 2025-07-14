@@ -1171,12 +1171,12 @@ async def miniapp():
         
         .gift-card {
             background: #2a2a3e;
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 8px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 6px;
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
@@ -1187,13 +1187,13 @@ async def miniapp():
         }
         
         .gift-image {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 8px;
+            border-radius: 6px;
             background-size: cover;
             background-position: center;
-            border: 2px solid #3a3a5c;
+            border: 1px solid #3a3a5c;
             flex-shrink: 0;
         }
         
@@ -1204,23 +1204,15 @@ async def miniapp():
         
         .gift-title {
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             text-transform: uppercase;
         }
         
         .gift-count {
             color: rgba(255,255,255,0.7);
-            font-size: 14px;
-        }
-        
-        .gift-price {
-            color: #64B5F6;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: right;
-            flex-shrink: 0;
+            font-size: 12px;
         }
         
         .buy-channel-btn {
@@ -2084,7 +2076,6 @@ async def miniapp():
                             <div class="gift-title">${correctGift.name}</div>
                             <div class="gift-count">${gift.count} шт</div>
                         </div>
-                        <div class="gift-price">${(Math.random() * 10 + 1).toFixed(1)} TON</div>
                     </div>
                 `;
             }).join('');
