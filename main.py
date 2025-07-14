@@ -684,177 +684,361 @@ async def miniapp():
             font-size: 10px;
         }
         
-        /* My Channel WOW Styles */
-        .my-channel-container {
-            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-            border-radius: 0;
-            padding: 20px 20px 20px 20px;
-            margin: 0;
-            position: relative;
-            overflow: hidden;
+        /* My Ads Container Styles */
+        .my-ads-container {
+            background: #1a1a2e;
+            padding: 20px;
             min-height: calc(100vh - 140px);
-            width: 100%;
-            box-sizing: border-box;
         }
         
-        .my-channel-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.02"><circle cx="30" cy="30" r="4"/></g></svg>') repeat;
-            opacity: 0.5;
-        }
-        
-        .channel-header-new {
+        .my-ads-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 2;
-            padding-top: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #2a2a3e;
+            padding-bottom: 15px;
         }
         
-        .channel-title-new {
+        .my-ads-title {
             color: white;
             font-size: 20px;
             font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
-        .channel-icon {
-            font-size: 28px;
-            animation: channelPulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes channelPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .add-channel-btn {
-            background: linear-gradient(45deg, #4299e1, #3182ce);
+        .add-ad-btn {
+            background: #3d5afe;
             color: white;
             border: none;
-            padding: 10px 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(66,153,225,0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .add-channel-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(66,153,225,0.4);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .stat-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
+            width: 40px;
+            height: 40px;
             border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
         
-        .stat-card:hover {
-            transform: translateY(-2px);
-            background: rgba(255,255,255,0.12);
+        .add-ad-btn:hover {
+            background: #5c7cfa;
+            transform: scale(1.05);
         }
         
-        .stat-number {
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 11px;
-            color: rgba(255,255,255,0.8);
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        
-        .empty-state-new {
+        /* Empty State Styles */
+        .empty-ads-state {
             text-align: center;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            flex: 1;
+            padding: 60px 20px;
         }
         
-        .empty-icon-new {
+        .empty-ads-icon {
             font-size: 80px;
-            margin-bottom: 25px;
-            animation: float 3s ease-in-out infinite;
+            margin-bottom: 20px;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .empty-title-new {
+        .empty-ads-title {
             font-size: 22px;
             color: white;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         
-        .empty-subtitle-new {
-            font-size: 15px;
+        .empty-ads-subtitle {
+            font-size: 16px;
             color: rgba(255,255,255,0.7);
             margin-bottom: 30px;
-            line-height: 1.4;
-            max-width: 280px;
         }
         
-        .create-channel-btn {
-            background: linear-gradient(45deg, #4299e1, #3182ce);
+        .create-ad-btn {
+            background: #3d5afe;
             color: white;
             border: none;
-            padding: 15px 25px;
+            padding: 15px 30px;
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(66,153,225,0.3);
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
         }
         
-        .create-channel-btn:hover {
+        .create-ad-btn:hover {
+            background: #5c7cfa;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66,153,225,0.4);
+        }
+        
+        /* Create Ad Form Styles */
+        .create-ad-container {
+            background: #1a1a2e;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .create-ad-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            background: #1a1a2e;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #2a2a3e;
+        }
+        
+        .create-ad-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .create-ad-form {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: #2a2a3e;
+            border: 2px solid #3a3a5c;
+            border-radius: 12px;
+            padding: 12px 15px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3d5afe;
+            box-shadow: 0 0 0 3px rgba(61, 90, 254, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .form-help {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        
+        /* Important Info Styles */
+        .important-info {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .info-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .info-content {
+            flex: 1;
+        }
+        
+        .info-title {
+            color: #ffc107;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .info-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .info-list {
+            margin-bottom: 12px;
+        }
+        
+        .info-item {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .req-title {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .req-item {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .create-btn {
+            width: 100%;
+            background: #00bfff;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .create-btn:hover {
+            background: #0099cc;
+            transform: translateY(-1px);
+        }
+        
+        /* Ads Table Styles */
+        .ads-table {
+            background: #2a2a3e;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #3a3a5c;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #3a3a5c;
+            align-items: center;
+        }
+        
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .channel-icon {
+            font-size: 24px;
+            background: #3d5afe;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .channel-details {
+            flex: 1;
+        }
+        
+        .channel-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .channel-type {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+        
+        .channel-title {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+        }
+        
+        .col-price {
+            color: #64B5F6;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .col-count {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .col-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .edit-btn, .delete-btn {
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-btn {
+            color: #64B5F6;
+        }
+        
+        .edit-btn:hover {
+            background: rgba(100, 181, 246, 0.1);
+        }
+        
+        .delete-btn {
+            color: #ff4757;
+        }
+        
+        .delete-btn:hover {
+            background: rgba(255, 71, 87, 0.1);
         }
         
         .floating-add-btn {
@@ -1598,48 +1782,153 @@ async def miniapp():
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
+            
+            // Перевіряємо чи є створені канали (поки що завжди пусто для демо)
+            const hasChannels = false; // В майбутньому тут буде перевірка реальних даних
+            
+            if (!hasChannels) {
+                // Показуємо пустий стан
+                grid.innerHTML = `
+                    <div class="my-ads-container">
+                        <div class="my-ads-header">
+                            <div class="my-ads-title">Мои объявления</div>
+                            <button class="add-ad-btn" onclick="showCreateAdForm()">+</button>
+                        </div>
+                        
+                        <div class="empty-ads-state">
+                            <div class="empty-ads-icon">📦</div>
+                            <div class="empty-ads-title">Нет объявлений</div>
+                            <div class="empty-ads-subtitle">Создайте ваше первое объявление</div>
+                            <button class="create-ad-btn" onclick="showCreateAdForm()">Добавить объявление</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Показуємо список каналів
+                showMyChannelsList();
+            }
+        }
+        
+        function showCreateAdForm() {
+            const grid = document.getElementById('giftsGrid');
             grid.innerHTML = `
-                <div class="my-channel-container">
-                    <div class="channel-header-new">
-                        <div class="channel-title-new">
-                            <span class="channel-icon">📺</span>
-                            Мои каналы
-                        </div>
-                        <button class="add-channel-btn" onclick="createChannel()">
-                            <span>+</span>
-                            Добавить
-                        </button>
+                <div class="create-ad-container">
+                    <div class="create-ad-header">
+                        <button class="back-btn" onclick="showMyChannels()">←</button>
+                        <div class="create-ad-title">Новое объявление</div>
+                        <div style="width: 32px;"></div>
                     </div>
                     
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">Каналов</div>
+                    <div class="create-ad-form">
+                        <div class="form-group">
+                            <label class="form-label">Ссылка на канал *</label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                placeholder="@channel_name или https://t.me/channel"
+                                id="channelLink"
+                            >
+                            <div class="form-help">Введите ссылку на канал, который продаете</div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">Подписчиков</div>
+                        
+                        <div class="important-info">
+                            <div class="info-icon">⚠️</div>
+                            <div class="info-content">
+                                <div class="info-title">Важная информация для продажи канала</div>
+                                <div class="info-text">Перед добавлением канала:</div>
+                                <div class="info-list">
+                                    <div class="info-item">1. Добавьте @GIFTROOM_MARKET_BOT в администраторы канала</div>
+                                    <div class="info-item">2. Не удаляйте бота до конца сделки!</div>
+                                </div>
+                                <div class="info-requirements">
+                                    <div class="req-title">Убедитесь что:</div>
+                                    <div class="req-item">• Облачный пароль включён минимум 7 дней назад</div>
+                                    <div class="req-item">• Сессия на устройстве активна не менее 24 часов</div>
+                                    <div class="req-item">• Подарки не скрыты!</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">Доход TON</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Цена (TON) *</label>
+                            <input 
+                                type="number" 
+                                class="form-input" 
+                                placeholder="0.00"
+                                id="channelPrice"
+                                step="0.01"
+                                min="0"
+                            >
                         </div>
-                    </div>
-                    
-                    <div class="empty-state-new">
-                        <div class="empty-icon-new">🚀</div>
-                        <div class="empty-title-new">Создайте свой первый канал!</div>
-                        <div class="empty-subtitle-new">
-                            Начните продавать подарки через Telegram канал
-                            и зарабатывайте TON каждый день
-                        </div>
-                        <button class="create-channel-btn" onclick="createChannel()">
-                            <span>📺</span>
-                            Создать канал
-                        </button>
+                        
+                        <button class="create-btn" onclick="createChannelAd()">СОЗДАТЬ</button>
                     </div>
                 </div>
             `;
+        }
+        
+        function showMyChannelsList() {
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="my-ads-container">
+                    <div class="my-ads-header">
+                        <div class="my-ads-title">Мои объявления</div>
+                        <button class="add-ad-btn" onclick="showCreateAdForm()">+</button>
+                    </div>
+                    
+                    <div class="ads-table">
+                        <div class="table-header">
+                            <div class="col-model">МОДЕЛЬ</div>
+                            <div class="col-price">ЦЕНА</div>
+                            <div class="col-count">КОЛ-ВО</div>
+                            <div class="col-actions">ДЕЙСТВИЯ</div>
+                        </div>
+                        
+                        <div class="table-row">
+                            <div class="col-model">
+                                <div class="channel-info">
+                                    <div class="channel-icon">🔥</div>
+                                    <div class="channel-details">
+                                        <div class="channel-name">35 факел...</div>
+                                        <div class="channel-type">Канал</div>
+                                        <div class="channel-title">🔥 Torch of freedom</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-price">💎 64,8 TON</div>
+                            <div class="col-count">38</div>
+                            <div class="col-actions">
+                                <button class="edit-btn" onclick="editChannel()">✏️</button>
+                                <button class="delete-btn" onclick="deleteChannel()">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function createChannelAd() {
+            const channelLink = document.getElementById('channelLink').value;
+            const channelPrice = document.getElementById('channelPrice').value;
+            
+            if (!channelLink || !channelPrice) {
+                tg.showAlert('Заполните все обязательные поля');
+                return;
+            }
+            
+            // Симулюємо створення каналу
+            tg.showAlert(`Канал ${channelLink} создан за ${channelPrice} TON!`);
+            
+            // Переходимо до списку каналів
+            showMyChannelsList();
+        }
+        
+        function editChannel() {
+            tg.showAlert('Редактирование канала');
+        }
+        
+        function deleteChannel() {
+            tg.showAlert('Удаление канала');
         }
         
         function showSortingOptions() {
