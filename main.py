@@ -1181,11 +1181,6 @@ async def miniapp():
             border: 2px solid transparent;
         }
         
-        .gift-card:hover {
-            background: #3a3a5c;
-            border-color: #3d5afe;
-        }
-        
         .gift-image {
             width: 40px;
             height: 40px;
