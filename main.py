@@ -438,6 +438,88 @@ async def miniapp():
             color: #8b8b8b;
         }
         
+        /* Profile Page Styles */
+        .profile-container {
+            background: #0F0F19;
+            padding: 20px;
+            min-height: calc(100vh - 140px);
+            text-align: center;
+        }
+        
+        .profile-avatar-container {
+            margin-bottom: 30px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            border: 4px solid rgba(255,255,255,0.1);
+            animation: profileFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes profileFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-5px) scale(1.02); }
+        }
+        
+        .profile-username {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .profile-id {
+            font-size: 16px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 30px;
+        }
+        
+        .profile-stats {
+            background: #2a2a3e;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .profile-stats-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .profile-stat-item {
+            text-align: center;
+        }
+        
+        .profile-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #64B5F6;
+            margin-bottom: 5px;
+        }
+        
+        .profile-stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+        
         /* Category Tabs Styles */
         .category-tabs {
             display: flex;
@@ -1295,6 +1377,7 @@ async def miniapp():
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
             <div class="tab" onclick="switchTab('my-channels')">Мої канали</div>
+            <div class="tab" onclick="switchTab('profile')">Мій профіль</div>
         </div>
         
         <!-- Нижні кнопки категорій -->
@@ -1914,6 +1997,49 @@ async def miniapp():
             }
         }
         
+        function showProfile() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
+            
+            // Получаем данные пользователя из Telegram WebApp
+            const user = tg.initDataUnsafe?.user;
+            let username = user?.username || user?.first_name || 'GiftRoom User';
+            let userId = user?.id || '123456789';
+            
+            grid.innerHTML = `
+                <div class="profile-container">
+                    <div class="profile-avatar-container">
+                        <div class="profile-avatar">👤</div>
+                        <div class="profile-username">${username}</div>
+                        <div class="profile-id">ID: ${userId}</div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="profile-stats-title">Статистика</div>
+                        <div class="profile-stats-grid">
+                            <div class="profile-stat-item">
+                                <div class="profile-stat-value">0</div>
+                                <div class="profile-stat-label">Каналов продано</div>
+                            </div>
+                            <div class="profile-stat-item">
+                                <div class="profile-stat-value">0</div>
+                                <div class="profile-stat-label">Каналов куплено</div>
+                            </div>
+                            <div class="profile-stat-item">
+                                <div class="profile-stat-value">0.00</div>
+                                <div class="profile-stat-label">Заработано TON</div>
+                            </div>
+                            <div class="profile-stat-item">
+                                <div class="profile-stat-value">0.00</div>
+                                <div class="profile-stat-label">Потрачено TON</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
         function showSortingOptions() {
             document.getElementById('giftsGrid').className = 'gifts-filter-grid';
             
@@ -2218,6 +2344,9 @@ async def miniapp():
             } else if (tab === 'my-channels') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 showMyChannels();
+            } else if (tab === 'profile') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
+                showProfile();
             }
         }
         
