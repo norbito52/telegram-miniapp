@@ -441,7 +441,7 @@ async def miniapp():
         /* Profile Page Styles - ВИПРАВЛЕНО */
         .profile-container {
             background: #0F0F19;
-            padding: 20px;
+            padding: 0;
             min-height: calc(100vh - 140px);
             display: flex;
             flex-direction: column;
@@ -449,11 +449,16 @@ async def miniapp():
             justify-content: center;
             position: relative;
             transform: translateY(-40px);
+            width: 100%;
         }
         
         .profile-avatar-container {
             text-align: center;
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         .profile-avatar {
