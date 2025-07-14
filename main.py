@@ -35,7 +35,7 @@ async def miniapp():
         }
         
         body {
-            background: #1a1a2e;
+            background: #0F0F19;
             color: white;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
@@ -686,7 +686,7 @@ async def miniapp():
         
         /* My Ads Container Styles */
         .my-ads-container {
-            background: #1a1a2e;
+            background: #0F0F19;
             padding: 20px;
             min-height: calc(100vh - 140px);
         }
@@ -780,7 +780,7 @@ async def miniapp():
         
         /* Create Ad Form Styles */
         .create-ad-container {
-            background: #1a1a2e;
+            background: #0F0F19;
             padding: 0;
             min-height: 100vh;
         }
@@ -791,7 +791,7 @@ async def miniapp():
             align-items: center;
             padding: 20px;
             border-bottom: 1px solid #2a2a3e;
-            background: #1a1a2e;
+            background: #0F0F19;
             position: sticky;
             top: 0;
             z-index: 10;
@@ -1126,7 +1126,7 @@ async def miniapp():
         }
         
         .gifts-modal-content {
-            background: #1a1a2e;
+            background: #0F0F19;
             margin: 0;
             height: 100vh;
             overflow-y: auto;
@@ -1141,7 +1141,7 @@ async def miniapp():
             border-bottom: 1px solid #2a2a3e;
             position: sticky;
             top: 0;
-            background: #1a1a2e;
+            background: #0F0F19;
             z-index: 10;
         }
         
@@ -2106,7 +2106,7 @@ async def miniapp():
         
         // Адаптация к теме
         if (tg.colorScheme === 'dark') {
-            document.body.style.background = '#0f0f1a';
+            document.body.style.background = '#0F0F19';
         }
     </script>
 </body>
