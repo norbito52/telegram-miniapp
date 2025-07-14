@@ -748,6 +748,17 @@ async def miniapp():
             50% { transform: translateY(-10px) scale(1.05); }
         }
         
+        @keyframes modalSlideOut {
+            from { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to { 
+                opacity: 0;
+                transform: translateY(100%);
+            }
+        }
+        
         .empty-ads-title {
             font-size: 22px;
             color: white;
@@ -2028,16 +2039,11 @@ async def miniapp():
             updateClearButton();
         }
         
-        let scrollPosition = 0;
-        
         function openGiftsModal(channelId) {
             const channel = channelListings.find(c => c.id === channelId);
             if (!channel) return;
             
             currentChannelModal = channel;
-            
-            // Зберігаємо поточну позицію скролу
-            scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
             
             // Генеруємо @ назву для демо на основі ID
             let demoChannelName = '';
@@ -2080,28 +2086,42 @@ async def miniapp():
                 `;
             }).join('');
             
-            // Блокуємо скрол на основній сторінці з збереженням позиції
+            // Блокуємо скрол на основній сторінці без зміни позиції
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
-            document.body.style.top = `-${scrollPosition}px`;
             document.body.style.width = '100%';
+            document.body.style.top = '0';
+            document.body.style.left = '0';
             
-            // Показуємо модальне вікно
-            document.getElementById('giftsModal').classList.add('show');
+            // Показуємо модальне вікно з анімацією
+            const modal = document.getElementById('giftsModal');
+            modal.classList.add('show');
+            
+            // Скролимо модальне вікно на початок
+            setTimeout(() => {
+                const modalGrid = document.getElementById('giftsModalGrid');
+                if (modalGrid) {
+                    modalGrid.scrollTop = 0;
+                }
+            }, 100);
         }
         
         function closeGiftsModal() {
-            document.getElementById('giftsModal').classList.remove('show');
-            currentChannelModal = null;
+            const modal = document.getElementById('giftsModal');
+            modal.style.animation = 'modalSlideOut 0.3s ease-in forwards';
             
-            // Відновлюємо скрол основної сторінки з тією ж позицією
-            document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.top = '';
-            document.body.style.width = '';
-            
-            // Повертаємо до збереженої позиції скролу
-            window.scrollTo(0, scrollPosition);
+            setTimeout(() => {
+                modal.classList.remove('show');
+                modal.style.animation = '';
+                currentChannelModal = null;
+                
+                // Відновлюємо скрол основної сторінки
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                document.body.style.top = '';
+                document.body.style.left = '';
+            }, 300);
         }
         
         function buyChannelFromModal() {
