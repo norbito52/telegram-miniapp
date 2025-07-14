@@ -684,6 +684,258 @@ async def miniapp():
             font-size: 10px;
         }
         
+        /* Profile Page Styles */
+        .profile-container {
+            background: #0F0F19;
+            padding: 20px;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2a2a3e;
+        }
+        
+        .profile-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .profile-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .balance-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .balance-amount {
+            color: white;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .balance-amount .ton-icon {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .balance-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .balance-action-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .balance-action-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .stat-card:hover {
+            border-color: #3d5afe;
+            transform: translateY(-2px);
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            color: #64B5F6;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+        }
+        
+        .settings-section {
+            margin-bottom: 25px;
+        }
+        
+        .settings-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-left: 5px;
+        }
+        
+        .settings-item {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .settings-item:hover {
+            background: #3a3a5c;
+            border-color: #3d5afe;
+        }
+        
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .settings-item-icon {
+            font-size: 20px;
+        }
+        
+        .settings-item-info {
+            flex: 1;
+        }
+        
+        .settings-item-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .settings-item-desc {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        .settings-item-value {
+            color: #64B5F6;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .settings-item-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 16px;
+        }
+        
+        .referral-section {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(78, 205, 196, 0.3);
+        }
+        
+        .referral-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .referral-subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-stat {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .referral-stat-value {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .referral-stat-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+        }
+        
+        .referral-link-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .referral-link-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
         /* My Ads Container Styles */
         .my-ads-container {
             background: #0F0F19;
@@ -1239,256 +1491,10 @@ async def miniapp():
             gap: 6px;
         }
         
-        /* Profile Page Styles */
-        .profile-container {
-            background: #0F0F19;
-            padding: 20px;
-            min-height: calc(100vh - 140px);
-        }
-        
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #2a2a3e;
-        }
-        
-        .profile-title {
-            color: white;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .profile-subtitle {
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
-        }
-        
-        .balance-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
-        }
-        
-        .balance-label {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .balance-amount {
-            color: white;
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .balance-amount .ton-icon {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .balance-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .balance-action-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .balance-action-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .stat-card {
-            background: #2a2a3e;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .stat-card:hover {
-            border-color: #3d5afe;
-            transform: translateY(-2px);
-        }
-        
-        .stat-icon {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        
-        .stat-value {
-            color: #64B5F6;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: rgba(255,255,255,0.7);
-            font-size: 12px;
-        }
-        
-        .settings-section {
-            margin-bottom: 25px;
-        }
-        
-        .settings-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding-left: 5px;
-        }
-        
-        .settings-item {
-            background: #2a2a3e;
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .settings-item:hover {
-            background: #3a3a5c;
-            border-color: #3d5afe;
-        }
-        
-        .settings-item-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .settings-item-icon {
-            font-size: 20px;
-        }
-        
-        .settings-item-info {
-            flex: 1;
-        }
-        
-        .settings-item-title {
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        
-        .settings-item-desc {
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
-        }
-        
-        .settings-item-value {
-            color: #64B5F6;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .settings-item-arrow {
-            color: rgba(255,255,255,0.4);
-            font-size: 16px;
-        }
-        
-        .referral-section {
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 30px rgba(78, 205, 196, 0.3);
-        }
-        
-        .referral-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .referral-subtitle {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        
-        .referral-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .referral-stat {
-            background: rgba(255,255,255,0.2);
-            border-radius: 15px;
-            padding: 15px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .referral-stat-value {
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .referral-stat-label {
-            color: rgba(255,255,255,0.8);
-            font-size: 12px;
-        }
-        
-        .referral-link-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .referral-link-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
+        .buy-channel-btn:hover {
+            background: #1976D2;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
         }
     </style>
 </head>
@@ -1789,7 +1795,7 @@ async def miniapp():
         
         let currentView = 'market';
         let currentCategory = 'all';
-        let currentExtrasCategory = 'all'; // Для вкладки "Доп"
+        let currentExtrasCategory = 'all';
         let currentChannelModal = null;
         let selectedGiftFilter = null;
         let selectedGifts = new Set();
@@ -1896,7 +1902,6 @@ async def miniapp():
             
             updateClearButton();
             
-            // Оновлюємо відображення
             if (currentCategory === 'new') {
                 showAllGiftsFilter();
             } else if (currentCategory === 'all') {
@@ -1932,7 +1937,6 @@ async def miniapp():
             
             const allGifts = new Map();
             
-            // Створюємо мапу всіх подарунків
             Object.values(ALL_GIFTS).forEach(giftTemplate => {
                 allGifts.set(giftTemplate.id, {
                     ...giftTemplate,
@@ -1941,7 +1945,6 @@ async def miniapp():
                 });
             });
             
-            // Додаємо дані з каналів
             channelListings.forEach(channel => {
                 channel.gifts.forEach(gift => {
                     if (allGifts.has(gift.id)) {
@@ -1954,7 +1957,6 @@ async def miniapp():
                 });
             });
             
-            // Конвертуємо в масив і сортуємо за ID від 37 до 1
             const giftsArray = Array.from(allGifts.values()).sort((a, b) => b.id - a.id);
             
             renderGiftsFilterList(giftsArray);
@@ -2021,20 +2023,17 @@ async def miniapp():
             let channelsToShow = [...channelListings];
             
             if (extrasType === 'with-extras') {
-                // Показуємо канали з різними подарунками (більше 3 різних типів)
                 channelsToShow = channelsToShow.filter(channel => {
                     const uniqueGifts = new Set(channel.gifts.map(gift => gift.id));
                     return uniqueGifts.size > 3;
                 });
             } else if (extrasType === 'without-extras') {
-                // Показуємо канали з одним типом подарунків (1-2 різних типи)
                 channelsToShow = channelsToShow.filter(channel => {
                     const uniqueGifts = new Set(channel.gifts.map(gift => gift.id));
                     return uniqueGifts.size <= 2;
                 });
             }
             
-            // Відображаємо результат
             if (extrasType === 'all') {
                 showExtrasOptions();
             } else {
@@ -2048,11 +2047,9 @@ async def miniapp():
             currentExtrasCategory = 'all';
             currentCategory = 'all';
             
-            // Оновлюємо активну вкладку
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.category-tab')[0].classList.add('active');
             
-            // Повертаємося до маркету з сіткою каналів
             document.getElementById('giftsGrid').className = 'gifts-grid';
             applyGiftFilter();
             
@@ -2075,10 +2072,8 @@ async def miniapp():
             
             grid.innerHTML = channelsToRender.map(channel => {
                 const mainGift = channel.gifts[0];
-                // Беремо правильні дані з бази ALL_GIFTS за ID
                 const correctGift = ALL_GIFTS[mainGift.id];
                 
-                // Генеруємо демо @ назву для відображення
                 let displayChannelName = '';
                 switch(channel.id) {
                     case 1: displayChannelName = '@fashion_style'; break;
@@ -2111,7 +2106,6 @@ async def miniapp():
             document.querySelector('.category-tabs').classList.remove('hidden');
             selectedGiftFilter = null;
             
-            // Відновлюємо поточну категорію без зміни стану
             if (currentCategory === 'all') {
                 document.getElementById('giftsGrid').className = 'gifts-grid';
                 applyGiftFilter();
@@ -2124,6 +2118,36 @@ async def miniapp():
             } else if (currentCategory === 'extras') {
                 document.getElementById('giftsGrid').className = 'gifts-filter-grid';
                 showExtrasOptions();
+            }
+        }
+        
+        function showMyChannels() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid my-channel-grid';
+            
+            const hasChannels = false;
+            
+            if (!hasChannels) {
+                grid.innerHTML = `
+                    <div class="my-ads-container">
+                        <div class="my-ads-header">
+                            <div class="my-ads-title">Мои объявления</div>
+                            <button class="add-ad-btn" onclick="showCreateAdForm()">+</button>
+                        </div>
+                        
+                        <div class="empty-ads-state">
+                            <div class="empty-ads-icon">
+                                <img src="https://i.postimg.cc/ncnSj3rD/1752485903244.png" alt="Gift" style="width: 120px; height: 120px; object-fit: contain; background: transparent;">
+                            </div>
+                            <div class="empty-ads-title">Нет объявлений</div>
+                            <div class="empty-ads-subtitle">Создайте ваше первое объявление</div>
+                            <button class="create-ad-btn" onclick="showCreateAdForm()">Добавить объявление</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                showMyChannelsList();
             }
         }
         
@@ -2224,37 +2248,6 @@ async def miniapp():
                 </div>
             `;
         }
-            document.querySelector('.category-tabs').classList.add('hidden');
-            const grid = document.getElementById('giftsGrid');
-            grid.className = 'gifts-grid my-channel-grid';
-            
-            // Перевіряємо чи є створені канали (поки що завжди пусто для демо)
-            const hasChannels = false; // В майбутньому тут буде перевірка реальних даних
-            
-            if (!hasChannels) {
-                // Показуємо пустий стан
-                grid.innerHTML = `
-                    <div class="my-ads-container">
-                        <div class="my-ads-header">
-                            <div class="my-ads-title">Мои объявления</div>
-                            <button class="add-ad-btn" onclick="showCreateAdForm()">+</button>
-                        </div>
-                        
-                        <div class="empty-ads-state">
-                            <div class="empty-ads-icon">
-                                <img src="https://i.postimg.cc/ncnSj3rD/1752485903244.png" alt="Gift" style="width: 120px; height: 120px; object-fit: contain; background: transparent;">
-                            </div>
-                            <div class="empty-ads-title">Нет объявлений</div>
-                            <div class="empty-ads-subtitle">Создайте ваше первое объявление</div>
-                            <button class="create-ad-btn" onclick="showCreateAdForm()">Добавить объявление</button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                // Показуємо список каналів
-                showMyChannelsList();
-            }
-        }
         
         function showSortingOptions() {
             document.getElementById('giftsGrid').className = 'gifts-filter-grid';
@@ -2303,7 +2296,6 @@ async def miniapp():
         }
         
         function updateClearButton() {
-            // Хрестик тепер завжди видимий
             const clearBtn = document.querySelector('.clear-selection-btn');
             clearBtn.style.display = 'flex';
         }
@@ -2442,10 +2434,7 @@ async def miniapp():
                 return;
             }
             
-            // Симулюємо створення каналу
             tg.showAlert(`Канал ${channelLink} создан за ${channelPrice} TON!`);
-            
-            // Переходимо до списку каналів
             showMyChannelsList();
         }
         
@@ -2457,13 +2446,28 @@ async def miniapp():
             tg.showAlert('Удаление канала');
         }
         
+        function shareReferralLink() {
+            tg.showAlert('Реферальне посилання:\nhttps://t.me/giftroom_bot?start=ref_12345\n\nПосилання скопійовано!');
+        }
+        
+        function changeLanguage() {
+            tg.showAlert('Вибір мови:\n🇺🇦 Українська\n🇷🇺 Русский\n🇺🇸 English');
+        }
+        
+        function showNotifications() {
+            tg.showAlert('Налаштування сповіщень:\n✅ Нові повідомлення\n✅ Продажі каналів\n❌ Реферальні бонуси');
+        }
+        
+        function showSupport() {
+            tg.showAlert('Підтримка GiftRoom:\n\n📧 Email: support@giftroom.com\n💬 Telegram: @giftroom_support\n\nЯк ми можемо допомогти?');
+        }
+        
         function openGiftsModal(channelId) {
             const channel = channelListings.find(c => c.id === channelId);
             if (!channel) return;
             
             currentChannelModal = channel;
             
-            // Генеруємо @ назву для демо на основі ID
             let demoChannelName = '';
             switch(channelId) {
                 case 1: demoChannelName = '@fashion_style'; break;
@@ -2504,18 +2508,15 @@ async def miniapp():
                 `;
             }).join('');
             
-            // Блокуємо скрол на основній сторінці без зміни позиції
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
             document.body.style.width = '100%';
             document.body.style.top = '0';
             document.body.style.left = '0';
             
-            // Показуємо модальне вікно з анімацією
             const modal = document.getElementById('giftsModal');
             modal.classList.add('show');
             
-            // Скролимо модальне вікно на початок
             setTimeout(() => {
                 const modalGrid = document.getElementById('giftsModalGrid');
                 if (modalGrid) {
@@ -2533,7 +2534,6 @@ async def miniapp():
                 modal.style.animation = '';
                 currentChannelModal = null;
                 
-                // Відновлюємо скрол основної сторінки
                 document.body.style.overflow = '';
                 document.body.style.position = '';
                 document.body.style.width = '';
@@ -2578,33 +2578,14 @@ async def miniapp():
             tg.showAlert('Пополнение баланса');
         }
         
-        function shareReferralLink() {
-            tg.showAlert('Реферальне посилання:\nhttps://t.me/giftroom_bot?start=ref_12345\n\nПосилання скопійовано!');
-        }
-        
-        function changeLanguage() {
-            tg.showAlert('Вибір мови:\n🇺🇦 Українська\n🇷🇺 Русский\n🇺🇸 English');
-        }
-        
-        function showNotifications() {
-            tg.showAlert('Налаштування сповіщень:\n✅ Нові повідомлення\n✅ Продажі каналів\n❌ Реферальні бонуси');
-        }
-        
-        function showSupport() {
-            tg.showAlert('Підтримка GiftRoom:\n\n📧 Email: support@giftroom.com\n💬 Telegram: @giftroom_support\n\nЯк ми можемо допомогти?');
-        }
-        
         function withdrawBalance() {
-            tg.showAlert('Вивід коштів');
+            tg.showAlert('Вывод средств');
         }
         
-        // Start loading when page loads
         window.addEventListener('load', startLoading);
         
-        // Убираем главную кнопку Telegram
         tg.MainButton.hide();
         
-        // Адаптация к теме
         if (tg.colorScheme === 'dark') {
             document.body.style.background = '#0F0F19';
         }
@@ -2612,6 +2593,28 @@ async def miniapp():
 </body>
 </html>
     """
+
+@dp.message(Command("start"))
+async def start(message: types.Message):
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[[
+            InlineKeyboardButton(
+                text="Открыть GiftRoom Market",
+                web_app=WebAppInfo(url=WEBAPP_URL)
+            )
+        ]]
+    )
+    
+    await message.answer(
+        f"Привет {message.from_user.first_name}!\n\n"
+        f"Добро пожаловать в GiftRoom Market!\n"
+        f"📺 Маркетплейс Telegram каналов с подарками\n"
+        f"🎁 37 уникальных подарков\n"
+        f"💎 Создавай каналы и продавай подарки\n"
+        f"💰 Зарабатывай TON с каждой продажи\n\n"
+        f"Нажми кнопку чтобы открыть магазин:",
+        reply_markup=keyboard
+    )
 
 async def run_bot():
     await dp.start_polling(bot)
