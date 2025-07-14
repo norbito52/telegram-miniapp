@@ -475,6 +475,66 @@ async def miniapp():
             color: white;
         }
         
+        /* Additional Tabs Styles */
+        .additional-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .additional-tabs.hidden {
+            display: none;
+        }
+        
+        .additional-tab {
+            background: #2a2a3e;
+            color: #8b8b8b;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .additional-tab.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        
+        .additional-tab:hover:not(.active) {
+            background: #3a3a5c;
+            color: white;
+        }
+        
+        .clear-additional-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .clear-additional-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
+        }
+        
         .clear-selection-btn {
             background: #ff4757;
             color: white;
@@ -1294,6 +1354,7 @@ async def miniapp():
         
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
+            <div class="tab" onclick="switchTab('additional')">Доп</div>
             <div class="tab" onclick="switchTab('my-channels')">Мої канали</div>
         </div>
         
@@ -1303,6 +1364,14 @@ async def miniapp():
             <div class="category-tab" onclick="switchCategory('new')">Нові</div>
             <div class="category-tab" onclick="switchCategory('sorting')">Сортування</div>
             <div class="clear-selection-btn" onclick="clearAllSelections()" style="display: none;">✕</div>
+        </div>
+        
+        <!-- Вкладки для категорії "Доп" -->
+        <div class="additional-tabs hidden">
+            <div class="additional-tab active" onclick="switchAdditionalTab('all')">Всі</div>
+            <div class="additional-tab" onclick="switchAdditionalTab('with-additional')">З доп подарка</div>
+            <div class="additional-tab" onclick="switchAdditionalTab('without-additional')">Без доп подарка</div>
+            <div class="clear-additional-btn" onclick="clearAdditionalFilter()" style="display: none;">✕</div>
         </div>
         
         <div class="gifts-grid" id="giftsGrid">
@@ -1390,72 +1459,12 @@ async def miniapp():
                 avatar: "👗",
                 dateAdded: new Date('2024-01-15'),
                 gifts: [
-                    {id: 1, name: "HEELS", desc: "High heels", count: "11500", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-                    {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
-                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
-                    {id: 2, name: "BUTTON", desc: "Simple button", count: "356", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-                    {id: 23, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
-                    {id: 31, name: "BOUQUET", desc: "Beautiful bouquet", count: "890", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"}
-                ]
-            },
-            {
-                id: 2,
-                name: "Cat Lovers 🐱",
-                description: "Милые подарки для любителей котиков и других животных",
-                subscribers: 890,
-                posts: 32,
-                category: "animals",
-                price: 15.25,
-                owner: "CatMom",
-                avatar: "🐱",
-                dateAdded: new Date('2024-01-20'),
-                gifts: [
-                    {id: 3, name: "CATS", desc: "Cute cats", count: "2945", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-                    {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
-                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
-                    {id: 1, name: "HEELS", desc: "High heels", count: "250", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-                    {id: 14, name: "PIGEON", desc: "City pigeon", count: "723", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
-                    {id: 12, name: "EAGLE", desc: "Majestic eagle", count: "567", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"}
-                ]
-            },
-            {
-                id: 3,
-                name: "Tech Store 🔌",
-                description: "Технические подарки и современные гаджеты",
-                subscribers: 2100,
-                posts: 67,
-                category: "tech",
-                price: 45.00,
-                owner: "TechGuru",
-                avatar: "⚡",
-                dateAdded: new Date('2024-01-10'),
-                gifts: [
-                    {id: 6, name: "LAMP", desc: "Table lamp", count: "2612", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
-                    {id: 10, name: "DYSON", desc: "Powerful vacuum", count: "2178", image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
-                    {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
-                    {id: 2, name: "BUTTON", desc: "Simple button", count: "890", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-                    {id: 11, name: "ESKIMO", desc: "Cold eskimo", count: "456", image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
-                    {id: 20, name: "BRICK", desc: "Building brick", count: "334", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"}
-                ]
-            },
-            {
-                id: 4,
-                name: "Sweet Treats 🧁",
-                description: "Сладкие подарки и десерты для сладкоежек",
-                subscribers: 756,
-                posts: 28,
-                category: "food",
-                price: 18.75,
-                owner: "SweetChef", 
-                avatar: "🍰",
-                dateAdded: new Date('2024-01-25'),
-                gifts: [
                     {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", count: "2390", image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
                     {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
                     {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
                     {id: 3, name: "CATS", desc: "Cute cats", count: "150", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-                    {id: 18, name: "KULICH", desc: "Easter cake", count: "789", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
-                    {id: 22, name: "POOP", desc: "Funny poop", count: "1234", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"}
+                    {id: 20, name: "KULICH", desc: "Easter cake", count: "789", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"},
+                    {id: 16, name: "POOP", desc: "Funny poop", count: "1234", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"}
                 ]
             },
             {
@@ -1493,9 +1502,9 @@ async def miniapp():
                     {id: 2, name: "BUTTON", desc: "Simple button", count: "5600", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
                     {id: 6, name: "LAMP", desc: "Table lamp", count: "234", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
                     {id: 5, name: "BICEPS", desc: "Strong muscles", count: "567", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
-                    {id: 16, name: "1 MAY", desc: "Labor day", count: "89", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
-                    {id: 28, name: "CLOVER", desc: "Lucky clover", count: "234", image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
-                    {id: 9, name: "NIPPLE", desc: "Baby nipple", count: "567", image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"}
+                    {id: 22, name: "1 MAY", desc: "Labor day", count: "89", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"},
+                    {id: 12, name: "CLOVER", desc: "Lucky clover", count: "234", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"},
+                    {id: 29, name: "NIPPLE", desc: "Baby nipple", count: "567", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"}
                 ]
             },
             {
@@ -1510,11 +1519,11 @@ async def miniapp():
                 avatar: "⚽",
                 dateAdded: new Date('2024-01-18'),
                 gifts: [
-                    {id: 16, name: "1 MAY", desc: "Labor day", count: "1234", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
-                    {id: 29, name: "MARCH 8", desc: "Women's day", count: "456", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
+                    {id: 22, name: "1 MAY", desc: "Labor day", count: "1234", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"},
+                    {id: 9, name: "MARCH 8", desc: "Women's day", count: "456", image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"},
                     {id: 5, name: "BICEPS", desc: "Strong muscles", count: "789", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
-                    {id: 7, name: "PLUMBER", desc: "Mario plumber", count: "123", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
-                    {id: 13, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+                    {id: 28, name: "PLUMBER", desc: "Mario plumber", count: "123", image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
+                    {id: 31, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"},
                     {id: 32, name: "TORCH", desc: "Olympic torch", count: "678", image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"}
                 ]
             },
@@ -1530,17 +1539,18 @@ async def miniapp():
                 avatar: "🕌",
                 dateAdded: new Date('2024-01-22'),
                 gifts: [
-                    {id: 24, name: "MOSQUE", desc: "Beautiful mosque", count: "234", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
-                    {id: 25, name: "AMULET", desc: "Protection amulet", count: "156", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
-                    {id: 30, name: "BOILER", desc: "Hot boiler", count: "789", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
-                    {id: 27, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
-                    {id: 23, name: "STAR", desc: "Shining star", count: "567", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"}
+                    {id: 14, name: "MOSQUE", desc: "Beautiful mosque", count: "234", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
+                    {id: 13, name: "AMULET", desc: "Protection amulet", count: "156", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+                    {id: 11, name: "BOILER", desc: "Hot boiler", count: "789", image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
+                    {id: 31, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"},
+                    {id: 25, name: "STAR", desc: "Shining star", count: "567", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"}
                 ]
             }
         ];
         
         let currentView = 'market';
         let currentCategory = 'all';
+        let currentAdditionalTab = 'all';
         let currentChannelModal = null;
         let selectedGiftFilter = null;
         let selectedGifts = new Set();
@@ -1740,6 +1750,134 @@ async def miniapp():
             }
         }
         
+        // Функція для визначення чи має канал додаткові подарунки
+        function hasAdditionalGifts(channel) {
+            // Групуємо подарунки за назвою
+            const giftGroups = {};
+            channel.gifts.forEach(gift => {
+                const correctGift = ALL_GIFTS[gift.id];
+                if (!giftGroups[correctGift.name]) {
+                    giftGroups[correctGift.name] = [];
+                }
+                giftGroups[correctGift.name].push(gift);
+            });
+            
+            // Якщо є групи з більше ніж одним подарунком, то є додаткові
+            return Object.values(giftGroups).some(group => group.length > 1);
+        }
+        
+        function showAdditional() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            document.querySelector('.additional-tabs').classList.remove('hidden');
+            
+            // Показуємо сортування замість підкатегорій
+            showAdditionalSortingOptions();
+        }
+        
+        function showAdditionalSortingOptions() {
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-filter-grid';
+            
+            grid.innerHTML = `
+                <div class="gift-filter-item" onclick="switchAdditionalTab('all')">
+                    <div class="gift-filter-checkbox ${currentAdditionalTab === 'all' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">📋</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Всі канали</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Показати всі канали</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="switchAdditionalTab('with-additional')">
+                    <div class="gift-filter-checkbox ${currentAdditionalTab === 'with-additional' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4CAF50, #45a049); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎁</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">З доп подарка</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Канали з додатковими подарками</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="switchAdditionalTab('without-additional')">
+                    <div class="gift-filter-checkbox ${currentAdditionalTab === 'without-additional' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ff9800, #f57c00); display: flex; align-items: center; justify-content: center; font-size: 20px;">💎</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Без доп подарка</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Канали тільки з унікальними подарками</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showAdditionalGifts(filterType) {
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
+            
+            let channelsToShow = [...channelListings];
+            
+            if (filterType === 'with-additional') {
+                // Показуємо тільки канали з додатковими подарунками
+                channelsToShow = channelsToShow.filter(channel => hasAdditionalGifts(channel));
+            } else if (filterType === 'without-additional') {
+                // Показуємо тільки канали без додаткових подарунків
+                channelsToShow = channelsToShow.filter(channel => !hasAdditionalGifts(channel));
+            }
+            
+            renderChannelListings(channelsToShow);
+        }
+        
+        function switchAdditionalTab(tabType) {
+            currentAdditionalTab = tabType;
+            
+            // Оновлюємо активну вкладку
+            document.querySelectorAll('.additional-tab').forEach(tab => tab.classList.remove('active'));
+            
+            if (tabType === 'all') {
+                document.querySelectorAll('.additional-tab')[0].classList.add('active');
+            } else if (tabType === 'with-additional') {
+                document.querySelectorAll('.additional-tab')[1].classList.add('active');
+            } else if (tabType === 'without-additional') {
+                document.querySelectorAll('.additional-tab')[2].classList.add('active');
+            }
+            
+            // Оновлюємо кнопку скидання
+            updateAdditionalClearButton();
+            
+            // Показуємо сортування або результати
+            if (currentView === 'additional') {
+                showAdditionalSortingOptions();
+            }
+        }
+        
+        function clearAdditionalFilter() {
+            currentAdditionalTab = 'all';
+            
+            // Оновлюємо активну вкладку
+            document.querySelectorAll('.additional-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.additional-tab')[0].classList.add('active');
+            
+            // Оновлюємо кнопку скидання
+            updateAdditionalClearButton();
+            
+            // Показуємо сортування
+            showAdditionalSortingOptions();
+        }
+        
+        function updateAdditionalClearButton() {
+            const clearBtn = document.querySelector('.clear-additional-btn');
+            
+            if (currentAdditionalTab !== 'all') {
+                clearBtn.style.display = 'flex';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+        }
+        
         function renderChannelListings(channelsToRender) {
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid';
@@ -1790,6 +1928,7 @@ async def miniapp():
         
         function showMarket() {
             document.querySelector('.category-tabs').classList.remove('hidden');
+            document.querySelector('.additional-tabs').classList.add('hidden');
             selectedGiftFilter = null;
             
             // Відновлюємо поточну категорію без зміни стану
@@ -1807,6 +1946,7 @@ async def miniapp():
         
         function showMyChannels() {
             document.querySelector('.category-tabs').classList.add('hidden');
+            document.querySelector('.additional-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
             
@@ -2139,8 +2279,12 @@ async def miniapp():
             if (tab === 'market') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 showMarket();
-            } else if (tab === 'my-channels') {
+            } else if (tab === 'additional') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
+                showAdditional();
+                updateAdditionalClearButton();
+            } else if (tab === 'my-channels') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
                 showMyChannels();
             }
         }
@@ -2215,3 +2359,63 @@ if __name__ == "__main__":
     print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
+                    {id: 1, name: "HEELS", desc: "High heels", count: "11500", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+                    {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "356", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+                    {id: 23, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+                    {id: 31, name: "BOUQUET", desc: "Beautiful bouquet", count: "890", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"}
+                ]
+            },
+            {
+                id: 2,
+                name: "Cat Lovers 🐱",
+                description: "Милые подарки для любителей котиков и других животных",
+                subscribers: 890,
+                posts: 32,
+                category: "animals",
+                price: 15.25,
+                owner: "CatMom",
+                avatar: "🐱",
+                dateAdded: new Date('2024-01-20'),
+                gifts: [
+                    {id: 3, name: "CATS", desc: "Cute cats", count: "2945", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+                    {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+                    {id: 1, name: "HEELS", desc: "High heels", count: "250", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+                    {id: 24, name: "PIGEON", desc: "City pigeon", count: "723", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
+                    {id: 30, name: "EAGLE", desc: "Majestic eagle", count: "567", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"}
+                ]
+            },
+            {
+                id: 3,
+                name: "Tech Store 🔌",
+                description: "Технические подарки и современные гаджеты",
+                subscribers: 2100,
+                posts: 67,
+                category: "tech",
+                price: 45.00,
+                owner: "TechGuru",
+                avatar: "⚡",
+                dateAdded: new Date('2024-01-10'),
+                gifts: [
+                    {id: 6, name: "LAMP", desc: "Table lamp", count: "2612", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+                    {id: 10, name: "DYSON", desc: "Powerful vacuum", count: "2178", image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+                    {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "890", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+                    {id: 27, name: "ESKIMO", desc: "Cold eskimo", count: "456", image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
+                    {id: 18, name: "BRICK", desc: "Building brick", count: "334", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"}
+                ]
+            },
+            {
+                id: 4,
+                name: "Sweet Treats 🧁",
+                description: "Сладкие подарки и десерты для сладкоежек",
+                subscribers: 756,
+                posts: 28,
+                category: "food",
+                price: 18.75,
+                owner: "SweetChef", 
+                avatar: "🍰",
+                dateAdded: new Date('2024-01-25'),
+                gifts: [
