@@ -662,7 +662,7 @@ async def miniapp():
         }
         
         .gift-price-main {
-            background: rgba(0,0,0,0.3);
+            background: #2196F3;
             color: white;
             padding: 5px 8px;
             border-radius: 12px;
@@ -1224,7 +1224,7 @@ async def miniapp():
         }
         
         .buy-channel-btn {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
+            background: #2196F3;
             color: white;
             border: none;
             padding: 10px 16px;
@@ -1242,8 +1242,9 @@ async def miniapp():
         }
         
         .buy-channel-btn:hover {
+            background: #1976D2;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
         }
     </style>
 </head>
@@ -2032,10 +2033,24 @@ async def miniapp():
             
             currentChannelModal = channel;
             
+            // Генеруємо @ назву для демо на основі ID
+            let demoChannelName = '';
+            switch(channelId) {
+                case 1: demoChannelName = '@fashion_style'; break;
+                case 2: demoChannelName = '@cat_lovers'; break;
+                case 3: demoChannelName = '@tech_store'; break;
+                case 4: demoChannelName = '@sweet_treats'; break;
+                case 5: demoChannelName = '@hiphop_central'; break;
+                case 6: demoChannelName = '@button_collectors'; break;
+                case 7: demoChannelName = '@sports_arena'; break;
+                case 8: demoChannelName = '@cultural_gifts'; break;
+                default: demoChannelName = channel.name;
+            }
+            
             document.getElementById('modalChannelName').innerHTML = `
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
                     <div style="font-size: 18px; font-weight: 600;">Подарки канала</div>
-                    <div style="font-size: 16px; color: #64B5F6;">${channel.name}</div>
+                    <div style="font-size: 16px; color: #64B5F6;">${demoChannelName}</div>
                 </div>
             `;
             
