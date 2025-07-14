@@ -2033,10 +2033,6 @@ async def miniapp():
             
             currentChannelModal = channel;
             
-            // Спочатку ховаємо модальне вікно і очищуємо його
-            const modal = document.getElementById('giftsModal');
-            modal.classList.remove('show');
-            
             // Генеруємо @ назву для демо на основі ID
             let demoChannelName = '';
             switch(channelId) {
@@ -2079,19 +2075,25 @@ async def miniapp():
                 `;
             }).join('');
             
-            // Невелика затримка для правильного рендерингу
-            setTimeout(() => {
-                modal.classList.add('show');
-                // Блокуємо скрол body
-                document.body.style.overflow = 'hidden';
-            }, 50);
+            // Блокуємо скрол на основній сторінці
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.height = '100%';
+            
+            // Показуємо модальне вікно
+            document.getElementById('giftsModal').classList.add('show');
         }
         
         function closeGiftsModal() {
             document.getElementById('giftsModal').classList.remove('show');
             currentChannelModal = null;
-            // Відновлюємо скрол body
-            document.body.style.overflow = 'auto';
+            
+            // Відновлюємо скрол основної сторінки
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.height = '';
         }
         
         function buyChannelFromModal() {
