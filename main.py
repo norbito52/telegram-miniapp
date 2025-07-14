@@ -1426,9 +1426,6 @@ async def miniapp():
         function renderGiftsFilterList(gifts) {
             const grid = document.getElementById('giftsGrid');
             
-            // Нові подарунки - тепер всі від 37 до 33 (топ 5 найновіших)
-            const newGiftIds = [37, 36, 35, 34, 33];
-            
             grid.innerHTML = gifts.map(gift => `
                 <div class="gift-filter-item" onclick="selectGiftForFilter(${gift.id})">
                     <div class="gift-filter-checkbox ${selectedGifts.has(gift.id) ? 'checked' : ''}" onclick="event.stopPropagation(); toggleGiftSelection(${gift.id})"></div>
@@ -1440,7 +1437,6 @@ async def miniapp():
                             <span class="gift-filter-count">(${gift.channels.length} 🎁)</span>
                         </div>
                     </div>
-                    ${newGiftIds.includes(gift.id) ? '<div class="gift-filter-badge">NEW!</div>' : ''}
                 </div>
             `).join('');
         }
