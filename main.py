@@ -1299,8 +1299,7 @@ async def miniapp():
         
         <!-- Нижні кнопки категорій -->
         <div class="category-tabs">
-            <div class="category-tab active" onclick="switchCategory('all')">Всі категорії</div>
-            <div class="category-tab" onclick="switchCategory('new')">Нові</div>
+            <div class="category-tab active" onclick="switchCategory('new')">Нові</div>
             <div class="category-tab" onclick="switchCategory('sorting')">Сортування</div>
             <div class="clear-selection-btn" onclick="clearAllSelections()" style="display: none;">✕</div>
         </div>
@@ -1540,7 +1539,7 @@ async def miniapp():
         ];
         
         let currentView = 'market';
-        let currentCategory = 'all';
+        let currentCategory = 'market';
         let currentChannelModal = null;
         let selectedGiftFilter = null;
         let selectedGifts = new Set();
@@ -1733,10 +1732,13 @@ async def miniapp():
             
             if (currentCategory === 'new') {
                 showAllGiftsFilter();
-            } else if (currentCategory === 'all') {
-                applyGiftFilter();
             } else if (currentCategory === 'sorting') {
                 showSortingOptions();
+            } else {
+                // Повертаємося до основного маркету
+                currentCategory = 'market';
+                document.getElementById('giftsGrid').className = 'gifts-grid';
+                applyGiftFilter();
             }
         }
         
@@ -1792,16 +1794,18 @@ async def miniapp():
             document.querySelector('.category-tabs').classList.remove('hidden');
             selectedGiftFilter = null;
             
-            // Відновлюємо поточну категорію без зміни стану
-            if (currentCategory === 'all') {
-                document.getElementById('giftsGrid').className = 'gifts-grid';
-                applyGiftFilter();
-            } else if (currentCategory === 'new') {
+            // За замовчуванням показуємо оголошення каналів (як колишню "Всі категорії")
+            if (currentCategory === 'new') {
                 document.getElementById('giftsGrid').className = 'gifts-filter-grid';
                 showAllGiftsFilter();
             } else if (currentCategory === 'sorting') {
                 document.getElementById('giftsGrid').className = 'gifts-filter-grid';
                 showSortingOptions();
+            } else {
+                // За замовчуванням показуємо список каналів
+                currentCategory = 'market';
+                document.getElementById('giftsGrid').className = 'gifts-grid';
+                applyGiftFilter();
             }
         }
         
