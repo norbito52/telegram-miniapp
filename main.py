@@ -598,14 +598,17 @@ async def miniapp():
             font-size: 14px;
         }
         
-        .gift-filter-badge {
-            background: #4CAF50;
-            color: white;
-            font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-            margin-left: 10px;
+        .gift-filter-item.selected-filter {
+            background: #3a3a5c;
+            border-color: #3d5afe;
+        }
+        
+        .all-gifts-icon {
+            background: linear-gradient(45deg, #3d5afe, #5c7cfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
         
         .gifts-grid.my-channel-grid {
@@ -1704,10 +1707,38 @@ async def miniapp():
                 });
             });
             
-            // Конвертуємо в масив і сортуємо за ID від 37 до 1
+            // Додаємо категорію "Всі подарунки" зверху
             const giftsArray = Array.from(allGifts.values()).sort((a, b) => b.id - a.id);
             
-            renderGiftsFilterList(giftsArray);
+            const grid = document.getElementById('giftsGrid');
+            
+            grid.innerHTML = `
+                <div class="gift-filter-item ${selectedGiftFilter === 'all' ? 'selected-filter' : ''}" onclick="selectAllGifts()">
+                    <div class="gift-filter-checkbox ${selectedGiftFilter === 'all' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image all-gifts-icon">🎁</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">ВСІ ПОДАРУНКИ</div>
+                        <div class="gift-filter-count">Показати всі оголошення</div>
+                    </div>
+                </div>
+            ` + giftsArray.map(gift => `
+                <div class="gift-filter-item ${selectedGiftFilter === gift.id ? 'selected-filter' : ''}" onclick="selectGiftForFilter(${gift.id})">
+                    <div class="gift-filter-checkbox ${selectedGifts.has(gift.id) ? 'checked' : ''}" onclick="event.stopPropagation(); toggleGiftSelection(${gift.id})"></div>
+                    <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">${gift.name}</div>
+                        <div class="gift-filter-count">${gift.totalCount} шт</div>
+                    </div>
+                    <div class="gift-filter-price">${(Math.random() * 50 + 5).toFixed(1)} TON</div>
+                </div>
+            `).join('');
+        }
+        
+        function selectAllGifts() {
+            selectedGiftFilter = 'all';
+            // Показуємо всі оголошення каналів
+            document.getElementById('giftsGrid').className = 'gifts-grid';
+            applyGiftFilter();
         }
         
         function showChannelsWithGift(giftId) {
@@ -1796,8 +1827,10 @@ async def miniapp():
             
             // За замовчуванням показуємо оголошення каналів (як колишню "Всі категорії")
             if (currentCategory === 'new') {
-                document.getElementById('giftsGrid').className = 'gifts-filter-grid';
-                showAllGiftsFilter();
+                // За замовчуванням показуємо "Всі подарунки"
+                selectedGiftFilter = 'all';
+                document.getElementById('giftsGrid').className = 'gifts-grid';
+                applyGiftFilter();
             } else if (currentCategory === 'sorting') {
                 document.getElementById('giftsGrid').className = 'gifts-filter-grid';
                 showSortingOptions();
