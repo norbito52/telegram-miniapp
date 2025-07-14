@@ -438,22 +438,18 @@ async def miniapp():
             color: #8b8b8b;
         }
         
-        /* Profile Page Styles - ИСПРАВЛЕНО */
+        /* Profile Page Styles */
         .profile-container {
             background: #0F0F19;
             padding: 20px;
             min-height: calc(100vh - 140px);
-            width: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
         
         .profile-avatar-container {
             text-align: center;
-            width: 100%;
-            max-width: 400px;
         }
         
         .profile-avatar {
@@ -461,7 +457,7 @@ async def miniapp():
             height: 120px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0 auto 30px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -477,19 +473,15 @@ async def miniapp():
         }
         
         .profile-username {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
             color: white;
-            margin-bottom: 12px;
-            word-break: break-word;
-            text-align: center;
+            margin-bottom: 8px;
         }
         
         .profile-id {
-            font-size: 18px;
+            font-size: 16px;
             color: rgba(255,255,255,0.6);
-            word-break: break-all;
-            text-align: center;
         }
         
         /* Category Tabs Styles */
@@ -2339,7 +2331,7 @@ async def miniapp():
     </script>
 </body>
 </html>
-
+    """
 
 async def run_bot():
     await dp.start_polling(bot)
