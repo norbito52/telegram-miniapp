@@ -1239,10 +1239,256 @@ async def miniapp():
             gap: 6px;
         }
         
-        .buy-channel-btn:hover {
-            background: #1976D2;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+        /* Profile Page Styles */
+        .profile-container {
+            background: #0F0F19;
+            padding: 20px;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2a2a3e;
+        }
+        
+        .profile-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .profile-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .balance-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .balance-amount {
+            color: white;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .balance-amount .ton-icon {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .balance-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .balance-action-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .balance-action-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .stat-card:hover {
+            border-color: #3d5afe;
+            transform: translateY(-2px);
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            color: #64B5F6;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+        }
+        
+        .settings-section {
+            margin-bottom: 25px;
+        }
+        
+        .settings-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-left: 5px;
+        }
+        
+        .settings-item {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .settings-item:hover {
+            background: #3a3a5c;
+            border-color: #3d5afe;
+        }
+        
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .settings-item-icon {
+            font-size: 20px;
+        }
+        
+        .settings-item-info {
+            flex: 1;
+        }
+        
+        .settings-item-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .settings-item-desc {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        .settings-item-value {
+            color: #64B5F6;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .settings-item-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 16px;
+        }
+        
+        .referral-section {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(78, 205, 196, 0.3);
+        }
+        
+        .referral-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .referral-subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-stat {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .referral-stat-value {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .referral-stat-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+        }
+        
+        .referral-link-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .referral-link-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -1295,6 +1541,7 @@ async def miniapp():
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
             <div class="tab" onclick="switchTab('my-channels')">Мої канали</div>
+            <div class="tab" onclick="switchTab('profile')">Мій профіль</div>
         </div>
         
         <!-- Нижні кнопки категорій -->
@@ -1880,7 +2127,103 @@ async def miniapp():
             }
         }
         
-        function showMyChannels() {
+        function showProfile() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
+            
+            grid.innerHTML = `
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-title">Мій профіль</div>
+                        <div class="profile-subtitle">Керуйте своїм акаунтом та налаштуваннями</div>
+                    </div>
+                    
+                    <div class="balance-card">
+                        <div class="balance-label">Основний баланс</div>
+                        <div class="balance-amount">
+                            <div class="ton-icon"></div>
+                            <span>24.75 TON</span>
+                        </div>
+                        <div class="balance-actions">
+                            <button class="balance-action-btn" onclick="addBalance()">Поповнити</button>
+                            <button class="balance-action-btn" onclick="withdrawBalance()">Вивести</button>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">Запрошено рефералів</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-value">342.5</div>
+                            <div class="stat-label">Торговий оборот TON</div>
+                        </div>
+                    </div>
+                    
+                    <div class="referral-section">
+                        <div class="referral-title">Реферальна програма</div>
+                        <div class="referral-subtitle">Запрошуйте друзів і отримуйте бонуси</div>
+                        
+                        <div class="referral-stats">
+                            <div class="referral-stat">
+                                <div class="referral-stat-value">8.25</div>
+                                <div class="referral-stat-label">Реферальний баланс TON</div>
+                            </div>
+                            <div class="referral-stat">
+                                <div class="referral-stat-value">5%</div>
+                                <div class="referral-stat-label">Комісія з продажів</div>
+                            </div>
+                        </div>
+                        
+                        <button class="referral-link-btn" onclick="shareReferralLink()">Поділитися посиланням</button>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <div class="settings-title">Налаштування</div>
+                        
+                        <div class="settings-item" onclick="changeLanguage()">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon">🌐</div>
+                                <div class="settings-item-info">
+                                    <div class="settings-item-title">Мова</div>
+                                    <div class="settings-item-desc">Змінити мову інтерфейсу</div>
+                                </div>
+                            </div>
+                            <div class="settings-item-value">Українська</div>
+                            <div class="settings-item-arrow">›</div>
+                        </div>
+                        
+                        <div class="settings-item" onclick="showNotifications()">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon">🔔</div>
+                                <div class="settings-item-info">
+                                    <div class="settings-item-title">Сповіщення</div>
+                                    <div class="settings-item-desc">Налаштувати сповіщення</div>
+                                </div>
+                            </div>
+                            <div class="settings-item-value">Увімкнено</div>
+                            <div class="settings-item-arrow">›</div>
+                        </div>
+                        
+                        <div class="settings-item" onclick="showSupport()">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon">💬</div>
+                                <div class="settings-item-info">
+                                    <div class="settings-item-title">Підтримка</div>
+                                    <div class="settings-item-desc">Зв'язатися з підтримкою</div>
+                                </div>
+                            </div>
+                            <div class="settings-item-arrow">›</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
@@ -2217,6 +2560,9 @@ async def miniapp():
             } else if (tab === 'my-channels') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 showMyChannels();
+            } else if (tab === 'profile') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
+                showProfile();
             }
         }
         
@@ -2232,8 +2578,24 @@ async def miniapp():
             tg.showAlert('Пополнение баланса');
         }
         
+        function shareReferralLink() {
+            tg.showAlert('Реферальне посилання:\nhttps://t.me/giftroom_bot?start=ref_12345\n\nПосилання скопійовано!');
+        }
+        
+        function changeLanguage() {
+            tg.showAlert('Вибір мови:\n🇺🇦 Українська\n🇷🇺 Русский\n🇺🇸 English');
+        }
+        
+        function showNotifications() {
+            tg.showAlert('Налаштування сповіщень:\n✅ Нові повідомлення\n✅ Продажі каналів\n❌ Реферальні бонуси');
+        }
+        
+        function showSupport() {
+            tg.showAlert('Підтримка GiftRoom:\n\n📧 Email: support@giftroom.com\n💬 Telegram: @giftroom_support\n\nЯк ми можемо допомогти?');
+        }
+        
         function withdrawBalance() {
-            tg.showAlert('Вывод средств');
+            tg.showAlert('Вивід коштів');
         }
         
         // Start loading when page loads
