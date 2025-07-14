@@ -1850,16 +1850,11 @@ async def miniapp():
                             <div class="info-icon">⚠️</div>
                             <div class="info-content">
                                 <div class="info-title">Важная информация для продажи канала</div>
-                                <div class="info-text">Перед добавлением канала:</div>
-                                <div class="info-list">
-                                    <div class="info-item">1. Добавьте @GIFTROOM_MARKET_BOT в администраторы канала</div>
-                                    <div class="info-item">2. Не удаляйте бота до конца сделки!</div>
-                                </div>
+                                <div class="info-text">Перед добавлением канала на маркет, сначала добавьте в него бота @Giftroom_market_bot и назначьте его администратором.</div>
                                 <div class="info-requirements">
-                                    <div class="req-title">Убедитесь что:</div>
-                                    <div class="req-item">• Облачный пароль включён минимум 7 дней назад</div>
-                                    <div class="req-item">• Сессия на устройстве активна не менее 24 часов</div>
-                                    <div class="req-item">• Подарки не скрыты!</div>
+                                    <div class="req-title">Внимание:</div>
+                                    <div class="req-item">— канал должен быть публичным</div>
+                                    <div class="req-item">— подарки в нём должны быть видимыми (не скрытыми)</div>
                                 </div>
                             </div>
                         </div>
