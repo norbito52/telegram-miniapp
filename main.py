@@ -1559,11 +1559,13 @@ async def miniapp():
             
             grid.innerHTML = channelsToRender.map(channel => {
                 const mainGift = channel.gifts[0];
+                // Беремо правильні дані з бази ALL_GIFTS за ID
+                const correctGift = ALL_GIFTS[mainGift.id];
                 
                 return `
                     <div class="gift-card-main" onclick="openGiftsModal(${channel.id})">
-                        <div class="gift-image-main" style="background-image: url('${mainGift.image}')"></div>
-                        <div class="gift-name-main">${mainGift.name}</div>
+                        <div class="gift-image-main" style="background-image: url('${correctGift.image}')"></div>
+                        <div class="gift-name-main">${correctGift.name}</div>
                         <div class="gift-channel-name">${channel.name}</div>
                         <div class="gift-price-main">
                             <div class="ton-icon"></div>
