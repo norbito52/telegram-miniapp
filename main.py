@@ -1761,11 +1761,25 @@ async def miniapp():
                 // Беремо правильні дані з бази ALL_GIFTS за ID
                 const correctGift = ALL_GIFTS[mainGift.id];
                 
+                // Генеруємо демо @ назву для відображення
+                let displayChannelName = '';
+                switch(channel.id) {
+                    case 1: displayChannelName = '@fashion_style'; break;
+                    case 2: displayChannelName = '@cat_lovers'; break;
+                    case 3: displayChannelName = '@tech_store'; break;
+                    case 4: displayChannelName = '@sweet_treats'; break;
+                    case 5: displayChannelName = '@hiphop_central'; break;
+                    case 6: displayChannelName = '@button_collectors'; break;
+                    case 7: displayChannelName = '@sports_arena'; break;
+                    case 8: displayChannelName = '@cultural_gifts'; break;
+                    default: displayChannelName = channel.name;
+                }
+                
                 return `
                     <div class="gift-card-main" onclick="openGiftsModal(${channel.id})">
                         <div class="gift-image-main" style="background-image: url('${correctGift.image}')"></div>
                         <div class="gift-name-main">${correctGift.name}</div>
-                        <div class="gift-channel-name">${channel.name}</div>
+                        <div class="gift-channel-name">${displayChannelName}</div>
                         <div class="gift-price-main">
                             <div class="ton-icon"></div>
                             <span>${channel.price} TON</span>
