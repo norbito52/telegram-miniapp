@@ -741,7 +741,6 @@ async def miniapp():
             filter: drop-shadow(0 8px 20px rgba(0,0,0,0.3));
             animation: giftFloat 3s ease-in-out infinite;
             background: transparent;
-            mix-blend-mode: multiply;
         }
         
         @keyframes giftFloat {
