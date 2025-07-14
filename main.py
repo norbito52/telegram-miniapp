@@ -443,11 +443,13 @@ async def miniapp():
             background: #0F0F19;
             padding: 20px;
             min-height: calc(100vh - 140px);
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .profile-avatar-container {
-            margin-bottom: 30px;
+            text-align: center;
         }
         
         .profile-avatar {
@@ -480,44 +482,6 @@ async def miniapp():
         .profile-id {
             font-size: 16px;
             color: rgba(255,255,255,0.6);
-            margin-bottom: 30px;
-        }
-        
-        .profile-stats {
-            background: #2a2a3e;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-        
-        .profile-stats-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        
-        .profile-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        
-        .profile-stat-item {
-            text-align: center;
-        }
-        
-        .profile-stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #64B5F6;
-            margin-bottom: 5px;
-        }
-        
-        .profile-stat-label {
-            font-size: 14px;
-            color: rgba(255,255,255,0.7);
         }
         
         /* Category Tabs Styles */
@@ -2007,34 +1971,22 @@ async def miniapp():
             let username = user?.username || user?.first_name || 'GiftRoom User';
             let userId = user?.id || '123456789';
             
+            // Создаем URL для аватара пользователя
+            let avatarContent = '👤'; // По умолчанию иконка
+            let avatarStyle = 'font-size: 48px;';
+            
+            // Если есть фото пользователя, используем его
+            if (user?.photo_url) {
+                avatarContent = '';
+                avatarStyle = `background-image: url('${user.photo_url}'); background-size: cover; background-position: center;`;
+            }
+            
             grid.innerHTML = `
                 <div class="profile-container">
                     <div class="profile-avatar-container">
-                        <div class="profile-avatar">👤</div>
+                        <div class="profile-avatar" style="${avatarStyle}">${avatarContent}</div>
                         <div class="profile-username">${username}</div>
                         <div class="profile-id">ID: ${userId}</div>
-                    </div>
-                    
-                    <div class="profile-stats">
-                        <div class="profile-stats-title">Статистика</div>
-                        <div class="profile-stats-grid">
-                            <div class="profile-stat-item">
-                                <div class="profile-stat-value">0</div>
-                                <div class="profile-stat-label">Каналов продано</div>
-                            </div>
-                            <div class="profile-stat-item">
-                                <div class="profile-stat-value">0</div>
-                                <div class="profile-stat-label">Каналов куплено</div>
-                            </div>
-                            <div class="profile-stat-item">
-                                <div class="profile-stat-value">0.00</div>
-                                <div class="profile-stat-label">Заработано TON</div>
-                            </div>
-                            <div class="profile-stat-item">
-                                <div class="profile-stat-value">0.00</div>
-                                <div class="profile-stat-label">Потрачено TON</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             `;
