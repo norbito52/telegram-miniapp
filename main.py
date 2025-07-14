@@ -1299,11 +1299,11 @@ async def miniapp():
         
         <!-- Нижні кнопки категорій -->
         <div class="category-tabs">
-            <div class="category-tab active" onclick="switchCategory('all')">Всі категорії</div>
+            <div class="category-tab active" onclick="switchCategory('all')">Всі</div>
             <div class="category-tab" onclick="switchCategory('new')">Нові</div>
             <div class="category-tab" onclick="switchCategory('sorting')">Сортування</div>
             <div class="category-tab" onclick="switchCategory('extras')">Доп</div>
-            <div class="clear-selection-btn" onclick="clearAllSelections()" style="display: none;">✕</div>
+            <div class="clear-selection-btn" onclick="clearAllSelections()">✕</div>
         </div>
         
         <div class="gifts-grid" id="giftsGrid">
@@ -1961,14 +1961,9 @@ async def miniapp():
         }
         
         function updateClearButton() {
+            // Хрестик тепер завжди видимий
             const clearBtn = document.querySelector('.clear-selection-btn');
-            const hasSelections = selectedGifts.size > 0 || currentSorting !== 'all' || currentExtrasCategory !== 'all';
-            
-            if (hasSelections) {
-                clearBtn.style.display = 'flex';
-            } else {
-                clearBtn.style.display = 'none';
-            }
+            clearBtn.style.display = 'flex';
         }
         
         function switchCategory(category) {
