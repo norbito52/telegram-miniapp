@@ -1155,7 +1155,7 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // База данных каналов с подарками - всі 37 подарунків з правильними назвами
+        // База данных каналов с подарками - всі 37 подарунків з правильними назвами та зображеннями
         const channelListings = [
             {
                 id: 1,
@@ -1169,11 +1169,11 @@ async def miniapp():
                 avatar: "👗",
                 dateAdded: new Date('2024-01-15'),
                 gifts: [
-                    {id: 37, name: "HEELS", desc: "High heels", count: "11500", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-                    {id: 34, name: "SOCKS", desc: "Warm socks", count: "2834", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
-                    {id: 2, name: "SWAG BAG", desc: "Stylish bag", count: "34", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
-                    {id: 36, name: "BUTTON", desc: "Simple button", count: "356", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-                    {id: 13, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+                    {id: 1, name: "HEELS", desc: "High heels", count: "11500", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+                    {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "356", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+                    {id: 23, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
                     {id: 31, name: "BOUQUET", desc: "Beautiful bouquet", count: "890", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"}
                 ]
             },
@@ -1189,12 +1189,12 @@ async def miniapp():
                 avatar: "🐱",
                 dateAdded: new Date('2024-01-20'),
                 gifts: [
-                    {id: 35, name: "CATS", desc: "Cute cats", count: "2945", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-                    {id: 21, name: "MONKEY", desc: "Playful monkey", count: "1401", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
-                    {id: 17, name: "RABBIT", desc: "Fluffy rabbit", count: "967", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
-                    {id: 37, name: "HEELS", desc: "High heels", count: "250", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
+                    {id: 3, name: "CATS", desc: "Cute cats", count: "2945", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+                    {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+                    {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+                    {id: 1, name: "HEELS", desc: "High heels", count: "250", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
                     {id: 14, name: "PIGEON", desc: "City pigeon", count: "723", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
-                    {id: 8, name: "EAGLE", desc: "Majestic eagle", count: "567", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"}
+                    {id: 12, name: "EAGLE", desc: "Majestic eagle", count: "567", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"}
                 ]
             },
             {
@@ -1209,10 +1209,10 @@ async def miniapp():
                 avatar: "⚡",
                 dateAdded: new Date('2024-01-10'),
                 gifts: [
-                    {id: 32, name: "LAMP", desc: "Table lamp", count: "2612", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
-                    {id: 28, name: "DYSON", desc: "Powerful vacuum", count: "2178", image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+                    {id: 6, name: "LAMP", desc: "Table lamp", count: "2612", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+                    {id: 10, name: "DYSON", desc: "Powerful vacuum", count: "2178", image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
                     {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
-                    {id: 36, name: "BUTTON", desc: "Simple button", count: "890", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "890", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
                     {id: 11, name: "ESKIMO", desc: "Cold eskimo", count: "456", image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
                     {id: 20, name: "BRICK", desc: "Building brick", count: "334", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"}
                 ]
@@ -1229,10 +1229,10 @@ async def miniapp():
                 avatar: "🍰",
                 dateAdded: new Date('2024-01-25'),
                 gifts: [
-                    {id: 30, name: "CUPCAKE", desc: "Sweet cupcake", count: "2390", image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
-                    {id: 23, name: "DOSHIK", desc: "Instant noodles", count: "1623", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
-                    {id: 12, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
-                    {id: 35, name: "CATS", desc: "Cute cats", count: "150", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+                    {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", count: "2390", image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
+                    {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+                    {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
+                    {id: 3, name: "CATS", desc: "Cute cats", count: "150", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
                     {id: 18, name: "KULICH", desc: "Easter cake", count: "789", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
                     {id: 22, name: "POOP", desc: "Funny poop", count: "1234", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"}
                 ]
@@ -1249,12 +1249,12 @@ async def miniapp():
                 avatar: "🌌",
                 dateAdded: new Date('2024-01-12'),
                 gifts: [
-                    {id: 5, name: "WESTSIDE SIGN", desc: "West coast sign", count: "67", image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
-                    {id: 4, name: "LOW RIDER", desc: "Cool car", count: "23", image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
-                    {id: 1, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
-                    {id: 2, name: "SWAG BAG", desc: "Stylish bag", count: "89", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
-                    {id: 3, name: "SNOOP CIGAR", desc: "Smoking cigar", count: "345", image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
-                    {id: 6, name: "TORCH", desc: "Olympic torch", count: "178", image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"}
+                    {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", count: "67", image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
+                    {id: 34, name: "LOW RIDER", desc: "Cool car", count: "23", image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
+                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+                    {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "89", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+                    {id: 35, name: "SNOOP CIGAR", desc: "Smoking cigar", count: "345", image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
+                    {id: 32, name: "TORCH", desc: "Olympic torch", count: "178", image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"}
                 ]
             },
             {
@@ -1269,11 +1269,11 @@ async def miniapp():
                 avatar: "🔘",
                 dateAdded: new Date('2024-01-28'),
                 gifts: [
-                    {id: 36, name: "BUTTON", desc: "Simple button", count: "5600", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-                    {id: 32, name: "LAMP", desc: "Table lamp", count: "234", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
-                    {id: 33, name: "BICEPS", desc: "Strong muscles", count: "567", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
+                    {id: 2, name: "BUTTON", desc: "Simple button", count: "5600", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+                    {id: 6, name: "LAMP", desc: "Table lamp", count: "234", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+                    {id: 5, name: "BICEPS", desc: "Strong muscles", count: "567", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
                     {id: 15, name: "MEDAL", desc: "Gold medal", count: "89", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
-                    {id: 26, name: "CLOVER", desc: "Lucky clover", count: "234", image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
+                    {id: 28, name: "CLOVER", desc: "Lucky clover", count: "234", image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
                     {id: 9, name: "NIPPLE", desc: "Baby nipple", count: "567", image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"}
                 ]
             },
@@ -1292,9 +1292,9 @@ async def miniapp():
                     {id: 15, name: "MEDAL", desc: "Gold medal", count: "1234", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
                     {id: 16, name: "1 MAY", desc: "Labor day", count: "456", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
                     {id: 29, name: "MARCH 8", desc: "Women's day", count: "789", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
-                    {id: 33, name: "BICEPS", desc: "Strong muscles", count: "123", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
-                    {id: 10, name: "PLUMBER", desc: "Mario plumber", count: "345", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
-                    {id: 7, name: "STATUE", desc: "Ancient statue", count: "678", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"}
+                    {id: 5, name: "BICEPS", desc: "Strong muscles", count: "123", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
+                    {id: 7, name: "PLUMBER", desc: "Mario plumber", count: "345", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
+                    {id: 13, name: "STATUE", desc: "Ancient statue", count: "678", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"}
                 ]
             },
             {
@@ -1311,9 +1311,9 @@ async def miniapp():
                 gifts: [
                     {id: 24, name: "MOSQUE", desc: "Beautiful mosque", count: "234", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
                     {id: 25, name: "AMULET", desc: "Protection amulet", count: "156", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
-                    {id: 27, name: "BOILER", desc: "Hot boiler", count: "789", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
-                    {id: 7, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
-                    {id: 13, name: "STAR", desc: "Shining star", count: "567", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"}
+                    {id: 30, name: "BOILER", desc: "Hot boiler", count: "789", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
+                    {id: 13, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+                    {id: 23, name: "STAR", desc: "Shining star", count: "567", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"}
                 ]
             }
         ];
