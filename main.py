@@ -442,13 +442,13 @@ async def miniapp():
         .profile-container {
             background: #0F0F19;
             padding: 20px;
-            height: calc(100vh - 160px);
+            padding-top: 60px;
+            min-height: calc(100vh - 140px);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             width: 100%;
-            margin-top: -20px;
         }
         
         .profile-avatar-container {
