@@ -418,6 +418,26 @@ async def miniapp():
             padding: 4px;
         }
         
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .tab.active {
+            background: #3d5afe;
+            color: white;
+        }
+        
+        .tab:not(.active) {
+            color: #8b8b8b;
+        }
+        
         /* Category Tabs Styles */
         .category-tabs {
             display: flex;
@@ -477,43 +497,6 @@ async def miniapp():
             background: #ff3742;
             transform: scale(1.1);
         }
-        
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        .tab.active {
-            background: #3d5afe;
-            color: white;
-        }
-        
-        .tab:not(.active) {
-            color: #8b8b8b;
-        }
-        
-        .search-box {
-            background: #2a2a3e;
-            border: none;
-            padding: 12px 15px;
-            border-radius: 10px;
-            color: white;
-            width: 100%;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        .search-box::placeholder {
-            color: #8b8b8b;
-        }
-        
-        /* Фільтри видалені - стилі не потрібні */
         
         .gifts-grid {
             display: grid;
@@ -1125,8 +1108,6 @@ async def miniapp():
             <div class="clear-selection-btn" onclick="clearAllSelections()" style="display: none;">✕</div>
         </div>
         
-        <!-- Фільтри видалені -->
-        
         <div class="gifts-grid" id="giftsGrid">
             <div class="loading">Загрузка каналов...</div>
         </div>
@@ -1155,7 +1136,7 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // База данных каналов с подарками - всі 37 подарунків з правильними назвами та зображеннями
+        // База данных каналов - ТОЧНО згідно вашого списку з правильними зображеннями
         const channelListings = [
             {
                 id: 1,
@@ -1173,8 +1154,8 @@ async def miniapp():
                     {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
                     {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
                     {id: 2, name: "BUTTON", desc: "Simple button", count: "356", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-                    {id: 23, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
-                    {id: 31, name: "BOUQUET", desc: "Beautiful bouquet", count: "890", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"}
+                    {id: 25, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+                    {id: 7, name: "BOUQUET", desc: "Beautiful bouquet", count: "890", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"}
                 ]
             },
             {
@@ -1193,7 +1174,7 @@ async def miniapp():
                     {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
                     {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
                     {id: 1, name: "HEELS", desc: "High heels", count: "250", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-                    {id: 14, name: "PIGEON", desc: "City pigeon", count: "723", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
+                    {id: 24, name: "PIGEON", desc: "City pigeon", count: "723", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
                     {id: 12, name: "EAGLE", desc: "Majestic eagle", count: "567", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"}
                 ]
             },
@@ -1214,7 +1195,7 @@ async def miniapp():
                     {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
                     {id: 2, name: "BUTTON", desc: "Simple button", count: "890", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
                     {id: 11, name: "ESKIMO", desc: "Cold eskimo", count: "456", image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
-                    {id: 20, name: "BRICK", desc: "Building brick", count: "334", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"}
+                    {id: 18, name: "BRICK", desc: "Building brick", count: "334", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"}
                 ]
             },
             {
@@ -1233,8 +1214,8 @@ async def miniapp():
                     {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
                     {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
                     {id: 3, name: "CATS", desc: "Cute cats", count: "150", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-                    {id: 18, name: "KULICH", desc: "Easter cake", count: "789", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
-                    {id: 22, name: "POOP", desc: "Funny poop", count: "1234", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"}
+                    {id: 20, name: "KULICH", desc: "Easter cake", count: "789", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
+                    {id: 16, name: "POOP", desc: "Funny poop", count: "1234", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"}
                 ]
             },
             {
@@ -1290,8 +1271,8 @@ async def miniapp():
                 dateAdded: new Date('2024-01-18'),
                 gifts: [
                     {id: 15, name: "MEDAL", desc: "Gold medal", count: "1234", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
-                    {id: 16, name: "1 MAY", desc: "Labor day", count: "456", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
-                    {id: 29, name: "MARCH 8", desc: "Women's day", count: "789", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
+                    {id: 22, name: "1 MAY", desc: "Labor day", count: "456", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
+                    {id: 9, name: "MARCH 8", desc: "Women's day", count: "789", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
                     {id: 5, name: "BICEPS", desc: "Strong muscles", count: "123", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
                     {id: 7, name: "PLUMBER", desc: "Mario plumber", count: "345", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
                     {id: 13, name: "STATUE", desc: "Ancient statue", count: "678", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"}
@@ -1309,8 +1290,8 @@ async def miniapp():
                 avatar: "🕌",
                 dateAdded: new Date('2024-01-22'),
                 gifts: [
-                    {id: 24, name: "MOSQUE", desc: "Beautiful mosque", count: "234", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
-                    {id: 25, name: "AMULET", desc: "Protection amulet", count: "156", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
+                    {id: 14, name: "MOSQUE", desc: "Beautiful mosque", count: "234", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
+                    {id: 13, name: "AMULET", desc: "Protection amulet", count: "156", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
                     {id: 30, name: "BOILER", desc: "Hot boiler", count: "789", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
                     {id: 13, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
                     {id: 23, name: "STAR", desc: "Shining star", count: "567", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"}
@@ -1322,8 +1303,8 @@ async def miniapp():
         let currentCategory = 'all';
         let currentChannelModal = null;
         let selectedGiftFilter = null;
-        let selectedGifts = new Set(); // Набір вибраних підарунків
-        let currentSorting = 'all'; // 'all', 'expensive' або 'cheap'
+        let selectedGifts = new Set();
+        let currentSorting = 'all';
         let currentFilters = {
             search: '',
             category: '',
@@ -1401,72 +1382,6 @@ async def miniapp():
             showMarket();
         }
         
-        function applyFilters() {
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            const sortFilter = document.getElementById('sortFilter').value;
-            
-            currentFilters.search = '';
-            currentFilters.category = categoryFilter;
-            currentFilters.sort = sortFilter;
-            
-            // Если выбран конкретный подарок - показываем каналы с этим подарком
-            if (selectedGiftFilter) {
-                showChannelsWithGift(selectedGiftFilter);
-                return;
-            }
-            
-            let filteredChannels = [...channelListings];
-            
-            // Фильтр по категории
-            if (categoryFilter) {
-                filteredChannels = filteredChannels.filter(channel => channel.category === categoryFilter);
-            }
-            
-            // Сортировка
-            switch (sortFilter) {
-                case 'recent':
-                    filteredChannels.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
-                    break;
-                case 'price_asc':
-                    filteredChannels.sort((a, b) => a.price - b.price);
-                    break;
-                case 'price_desc':
-                    filteredChannels.sort((a, b) => b.price - a.price);
-                    break;
-                case 'subscribers':
-                    filteredChannels.sort((a, b) => b.subscribers - a.subscribers);
-                    break;
-            }
-            
-            renderChannelListings(filteredChannels);
-        }
-        
-        function showGiftsFilter() {
-            // Собираем все уникальные подарки из всех каналов
-            const allGifts = new Map();
-            
-            channelListings.forEach(channel => {
-                channel.gifts.forEach(gift => {
-                    if (!allGifts.has(gift.id)) {
-                        allGifts.set(gift.id, {
-                            ...gift,
-                            totalCount: parseInt(gift.count),
-                            channels: [channel.id]
-                        });
-                    } else {
-                        const existing = allGifts.get(gift.id);
-                        existing.totalCount += parseInt(gift.count);
-                        if (!existing.channels.includes(channel.id)) {
-                            existing.channels.push(channel.id);
-                        }
-                    }
-                });
-            });
-            
-            const giftsArray = Array.from(allGifts.values());
-            renderGiftsFilterList(giftsArray);
-        }
-        
         function renderGiftsFilterList(gifts) {
             const grid = document.getElementById('giftsGrid');
             
@@ -1506,120 +1421,65 @@ async def miniapp():
             }
         }
         
-        function showSortingOptions() {
-            document.getElementById('giftsGrid').className = 'gifts-filter-grid';
-            
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = `
-                <div class="gift-filter-item" onclick="applySorting('all')">
-                    <div class="gift-filter-checkbox ${currentSorting === 'all' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">📋</div>
-                    <div class="gift-filter-info">
-                        <div class="gift-filter-name">Всі</div>
-                        <div class="gift-filter-stats">
-                            <span class="gift-filter-count">Показати всі канали</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="gift-filter-item" onclick="applySorting('expensive')">
-                    <div class="gift-filter-checkbox ${currentSorting === 'expensive' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">💰</div>
-                    <div class="gift-filter-info">
-                        <div class="gift-filter-name">Дорогі → Дешеві</div>
-                        <div class="gift-filter-stats">
-                            <span class="gift-filter-count">Спочатку дорожчі</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="gift-filter-item" onclick="applySorting('cheap')">
-                    <div class="gift-filter-checkbox ${currentSorting === 'cheap' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">💸</div>
-                    <div class="gift-filter-info">
-                        <div class="gift-filter-name">Дешеві → Дорогі</div>
-                        <div class="gift-filter-stats">
-                            <span class="gift-filter-count">Спочатку дешевші</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function applySorting(sortType) {
-            currentSorting = sortType;
-            updateClearButton();
-            
-            // Оновлюємо відображення опцій сортування
-            showSortingOptions();
-        }
-        
-        function updateClearButton() {
-            const clearBtn = document.querySelector('.clear-selection-btn');
-            const hasSelections = selectedGifts.size > 0 || currentSorting !== 'all';
-            
-            if (hasSelections) {
-                clearBtn.style.display = 'flex';
-            } else {
-                clearBtn.style.display = 'none';
-            }
-        }
-        
-        function clearAllSelections() {
-            selectedGifts.clear();
-            currentSorting = 'all';
-            
-            updateClearButton();
-            
-            // Оновлюємо відображення
-            if (currentCategory === 'new') {
-                showAllGiftsFilter();
-            } else if (currentCategory === 'all') {
-                applyGiftFilter();
-            } else if (currentCategory === 'sorting') {
-                showSortingOptions();
-            }
-        }
-        
         function selectGiftForFilter(giftId) {
-            // Ця функція замінює стару selectGiftFilter
             selectedGiftFilter = giftId;
             showChannelsWithGift(giftId);
         }
         
         function applyGiftFilter() {
-            let channelsToShow = [...channelListings]; // Копія масиву
+            let channelsToShow = [...channelListings];
             
-            // Фільтруємо за вибраними підарунками
             if (selectedGifts.size > 0) {
                 channelsToShow = channelsToShow.filter(channel => {
                     return channel.gifts.some(gift => selectedGifts.has(gift.id));
                 });
             }
             
-            // Сортуємо за ціною
             if (currentSorting === 'expensive') {
-                channelsToShow.sort((a, b) => b.price - a.price); // дорогі → дешеві
+                channelsToShow.sort((a, b) => b.price - a.price);
             } else if (currentSorting === 'cheap') {
-                channelsToShow.sort((a, b) => a.price - b.price); // дешеві → дорогі
+                channelsToShow.sort((a, b) => a.price - b.price);
             }
-            // Якщо currentSorting === 'all', залишаємо оригінальний порядок (не сортуємо)
             
             renderChannelListings(channelsToShow);
         }
         
-        function selectGiftFilter(giftId) {
-            selectedGiftFilter = giftId;
-            showChannelsWithGift(giftId);
+        function showAllGiftsFilter() {
+            document.getElementById('giftsGrid').className = 'gifts-filter-grid';
+            
+            const allGifts = new Map();
+            
+            channelListings.forEach(channel => {
+                channel.gifts.forEach(gift => {
+                    if (!allGifts.has(gift.id)) {
+                        allGifts.set(gift.id, {
+                            ...gift,
+                            totalCount: parseInt(gift.count),
+                            channels: [channel.id]
+                        });
+                    } else {
+                        const existing = allGifts.get(gift.id);
+                        existing.totalCount += parseInt(gift.count);
+                        if (!existing.channels.includes(channel.id)) {
+                            existing.channels.push(channel.id);
+                        }
+                    }
+                });
+            });
+            
+            const giftsArray = Array.from(allGifts.values());
+            
+            // Сортируем згідно нового порядку ID: 37, 36, 35, ... 3, 2, 1
+            giftsArray.sort((a, b) => b.id - a.id);
+            
+            renderGiftsFilterList(giftsArray);
         }
         
         function showChannelsWithGift(giftId) {
-            // Находим все каналы где этот подарок является ПЕРВЫМ (главным)
             const channelsWithGift = channelListings.filter(channel => 
                 channel.gifts.length > 0 && channel.gifts[0].id === giftId
             );
             
-            // Сортируем по количеству этого подарка (у кого больше)
             channelsWithGift.sort((a, b) => {
                 const aGift = a.gifts.find(gift => gift.id === giftId);
                 const bGift = b.gifts.find(gift => gift.id === giftId);
@@ -1629,10 +1489,19 @@ async def miniapp():
             renderChannelListings(channelsWithGift);
         }
         
-        function clearFilters() {
-            selectedGiftFilter = null;
-            currentFilters = { search: '', category: '', sort: 'recent' };
-            renderChannelListings(channelListings);
+        function clearAllSelections() {
+            selectedGifts.clear();
+            currentSorting = 'all';
+            
+            updateClearButton();
+            
+            if (currentCategory === 'new') {
+                showAllGiftsFilter();
+            } else if (currentCategory === 'all') {
+                applyGiftFilter();
+            } else if (currentCategory === 'sorting') {
+                showSortingOptions();
+            }
         }
         
         function renderChannelListings(channelsToRender) {
@@ -1649,7 +1518,6 @@ async def miniapp():
             }
             
             grid.innerHTML = channelsToRender.map(channel => {
-                // Берем ПЕРВЫЙ подарок как главный
                 const mainGift = channel.gifts[0];
                 
                 return `
@@ -1727,36 +1595,61 @@ async def miniapp():
             `;
         }
         
-        function showAllGiftsFilter() {
+        function showSortingOptions() {
             document.getElementById('giftsGrid').className = 'gifts-filter-grid';
             
-            // Собираем все уникальные подарки из всех каналов
-            const allGifts = new Map();
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="gift-filter-item" onclick="applySorting('all')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'all' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">📋</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Всі</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Показати всі канали</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="applySorting('expensive')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'expensive' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">💰</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Дорогі → Дешеві</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Спочатку дорожчі</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="applySorting('cheap')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'cheap' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">💸</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Дешеві → Дорогі</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Спочатку дешевші</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function applySorting(sortType) {
+            currentSorting = sortType;
+            updateClearButton();
+            showSortingOptions();
+        }
+        
+        function updateClearButton() {
+            const clearBtn = document.querySelector('.clear-selection-btn');
+            const hasSelections = selectedGifts.size > 0 || currentSorting !== 'all';
             
-            channelListings.forEach(channel => {
-                channel.gifts.forEach(gift => {
-                    if (!allGifts.has(gift.id)) {
-                        allGifts.set(gift.id, {
-                            ...gift,
-                            totalCount: parseInt(gift.count),
-                            channels: [channel.id]
-                        });
-                    } else {
-                        const existing = allGifts.get(gift.id);
-                        existing.totalCount += parseInt(gift.count);
-                        if (!existing.channels.includes(channel.id)) {
-                            existing.channels.push(channel.id);
-                        }
-                    }
-                });
-            });
-            
-            const giftsArray = Array.from(allGifts.values());
-            
-            // Сортируем згідно нового порядку ID: 37, 36, 35, ... 3, 2, 1
-            giftsArray.sort((a, b) => b.id - a.id);
-            
-            renderGiftsFilterList(giftsArray);
+            if (hasSelections) {
+                clearBtn.style.display = 'flex';
+            } else {
+                clearBtn.style.display = 'none';
+            }
         }
         
         function switchCategory(category) {
