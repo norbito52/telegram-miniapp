@@ -740,6 +740,8 @@ async def miniapp():
         .empty-ads-icon img {
             filter: drop-shadow(0 8px 20px rgba(0,0,0,0.3));
             animation: giftFloat 3s ease-in-out infinite;
+            background: transparent;
+            mix-blend-mode: multiply;
         }
         
         @keyframes giftFloat {
@@ -1809,7 +1811,7 @@ async def miniapp():
                         
                         <div class="empty-ads-state">
                             <div class="empty-ads-icon">
-                                <img src="https://i.postimg.cc/V6n3QrrX/gift-3d-render-illustration-isolated-transparent-background-106547-7.avif" alt="Gift" style="width: 120px; height: 120px; object-fit: contain;">
+                                <img src="https://i.postimg.cc/V6n3QrrX/gift-3d-render-illustration-isolated-transparent-background-106547-7.avif" alt="Gift" style="width: 120px; height: 120px; object-fit: contain; background: transparent;">
                             </div>
                             <div class="empty-ads-title">Нет объявлений</div>
                             <div class="empty-ads-subtitle">Создайте ваше первое объявление</div>
