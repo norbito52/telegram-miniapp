@@ -1470,8 +1470,8 @@ async def miniapp():
         function renderGiftsFilterList(gifts) {
             const grid = document.getElementById('giftsGrid');
             
-            // ID підарунків які є "новими"
-            const newGiftIds = [1, 2, 3, 4, 5]; // Snoop Dogg, Swag Bag, Snoop Cigar, Low Rider, Westside Sign
+            // ID підарунків які є "новими" - тепер 37, 36, 35, 34, 33
+            const newGiftIds = [37, 36, 35, 34, 33]; // Snoop Dogg, Swag Bag, Snoop Cigar, Low Rider, Westside Sign
             
             grid.innerHTML = gifts.map(gift => `
                 <div class="gift-filter-item" onclick="selectGiftForFilter(${gift.id})">
@@ -1753,8 +1753,8 @@ async def miniapp():
             
             const giftsArray = Array.from(allGifts.values());
             
-            // Сортируем в прямому порядку по ID (від 1 до 37)
-            giftsArray.sort((a, b) => a.id - b.id);
+            // Сортируем згідно нового порядку ID: 37, 36, 35, ... 3, 2, 1
+            giftsArray.sort((a, b) => b.id - a.id);
             
             renderGiftsFilterList(giftsArray);
         }
