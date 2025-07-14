@@ -438,6 +438,16 @@ async def miniapp():
             color: #8b8b8b;
         }
         
+        .gifts-grid.profile-full-screen {
+            position: fixed;
+            top: 140px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 5;
+            background: #0F0F19;
+        }
+        
         /* Profile Page Styles - ВИПРАВЛЕНО */
         .profile-container {
             background: #0F0F19;
@@ -448,8 +458,7 @@ async def miniapp():
             align-items: center;
             justify-content: center;
             width: 100%;
-            position: relative;
-            transform: translateY(-20px);
+            transform: translateY(-40px);
         }
         
         .profile-avatar-container {
@@ -1973,9 +1982,7 @@ async def miniapp():
         function showProfile() {
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
-            grid.className = 'gifts-grid';
-            grid.style.height = 'calc(100vh - 140px)';
-            grid.style.overflow = 'hidden';
+            grid.className = 'gifts-grid profile-full-screen';
             
             // Получаем данные пользователя из Telegram WebApp
             const user = tg.initDataUnsafe?.user;
