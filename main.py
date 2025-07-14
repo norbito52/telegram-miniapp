@@ -1799,18 +1799,17 @@ async def miniapp():
             selectedGifts.clear();
             currentSorting = 'all';
             currentExtrasCategory = 'all';
+            currentCategory = 'all';
+            
+            // Оновлюємо активну вкладку
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.category-tab')[0].classList.add('active');
+            
+            // Повертаємося до маркету з сіткою каналів
+            document.getElementById('giftsGrid').className = 'gifts-grid';
+            applyGiftFilter();
             
             updateClearButton();
-            
-            if (currentCategory === 'new') {
-                showAllGiftsFilter();
-            } else if (currentCategory === 'all') {
-                applyGiftFilter();
-            } else if (currentCategory === 'sorting') {
-                showSortingOptions();
-            } else if (currentCategory === 'extras') {
-                showExtrasOptions();
-            }
         }
         
         function renderChannelListings(channelsToRender) {
