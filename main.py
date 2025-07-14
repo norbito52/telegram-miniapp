@@ -442,7 +442,7 @@ async def miniapp():
         .profile-container {
             background: #0F0F19;
             padding: 20px;
-            padding-top: 80px;
+            padding-top: 40px;
             height: calc(100vh - 140px);
             display: flex;
             flex-direction: column;
