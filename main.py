@@ -1631,11 +1631,9 @@ async def miniapp():
                     <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">${gift.name}</div>
-                        <div class="gift-filter-stats">
-                            <span class="gift-filter-price">${gift.totalCount} ▽</span>
-                            <span class="gift-filter-count">(${gift.channels.length} 🎁)</span>
-                        </div>
+                        <div class="gift-filter-count">${gift.totalCount} шт</div>
                     </div>
+                    <div class="gift-filter-price">${(Math.random() * 50 + 5).toFixed(1)} TON</div>
                 </div>
             `).join('');
         }
