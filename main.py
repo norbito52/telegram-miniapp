@@ -1136,7 +1136,48 @@ async def miniapp():
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // База данных каналов - ТОЧНО згідно вашого списку з правильними зображеннями
+        // ПОВНА БАЗА ДАННЫХ з усіма 37 подарунками в правильному порядку
+        const ALL_GIFTS = {
+            37: {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+            36: {id: 36, name: "SWAG BAG", desc: "Stylish bag", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+            35: {id: 35, name: "SNOOP CIGAR", desc: "Smoking cigar", image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
+            34: {id: 34, name: "LOW RIDER", desc: "Cool car", image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
+            33: {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
+            32: {id: 32, name: "TORCH", desc: "Olympic torch", image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"},
+            31: {id: 31, name: "BOUQUET", desc: "Beautiful bouquet", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"},
+            30: {id: 30, name: "BOILER", desc: "Hot boiler", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
+            29: {id: 29, name: "MARCH 8", desc: "Women's day", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
+            28: {id: 28, name: "CLOVER", desc: "Lucky clover", image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
+            27: {id: 27, name: "STATUE", desc: "Ancient statue", image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
+            26: {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
+            25: {id: 25, name: "AMULET", desc: "Protection amulet", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
+            24: {id: 24, name: "MOSQUE", desc: "Beautiful mosque", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
+            23: {id: 23, name: "STAR", desc: "Shining star", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+            22: {id: 22, name: "POOP", desc: "Funny poop", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"},
+            21: {id: 21, name: "RABBIT", desc: "Fluffy rabbit", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+            20: {id: 20, name: "BRICK", desc: "Building brick", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"},
+            19: {id: 19, name: "ROCKET", desc: "Space rocket", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
+            18: {id: 18, name: "KULICH", desc: "Easter cake", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
+            17: {id: 17, name: "MONKEY", desc: "Playful monkey", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+            16: {id: 16, name: "1 MAY", desc: "Labor day", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
+            15: {id: 15, name: "DOSHIK", desc: "Instant noodles", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+            14: {id: 14, name: "PIGEON", desc: "City pigeon", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
+            13: {id: 13, name: "STATUE", desc: "Ancient statue", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+            12: {id: 12, name: "EAGLE", desc: "Majestic eagle", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"},
+            11: {id: 11, name: "ESKIMO", desc: "Cold eskimo", image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
+            10: {id: 10, name: "DYSON", desc: "Powerful vacuum", image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+            9: {id: 9, name: "NIPPLE", desc: "Baby nipple", image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"},
+            8: {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
+            7: {id: 7, name: "PLUMBER", desc: "Mario plumber", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
+            6: {id: 6, name: "LAMP", desc: "Table lamp", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+            5: {id: 5, name: "BICEPS", desc: "Strong muscles", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
+            4: {id: 4, name: "SOCKS", desc: "Warm socks", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+            3: {id: 3, name: "CATS", desc: "Cute cats", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            2: {id: 2, name: "BUTTON", desc: "Simple button", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+            1: {id: 1, name: "HEELS", desc: "High heels", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"}
+        };
+        
+        // База данных каналов з оновленими подарунками
         const channelListings = [
             {
                 id: 1,
@@ -1154,8 +1195,8 @@ async def miniapp():
                     {id: 4, name: "SOCKS", desc: "Warm socks", count: "2834", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
                     {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "34", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
                     {id: 2, name: "BUTTON", desc: "Simple button", count: "356", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
-                    {id: 25, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
-                    {id: 7, name: "BOUQUET", desc: "Beautiful bouquet", count: "890", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"}
+                    {id: 23, name: "STAR", desc: "Shining star", count: "1240", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+                    {id: 31, name: "BOUQUET", desc: "Beautiful bouquet", count: "890", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"}
                 ]
             },
             {
@@ -1174,7 +1215,7 @@ async def miniapp():
                     {id: 17, name: "MONKEY", desc: "Playful monkey", count: "1401", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
                     {id: 21, name: "RABBIT", desc: "Fluffy rabbit", count: "967", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
                     {id: 1, name: "HEELS", desc: "High heels", count: "250", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"},
-                    {id: 24, name: "PIGEON", desc: "City pigeon", count: "723", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
+                    {id: 14, name: "PIGEON", desc: "City pigeon", count: "723", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
                     {id: 12, name: "EAGLE", desc: "Majestic eagle", count: "567", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"}
                 ]
             },
@@ -1195,7 +1236,7 @@ async def miniapp():
                     {id: 19, name: "ROCKET", desc: "Space rocket", count: "1189", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
                     {id: 2, name: "BUTTON", desc: "Simple button", count: "890", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
                     {id: 11, name: "ESKIMO", desc: "Cold eskimo", count: "456", image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
-                    {id: 18, name: "BRICK", desc: "Building brick", count: "334", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"}
+                    {id: 20, name: "BRICK", desc: "Building brick", count: "334", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"}
                 ]
             },
             {
@@ -1214,8 +1255,8 @@ async def miniapp():
                     {id: 15, name: "DOSHIK", desc: "Instant noodles", count: "1623", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
                     {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", count: "423", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
                     {id: 3, name: "CATS", desc: "Cute cats", count: "150", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
-                    {id: 20, name: "KULICH", desc: "Easter cake", count: "789", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
-                    {id: 16, name: "POOP", desc: "Funny poop", count: "1234", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"}
+                    {id: 18, name: "KULICH", desc: "Easter cake", count: "789", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
+                    {id: 22, name: "POOP", desc: "Funny poop", count: "1234", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"}
                 ]
             },
             {
@@ -1230,9 +1271,9 @@ async def miniapp():
                 avatar: "🌌",
                 dateAdded: new Date('2024-01-12'),
                 gifts: [
+                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
                     {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", count: "67", image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
                     {id: 34, name: "LOW RIDER", desc: "Cool car", count: "23", image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
-                    {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", count: "15", image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
                     {id: 36, name: "SWAG BAG", desc: "Stylish bag", count: "89", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
                     {id: 35, name: "SNOOP CIGAR", desc: "Smoking cigar", count: "345", image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
                     {id: 32, name: "TORCH", desc: "Olympic torch", count: "178", image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"}
@@ -1253,7 +1294,7 @@ async def miniapp():
                     {id: 2, name: "BUTTON", desc: "Simple button", count: "5600", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
                     {id: 6, name: "LAMP", desc: "Table lamp", count: "234", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
                     {id: 5, name: "BICEPS", desc: "Strong muscles", count: "567", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
-                    {id: 15, name: "MEDAL", desc: "Gold medal", count: "89", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+                    {id: 16, name: "1 MAY", desc: "Labor day", count: "89", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
                     {id: 28, name: "CLOVER", desc: "Lucky clover", count: "234", image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
                     {id: 9, name: "NIPPLE", desc: "Baby nipple", count: "567", image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"}
                 ]
@@ -1270,12 +1311,12 @@ async def miniapp():
                 avatar: "⚽",
                 dateAdded: new Date('2024-01-18'),
                 gifts: [
-                    {id: 15, name: "MEDAL", desc: "Gold medal", count: "1234", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
-                    {id: 22, name: "1 MAY", desc: "Labor day", count: "456", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
-                    {id: 9, name: "MARCH 8", desc: "Women's day", count: "789", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
-                    {id: 5, name: "BICEPS", desc: "Strong muscles", count: "123", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
-                    {id: 7, name: "PLUMBER", desc: "Mario plumber", count: "345", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
-                    {id: 13, name: "STATUE", desc: "Ancient statue", count: "678", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"}
+                    {id: 16, name: "1 MAY", desc: "Labor day", count: "1234", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
+                    {id: 29, name: "MARCH 8", desc: "Women's day", count: "456", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
+                    {id: 5, name: "BICEPS", desc: "Strong muscles", count: "789", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
+                    {id: 7, name: "PLUMBER", desc: "Mario plumber", count: "123", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
+                    {id: 13, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+                    {id: 32, name: "TORCH", desc: "Olympic torch", count: "678", image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"}
                 ]
             },
             {
@@ -1290,10 +1331,10 @@ async def miniapp():
                 avatar: "🕌",
                 dateAdded: new Date('2024-01-22'),
                 gifts: [
-                    {id: 14, name: "MOSQUE", desc: "Beautiful mosque", count: "234", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
-                    {id: 13, name: "AMULET", desc: "Protection amulet", count: "156", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
+                    {id: 24, name: "MOSQUE", desc: "Beautiful mosque", count: "234", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
+                    {id: 25, name: "AMULET", desc: "Protection amulet", count: "156", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
                     {id: 30, name: "BOILER", desc: "Hot boiler", count: "789", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
-                    {id: 13, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+                    {id: 27, name: "STATUE", desc: "Ancient statue", count: "345", image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
                     {id: 23, name: "STAR", desc: "Shining star", count: "567", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"}
                 ]
             }
@@ -1385,8 +1426,8 @@ async def miniapp():
         function renderGiftsFilterList(gifts) {
             const grid = document.getElementById('giftsGrid');
             
-            // ID підарунків які є "новими" - тепер 37, 36, 35, 34, 33
-            const newGiftIds = [37, 36, 35, 34, 33]; // Snoop Dogg, Swag Bag, Snoop Cigar, Low Rider, Westside Sign
+            // Нові подарунки - тепер всі від 37 до 33 (топ 5 найновіших)
+            const newGiftIds = [37, 36, 35, 34, 33];
             
             grid.innerHTML = gifts.map(gift => `
                 <div class="gift-filter-item" onclick="selectGiftForFilter(${gift.id})">
@@ -1449,15 +1490,19 @@ async def miniapp():
             
             const allGifts = new Map();
             
+            // Створюємо мапу всіх подарунків
+            Object.values(ALL_GIFTS).forEach(giftTemplate => {
+                allGifts.set(giftTemplate.id, {
+                    ...giftTemplate,
+                    totalCount: 0,
+                    channels: []
+                });
+            });
+            
+            // Додаємо дані з каналів
             channelListings.forEach(channel => {
                 channel.gifts.forEach(gift => {
-                    if (!allGifts.has(gift.id)) {
-                        allGifts.set(gift.id, {
-                            ...gift,
-                            totalCount: parseInt(gift.count),
-                            channels: [channel.id]
-                        });
-                    } else {
+                    if (allGifts.has(gift.id)) {
                         const existing = allGifts.get(gift.id);
                         existing.totalCount += parseInt(gift.count);
                         if (!existing.channels.includes(channel.id)) {
@@ -1467,17 +1512,15 @@ async def miniapp():
                 });
             });
             
-            const giftsArray = Array.from(allGifts.values());
-            
-            // Сортируем згідно нового порядку ID: 37, 36, 35, ... 3, 2, 1
-            giftsArray.sort((a, b) => b.id - a.id);
+            // Конвертуємо в масив і сортуємо за ID від 37 до 1
+            const giftsArray = Array.from(allGifts.values()).sort((a, b) => b.id - a.id);
             
             renderGiftsFilterList(giftsArray);
         }
         
         function showChannelsWithGift(giftId) {
             const channelsWithGift = channelListings.filter(channel => 
-                channel.gifts.length > 0 && channel.gifts[0].id === giftId
+                channel.gifts.some(gift => gift.id === giftId)
             );
             
             channelsWithGift.sort((a, b) => {
@@ -1506,12 +1549,13 @@ async def miniapp():
         
         function renderChannelListings(channelsToRender) {
             const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
             
             if (channelsToRender.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
                         <div style="font-size: 18px; margin-bottom: 10px;">Каналы не найдены</div>
-                        <div style="font-size: 14px;">Этот подарок не является главным ни в одном канале</div>
+                        <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
                     </div>
                 `;
                 return;
@@ -1797,7 +1841,7 @@ if __name__ == "__main__":
     bot_thread.daemon = True
     bot_thread.start()
     
-    print("🎁 GiftRoom Market без системы рідкісності запущен!")
+    print("🎁 GiftRoom Market з правильним порядком подарунків запущен!")
     print(f"🌐 URL: {WEBAPP_URL}")
     
     uvicorn.run(app, host="0.0.0.0", port=port)
