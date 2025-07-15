@@ -3096,8 +3096,8 @@ async def miniapp():
             
             // Генеруємо реферальне посилання
             const user = tg.initDataUnsafe?.user;
-            const userId = user?.id || Math.floor(Math.random() * 100000000).toString(16);
-            const referralLink = `t.me/Giftroommarketbot?start=${userId}`;
+            const userId = user?.id || '5272691353';
+            const referralLink = `http://t.me/Giftroom_market_bot?start=${userId}`;
             
             // Демо дані для рефералів
             const referralData = {
@@ -3120,12 +3120,6 @@ async def miniapp():
                     </div>
                     
                     <div class="referral-content">
-                        <!-- Информационный блок -->
-                        <div class="referral-main-info">
-                            <div class="referral-main-title">Приглашай друзей и получай 2.5% комиссии</div>
-                            <div class="referral-main-text">Получай 2.5% от всех покупок твоих рефералов! Чем больше друзей пригласишь, тем больше заработаешь.</div>
-                        </div>
-                        
                         <!-- Статистика -->
                         <div class="referral-stats">
                             <div class="referral-stat-card">
@@ -3163,23 +3157,6 @@ async def miniapp():
                                     ${t('copyLink')}
                                 </button>
                             </div>
-                        </div>
-                        
-                        <!-- История рефералов -->
-                        <div class="referral-history">
-                            <div class="referral-history-title">${t('recentReferrals')}</div>
-                            ${referralData.recentReferrals.length > 0 ? 
-                                referralData.recentReferrals.map(ref => `
-                                    <div class="referral-history-item">
-                                        <div class="referral-history-info">
-                                            <div class="referral-history-name">${ref.name}</div>
-                                            <div class="referral-history-date">${t('joinedDate')}: ${ref.date}</div>
-                                        </div>
-                                        <div class="referral-history-earning">+${ref.earning} TON</div>
-                                    </div>
-                                `).join('') : 
-                                `<div class="referral-empty">${t('noReferrals')}</div>`
-                            }
                         </div>
                     </div>
                 </div>
