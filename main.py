@@ -2519,6 +2519,10 @@ async def miniapp():
             tg.showAlert('Вывод средств на TON кошелек...');
         }
         
+        function withdrawBalance() {
+            tg.showAlert('Вывод средств');
+        }
+        
         // Start loading when page loads
         window.addEventListener('load', startLoading);
         
