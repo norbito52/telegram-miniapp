@@ -2084,25 +2084,25 @@ async def miniapp():
                     
                     <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px;">
                         <div style="text-align: center; flex: 1;">
-                            <div style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 207.5 
-                                <div style="width: 18px; height: 18px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
+                                <div style="width: 16px; height: 16px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
                             </div>
-                            <div style="font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">TOTAL VOLUME</div>
+                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">TOTAL VOLUME</div>
                         </div>
                         <div style="text-align: center; flex: 1;">
-                            <div style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 0 
-                                <span style="font-size: 18px;">🎁</span>
+                                <span style="font-size: 16px;">🎁</span>
                             </div>
-                            <div style="font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">BOUGHT</div>
+                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">BOUGHT</div>
                         </div>
                         <div style="text-align: center; flex: 1;">
-                            <div style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 8 
-                                <span style="font-size: 18px;">🎁</span>
+                                <span style="font-size: 16px;">🎁</span>
                             </div>
-                            <div style="font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">SOLD</div>
+                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">SOLD</div>
                         </div>
                     </div>
                 </div>
