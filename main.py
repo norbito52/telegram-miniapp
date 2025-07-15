@@ -1162,10 +1162,13 @@ async def miniapp():
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 12px;
             margin: 8px auto 12px;
-            background-size: cover;
+            background-size: contain;
+            background-repeat: no-repeat;
             background-position: center;
-            border: 3px solid rgba(255,255,255,0.2);
+            border: 3px solid rgba(255,255,255,0.3);
             position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
         }
         
         .gift-name-main {
