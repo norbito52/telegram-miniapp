@@ -506,8 +506,8 @@ async def miniapp():
             font-size: 42px;
             font-weight: 700;
             color: white;
-            box-shadow: 0 15px 35px rgba(66, 133, 244, 0.4);
-            border: 3px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255,255,255,0.1);
             animation: profileFloat 3s ease-in-out infinite;
             background-size: cover;
             background-position: center;
@@ -522,13 +522,8 @@ async def miniapp():
             left: -50%;
             right: -50%;
             bottom: -50%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 2.5s linear infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(200%) rotate(45deg); }
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            animation: shimmer 3s linear infinite;
         }
         
         @keyframes profileFloat {
@@ -2159,7 +2154,424 @@ async def miniapp():
         };
         
         // Функція для отримання перекладу
-        function t(key) {
+        function showCreateAdForm() {
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="create-ad-container">
+                    <div class="create-ad-header">
+                        <button class="back-btn" onclick="showMyChannels()">←</button>
+                        <div class="create-ad-title">Новое объявление</div>
+                        <div style="width: 32px;"></div>
+                    </div>
+                    
+                    <div class="create-ad-form">
+                        <div class="form-group">
+                            <label class="form-label">Ссылка на канал *</label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                placeholder="@channel_name или https://t.me/channel"
+                                id="channelLink"
+                            >
+                            <div class="form-help">Введите ссылку на канал, который продаете</div>
+                        </div>
+                        
+                        <div class="important-info">
+                            <div class="info-icon">ℹ️</div>
+                            <div class="info-content">
+                                <div class="info-title">Важная информация для продажи канала</div>
+                                <div class="info-text">Перед добавлением канала на маркет, сначала добавьте в него бота @Giftroom_market_bot и назначьте его администратором.</div>
+                                <div class="info-requirements">
+                                    <div class="req-title">Внимание:</div>
+                                    <div class="req-item">— канал должен быть публичным</div>
+                                    <div class="req-item">— подарки в нём должны быть видимыми (не скрытыми)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Цена (TON) *</label>
+                            <input 
+                                type="number" 
+                                class="form-input" 
+                                placeholder="0.00"
+                                id="channelPrice"
+                                step="0.01"
+                                min="0"
+                            >
+                        </div>
+                        
+                        <button class="create-btn" onclick="createChannelAd()">СОЗДАТЬ</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showMyChannelsList() {
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="my-ads-container">
+                    <div class="my-ads-header">
+                        <div class="my-ads-title">Мои объявления</div>
+                        <button class="add-ad-btn" onclick="showCreateAdForm()">+</button>
+                    </div>
+                    
+                    <div class="ads-table">
+                        <div class="table-header">
+                            <div class="col-model">МОДЕЛЬ</div>
+                            <div class="col-price">ЦЕНА</div>
+                            <div class="col-count">КОЛ-ВО</div>
+                            <div class="col-actions">ДЕЙСТВИЯ</div>
+                        </div>
+                        
+                        <div class="table-row">
+                            <div class="col-model">
+                                <div class="channel-info">
+                                    <div class="channel-icon">🔥</div>
+                                    <div class="channel-details">
+                                        <div class="channel-name">35 факел...</div>
+                                        <div class="channel-type">Канал</div>
+                                        <div class="channel-title">🔥 Torch of freedom</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-price">💎 64,8 TON</div>
+                            <div class="col-count">38</div>
+                            <div class="col-actions">
+                                <button class="edit-btn" onclick="editChannel()">✏️</button>
+                                <button class="delete-btn" onclick="deleteChannel()">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function createChannelAd() {
+            const channelLink = document.getElementById('channelLink').value;
+            const channelPrice = document.getElementById('channelPrice').value;
+            
+            if (!channelLink || !channelPrice) {
+                tg.showAlert('Заполните все обязательные поля');
+                return;
+            }
+            
+            // Симулюємо створення каналу
+            tg.showAlert(`Канал ${channelLink} создан за ${channelPrice} TON!`);
+            
+            // Переходимо до списку каналів
+            showMyChannelsList();
+        }
+        
+        function editChannel() {
+            tg.showAlert('Редактирование канала');
+        }
+        
+        function deleteChannel() {
+            tg.showAlert('Удаление канала');
+        }
+        
+        function openGiftsModal(channelId) {
+            const channel = channelListings.find(c => c.id === channelId);
+            if (!channel) return;
+            
+            currentChannelModal = channel;
+            
+            // Генеруємо @ назву для демо на основі ID
+            let demoChannelName = '';
+            switch(channelId) {
+                case 1: demoChannelName = '@fashion_style'; break;
+                case 2: demoChannelName = '@cat_lovers'; break;
+                case 3: demoChannelName = '@tech_store'; break;
+                case 4: demoChannelName = '@sweet_treats'; break;
+                case 5: demoChannelName = '@hiphop_central'; break;
+                case 6: demoChannelName = '@button_collectors'; break;
+                case 7: demoChannelName = '@sports_arena'; break;
+                case 8: demoChannelName = '@cultural_gifts'; break;
+                default: demoChannelName = channel.name;
+            }
+            
+            document.getElementById('modalChannelName').innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <div style="font-size: 18px; font-weight: 600;">${t('channelGifts')}</div>
+                    <div style="font-size: 16px; color: #64B5F6;">${demoChannelName}</div>
+                </div>
+            `;
+            
+            document.getElementById('buyChannelBtn').innerHTML = `
+                <div class="ton-icon"></div>
+                <span>${t('buyChannel')} ${channel.price} TON</span>
+            `;
+            
+            const giftsGrid = document.getElementById('giftsModalGrid');
+            
+            giftsGrid.innerHTML = channel.gifts.map(gift => {
+                const correctGift = ALL_GIFTS[gift.id];
+                return `
+                    <div class="gift-card">
+                        <div class="gift-image" style="background-image: url('${correctGift.image}')"></div>
+                        <div class="gift-info">
+                            <div class="gift-title">${correctGift.name}</div>
+                            <div class="gift-count">${gift.count} шт</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Блокуємо скрол на основній сторінці без зміни позиції
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.top = '0';
+            document.body.style.left = '0';
+            
+            // Показуємо модальне вікно з анімацією
+            const modal = document.getElementById('giftsModal');
+            modal.classList.add('show');
+            
+            // Скролимо модальне вікно на початок
+            setTimeout(() => {
+                const modalGrid = document.getElementById('giftsModalGrid');
+                if (modalGrid) {
+                    modalGrid.scrollTop = 0;
+                }
+            }, 100);
+        }
+        
+        function closeGiftsModal() {
+            const modal = document.getElementById('giftsModal');
+            modal.style.animation = 'modalSlideOut 0.3s ease-in forwards';
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+                modal.style.animation = '';
+                currentChannelModal = null;
+                
+                // Відновлюємо скрол основної сторінки
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                document.body.style.top = '';
+                document.body.style.left = '';
+            }, 300);
+        }
+        
+        function buyChannelFromModal() {
+            if (currentChannelModal) {
+                tg.showAlert(`Покупка канала: ${currentChannelModal.name}\\nЦена: ${currentChannelModal.price} TON\\n\\nДля завершения покупки подключите TON кошелек`);
+                closeGiftsModal();
+            }
+        }
+        
+        function switchTab(tab) {
+            // Блокуємо переходи між вкладками якщо відкрита реферальна система
+            if (currentView === 'referral' && tab !== 'profile') {
+                return;
+            }
+            
+            // Відновлюємо свайпи якщо виходимо з реферальної системи
+            if (currentView === 'referral' && tab === 'profile') {
+                document.body.style.overflowX = '';
+                document.body.style.touchAction = '';
+            }
+            
+            currentView = tab;
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'market') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                showMarket();
+            } else if (tab === 'my-channels') {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                showMyChannels();
+            } else if (tab === 'profile') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
+                showProfile();
+            }
+        }
+        
+        function createChannel() {
+            tg.showAlert('Создание Telegram канала для продажи подарков');
+        }
+        
+        function connectWallet() {
+            tg.showAlert('Подключение к TON кошельку...');
+        }
+        
+        function addBalance() {
+            tg.showAlert('Пополнение баланса');
+        }
+        
+        function withdrawBalance() {
+            tg.showAlert('Вывод средств');
+        }
+        
+        function openReferralSystem() {
+            currentView = 'referral';
+            // Блокуємо свайпи для всього додатка
+            document.body.style.overflowX = 'hidden';
+            document.body.style.touchAction = 'pan-y';
+            showReferralSystem();
+        }
+        
+        function showReferralSystem() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            // Приховуємо основні вкладки
+            document.querySelector('.tabs').style.display = 'none';
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid referral-grid';
+            
+            // Генеруємо реферальне посилання
+            const user = tg.initDataUnsafe?.user;
+            const userId = user?.id || Math.floor(Math.random() * 100000000).toString(16);
+            const referralLink = `t.me/Giftroommarketbot?start=${userId}`;
+            
+            // Демо дані для рефералів
+            const referralData = {
+                invitedFriends: 12,
+                totalEarnings: 3.75,
+                recentReferrals: [
+                    { name: 'Андрій М.', date: '15.07.2025', earning: 0.25 },
+                    { name: 'Марія К.', date: '14.07.2025', earning: 0.15 },
+                    { name: 'Олег П.', date: '13.07.2025', earning: 0.35 },
+                    { name: 'Анна С.', date: '12.07.2025', earning: 0.18 }
+                ]
+            };
+            
+            grid.innerHTML = `
+                <div class="referral-container">
+                    <div class="referral-header">
+                        <button class="back-btn" onclick="switchTab('profile')">←</button>
+                        <div class="referral-title">${t('referralTitle')}</div>
+                        <div style="width: 32px;"></div>
+                    </div>
+                    
+                    <div class="referral-content">
+                        <!-- Статистика -->
+                        <div class="referral-stats">
+                            <div class="referral-stat-card">
+                                <div class="referral-stat-value">${referralData.invitedFriends}</div>
+                                <div class="referral-stat-label">${t('invitedFriends')}</div>
+                            </div>
+                            <div class="referral-stat-card">
+                                <div class="referral-stat-value">${referralData.totalEarnings} TON</div>
+                                <div class="referral-stat-label">${t('totalEarnings')}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Заработки -->
+                        <div class="referral-earnings">
+                            <div class="referral-earnings-title">
+                                💰 ${t('myEarnings')}
+                            </div>
+                            <div class="referral-earnings-amount">
+                                <div class="referral-earnings-value">
+                                    <div class="ton-icon"></div>
+                                    ${referralData.totalEarnings} TON
+                                </div>
+                                <button class="withdraw-btn" onclick="withdrawReferralEarnings()" ${referralData.totalEarnings < 0.1 ? 'disabled' : ''}>
+                                    ${t('withdrawToBalance')}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Реферальное ссылка -->
+                        <div class="referral-link-section">
+                            <div class="referral-link-title">${t('referralLink')}</div>
+                            <div class="referral-link-container">
+                                <input type="text" class="referral-link-input" value="${referralLink}" readonly id="referralLinkInput">
+                                <button class="copy-btn" onclick="copyReferralLink()" id="copyBtn">
+                                    ${t('copyLink')}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Информация о системе под ссылкой -->
+                        <div class="referral-info">
+                            <div class="referral-info-title">${t('referralInfoTitle')}</div>
+                            <div class="referral-info-text">${t('referralInfoText')}</div>
+                        </div>
+                        
+                        <!-- История рефералов -->
+                        <div class="referral-history">
+                            <div class="referral-history-title">${t('recentReferrals')}</div>
+                            ${referralData.recentReferrals.length > 0 ? 
+                                referralData.recentReferrals.map(ref => `
+                                    <div class="referral-history-item">
+                                        <div class="referral-history-info">
+                                            <div class="referral-history-name">${ref.name}</div>
+                                            <div class="referral-history-date">${t('joinedDate')}: ${ref.date}</div>
+                                        </div>
+                                        <div class="referral-history-earning">+${ref.earning} TON</div>
+                                    </div>
+                                `).join('') : 
+                                `<div class="referral-empty">${t('noReferrals')}</div>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function copyReferralLink() {
+            const input = document.getElementById('referralLinkInput');
+            const button = document.getElementById('copyBtn');
+            
+            input.select();
+            input.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                button.textContent = t('linkCopied');
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = t('copyLink');
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Помилка копіювання:', err);
+            }
+        }
+        
+        function withdrawReferralEarnings() {
+            tg.showAlert('Заработки успешно выведены на баланс маркета!');
+            // Тут буде логіка для виведення коштів на баланс
+        }
+        
+        // Start loading when page loads
+        window.addEventListener('load', startLoading);
+        
+        // Start loading when page loads
+        tg.MainButton.hide();
+        
+        // Адаптация к теме
+        if (tg.colorScheme === 'dark') {
+            document.body.style.background = '#0F0F19';
+        }
+    </script>
+</body>
+</html>
+    """
+
+async def run_bot():
+    await dp.start_polling(bot)
+
+def start_bot():
+    asyncio.run(run_bot())
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))
+    
+    bot_thread = threading.Thread(target=start_bot)
+    bot_thread.daemon = True
+    bot_thread.start()
+    
+    print("🎁 GiftRoom Market з виправленою підсвіткою аватарки запущен!")
+    print(f"🌐 URL: {WEBAPP_URL}")
+    
+    uvicorn.run(app, host="0.0.0.0", port=port) t(key) {
             return translations[currentLanguage][key] || key;
         }
         
@@ -2675,7 +3087,7 @@ async def miniapp():
                         ${currentLanguage === 'ru' ? 'РУС' : 'ENG'}
                     </div>
                     
-                    <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 12px; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4); border: 2px solid rgba(255,255,255,0.15);">${avatarContent}</div>
+                    <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); border: 2px solid rgba(255,255,255,0.1);">${avatarContent}</div>
                     <div style="font-size: 26px; font-weight: 700; color: white; margin-bottom: 25px; line-height: 1.1;">${username}</div>
                     
                     <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px; margin-bottom: 30px;">
@@ -2795,421 +3207,4 @@ async def miniapp():
             updateClearButton();
         }
         
-        function showCreateAdForm() {
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = `
-                <div class="create-ad-container">
-                    <div class="create-ad-header">
-                        <button class="back-btn" onclick="showMyChannels()">←</button>
-                        <div class="create-ad-title">Новое объявление</div>
-                        <div style="width: 32px;"></div>
-                    </div>
-                    
-                    <div class="create-ad-form">
-                        <div class="form-group">
-                            <label class="form-label">Ссылка на канал *</label>
-                            <input 
-                                type="text" 
-                                class="form-input" 
-                                placeholder="@channel_name или https://t.me/channel"
-                                id="channelLink"
-                            >
-                            <div class="form-help">Введите ссылку на канал, который продаете</div>
-                        </div>
-                        
-                        <div class="important-info">
-                            <div class="info-icon">ℹ️</div>
-                            <div class="info-content">
-                                <div class="info-title">Важная информация для продажи канала</div>
-                                <div class="info-text">Перед добавлением канала на маркет, сначала добавьте в него бота @Giftroom_market_bot и назначьте его администратором.</div>
-                                <div class="info-requirements">
-                                    <div class="req-title">Внимание:</div>
-                                    <div class="req-item">— канал должен быть публичным</div>
-                                    <div class="req-item">— подарки в нём должны быть видимыми (не скрытыми)</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Цена (TON) *</label>
-                            <input 
-                                type="number" 
-                                class="form-input" 
-                                placeholder="0.00"
-                                id="channelPrice"
-                                step="0.01"
-                                min="0"
-                            >
-                        </div>
-                        
-                        <button class="create-btn" onclick="createChannelAd()">СОЗДАТЬ</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function showMyChannelsList() {
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = `
-                <div class="my-ads-container">
-                    <div class="my-ads-header">
-                        <div class="my-ads-title">Мои объявления</div>
-                        <button class="add-ad-btn" onclick="showCreateAdForm()">+</button>
-                    </div>
-                    
-                    <div class="ads-table">
-                        <div class="table-header">
-                            <div class="col-model">МОДЕЛЬ</div>
-                            <div class="col-price">ЦЕНА</div>
-                            <div class="col-count">КОЛ-ВО</div>
-                            <div class="col-actions">ДЕЙСТВИЯ</div>
-                        </div>
-                        
-                        <div class="table-row">
-                            <div class="col-model">
-                                <div class="channel-info">
-                                    <div class="channel-icon">🔥</div>
-                                    <div class="channel-details">
-                                        <div class="channel-name">35 факел...</div>
-                                        <div class="channel-type">Канал</div>
-                                        <div class="channel-title">🔥 Torch of freedom</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-price">💎 64,8 TON</div>
-                            <div class="col-count">38</div>
-                            <div class="col-actions">
-                                <button class="edit-btn" onclick="editChannel()">✏️</button>
-                                <button class="delete-btn" onclick="deleteChannel()">🗑️</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createChannelAd() {
-            const channelLink = document.getElementById('channelLink').value;
-            const channelPrice = document.getElementById('channelPrice').value;
-            
-            if (!channelLink || !channelPrice) {
-                tg.showAlert('Заполните все обязательные поля');
-                return;
-            }
-            
-            // Симулюємо створення каналу
-            tg.showAlert(`Канал ${channelLink} создан за ${channelPrice} TON!`);
-            
-            // Переходимо до списку каналів
-            showMyChannelsList();
-        }
-        
-        function editChannel() {
-            tg.showAlert('Редактирование канала');
-        }
-        
-        function deleteChannel() {
-            tg.showAlert('Удаление канала');
-        }
-        
-        function openGiftsModal(channelId) {
-            const channel = channelListings.find(c => c.id === channelId);
-            if (!channel) return;
-            
-            currentChannelModal = channel;
-            
-            // Генеруємо @ назву для демо на основі ID
-            let demoChannelName = '';
-            switch(channelId) {
-                case 1: demoChannelName = '@fashion_style'; break;
-                case 2: demoChannelName = '@cat_lovers'; break;
-                case 3: demoChannelName = '@tech_store'; break;
-                case 4: demoChannelName = '@sweet_treats'; break;
-                case 5: demoChannelName = '@hiphop_central'; break;
-                case 6: demoChannelName = '@button_collectors'; break;
-                case 7: demoChannelName = '@sports_arena'; break;
-                case 8: demoChannelName = '@cultural_gifts'; break;
-                default: demoChannelName = channel.name;
-            }
-            
-            document.getElementById('modalChannelName').innerHTML = `
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <div style="font-size: 18px; font-weight: 600;">${t('channelGifts')}</div>
-                    <div style="font-size: 16px; color: #64B5F6;">${demoChannelName}</div>
-                </div>
-            `;
-            
-            document.getElementById('buyChannelBtn').innerHTML = `
-                <div class="ton-icon"></div>
-                <span>${t('buyChannel')} ${channel.price} TON</span>
-            `;
-            
-            const giftsGrid = document.getElementById('giftsModalGrid');
-            
-            giftsGrid.innerHTML = channel.gifts.map(gift => {
-                const correctGift = ALL_GIFTS[gift.id];
-                return `
-                    <div class="gift-card">
-                        <div class="gift-image" style="background-image: url('${correctGift.image}')"></div>
-                        <div class="gift-info">
-                            <div class="gift-title">${correctGift.name}</div>
-                            <div class="gift-count">${gift.count} шт</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            // Блокуємо скрол на основній сторінці без зміни позиції
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            document.body.style.top = '0';
-            document.body.style.left = '0';
-            
-            // Показуємо модальне вікно з анімацією
-            const modal = document.getElementById('giftsModal');
-            modal.classList.add('show');
-            
-            // Скролимо модальне вікно на початок
-            setTimeout(() => {
-                const modalGrid = document.getElementById('giftsModalGrid');
-                if (modalGrid) {
-                    modalGrid.scrollTop = 0;
-                }
-            }, 100);
-        }
-        
-        function closeGiftsModal() {
-            const modal = document.getElementById('giftsModal');
-            modal.style.animation = 'modalSlideOut 0.3s ease-in forwards';
-            
-            setTimeout(() => {
-                modal.classList.remove('show');
-                modal.style.animation = '';
-                currentChannelModal = null;
-                
-                // Відновлюємо скрол основної сторінки
-                document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.width = '';
-                document.body.style.top = '';
-                document.body.style.left = '';
-            }, 300);
-        }
-        
-        function buyChannelFromModal() {
-            if (currentChannelModal) {
-                tg.showAlert(`Покупка канала: ${currentChannelModal.name}\\nЦена: ${currentChannelModal.price} TON\\n\\nДля завершения покупки подключите TON кошелек`);
-                closeGiftsModal();
-            }
-        }
-        
-        function switchTab(tab) {
-            // Блокуємо переходи між вкладками якщо відкрита реферальна система
-            if (currentView === 'referral' && tab !== 'profile') {
-                return;
-            }
-            
-            // Відновлюємо свайпи якщо виходимо з реферальної системи
-            if (currentView === 'referral' && tab === 'profile') {
-                document.body.style.overflowX = '';
-                document.body.style.touchAction = '';
-            }
-            
-            currentView = tab;
-            
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            
-            if (tab === 'market') {
-                document.querySelectorAll('.tab')[0].classList.add('active');
-                showMarket();
-            } else if (tab === 'my-channels') {
-                document.querySelectorAll('.tab')[1].classList.add('active');
-                showMyChannels();
-            } else if (tab === 'profile') {
-                document.querySelectorAll('.tab')[2].classList.add('active');
-                showProfile();
-            }
-        }
-        
-        function createChannel() {
-            tg.showAlert('Создание Telegram канала для продажи подарков');
-        }
-        
-        function connectWallet() {
-            tg.showAlert('Подключение к TON кошельку...');
-        }
-        
-        function addBalance() {
-            tg.showAlert('Пополнение баланса');
-        }
-        
-        function withdrawBalance() {
-            tg.showAlert('Вывод средств');
-        }
-        
-        function openReferralSystem() {
-            currentView = 'referral';
-            // Блокуємо свайпи для всього додатка
-            document.body.style.overflowX = 'hidden';
-            document.body.style.touchAction = 'pan-y';
-            showReferralSystem();
-        }
-        
-        function showReferralSystem() {
-            document.querySelector('.category-tabs').classList.add('hidden');
-            // Приховуємо основні вкладки
-            document.querySelector('.tabs').style.display = 'none';
-            const grid = document.getElementById('giftsGrid');
-            grid.className = 'gifts-grid referral-grid';
-            
-            // Генеруємо реферальне посилання
-            const user = tg.initDataUnsafe?.user;
-            const userId = user?.id || Math.floor(Math.random() * 100000000).toString(16);
-            const referralLink = `t.me/Giftroommarketbot?start=${userId}`;
-            
-            // Демо дані для рефералів
-            const referralData = {
-                invitedFriends: 12,
-                totalEarnings: 3.75,
-                recentReferrals: [
-                    { name: 'Андрій М.', date: '15.07.2025', earning: 0.25 },
-                    { name: 'Марія К.', date: '14.07.2025', earning: 0.15 },
-                    { name: 'Олег П.', date: '13.07.2025', earning: 0.35 },
-                    { name: 'Анна С.', date: '12.07.2025', earning: 0.18 }
-                ]
-            };
-            
-            grid.innerHTML = `
-                <div class="referral-container">
-                    <div class="referral-header">
-                        <button class="back-btn" onclick="switchTab('profile')">←</button>
-                        <div class="referral-title">${t('referralTitle')}</div>
-                        <div style="width: 32px;"></div>
-                    </div>
-                    
-                    <div class="referral-content">
-                        <!-- Статистика -->
-                        <div class="referral-stats">
-                            <div class="referral-stat-card">
-                                <div class="referral-stat-value">${referralData.invitedFriends}</div>
-                                <div class="referral-stat-label">${t('invitedFriends')}</div>
-                            </div>
-                            <div class="referral-stat-card">
-                                <div class="referral-stat-value">${referralData.totalEarnings} TON</div>
-                                <div class="referral-stat-label">${t('totalEarnings')}</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Заработки -->
-                        <div class="referral-earnings">
-                            <div class="referral-earnings-title">
-                                💰 ${t('myEarnings')}
-                            </div>
-                            <div class="referral-earnings-amount">
-                                <div class="referral-earnings-value">
-                                    <div class="ton-icon"></div>
-                                    ${referralData.totalEarnings} TON
-                                </div>
-                                <button class="withdraw-btn" onclick="withdrawReferralEarnings()" ${referralData.totalEarnings < 0.1 ? 'disabled' : ''}>
-                                    ${t('withdrawToBalance')}
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Реферальное ссылка -->
-                        <div class="referral-link-section">
-                            <div class="referral-link-title">${t('referralLink')}</div>
-                            <div class="referral-link-container">
-                                <input type="text" class="referral-link-input" value="${referralLink}" readonly id="referralLinkInput">
-                                <button class="copy-btn" onclick="copyReferralLink()" id="copyBtn">
-                                    ${t('copyLink')}
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Информация о системе под ссылкой -->
-                        <div class="referral-info">
-                            <div class="referral-info-title">${t('referralInfoTitle')}</div>
-                            <div class="referral-info-text">${t('referralInfoText')}</div>
-                        </div>
-                        
-                        <!-- История рефералов -->
-                        <div class="referral-history">
-                            <div class="referral-history-title">${t('recentReferrals')}</div>
-                            ${referralData.recentReferrals.length > 0 ? 
-                                referralData.recentReferrals.map(ref => `
-                                    <div class="referral-history-item">
-                                        <div class="referral-history-info">
-                                            <div class="referral-history-name">${ref.name}</div>
-                                            <div class="referral-history-date">${t('joinedDate')}: ${ref.date}</div>
-                                        </div>
-                                        <div class="referral-history-earning">+${ref.earning} TON</div>
-                                    </div>
-                                `).join('') : 
-                                `<div class="referral-empty">${t('noReferrals')}</div>`
-                            }
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function copyReferralLink() {
-            const input = document.getElementById('referralLinkInput');
-            const button = document.getElementById('copyBtn');
-            
-            input.select();
-            input.setSelectionRange(0, 99999);
-            
-            try {
-                document.execCommand('copy');
-                button.textContent = t('linkCopied');
-                button.classList.add('copied');
-                
-                setTimeout(() => {
-                    button.textContent = t('copyLink');
-                    button.classList.remove('copied');
-                }, 2000);
-            } catch (err) {
-                console.error('Помилка копіювання:', err);
-            }
-        }
-        
-        function withdrawReferralEarnings() {
-            tg.showAlert('Заработки успешно выведены на баланс маркета!');
-            // Тут буде логіка для виведення коштів на баланс
-        }
-        
-        // Start loading when page loads
-        window.addEventListener('load', startLoading);
-        
-        // Start loading when page loads
-        tg.MainButton.hide();
-        
-        // Адаптация к теме
-        if (tg.colorScheme === 'dark') {
-            document.body.style.background = '#0F0F19';
-        }
-    </script>
-</body>
-</html>
-    """
-
-async def run_bot():
-    await dp.start_polling(bot)
-
-def start_bot():
-    asyncio.run(run_bot())
-
-if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8000))
-    
-    bot_thread = threading.Thread(target=start_bot)
-    bot_thread.daemon = True
-    bot_thread.start()
-    
-    print("🎁 GiftRoom Market з правильним порядком подарунків запущен!")
-    print(f"🌐 URL: {WEBAPP_URL}")
-    
-    uvicorn.run(app, host="0.0.0.0", port=port)
+        function
