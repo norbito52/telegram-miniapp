@@ -2346,7 +2346,7 @@ async def miniapp():
     </script>
 </body>
 </html>
-
+    """
 
 async def run_bot():
     await dp.start_polling(bot)
