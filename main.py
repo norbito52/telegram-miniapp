@@ -559,6 +559,32 @@ async def miniapp():
             font-size: 18px;
         }
         
+        /* Referral Button Styles */
+        .referral-btn {
+            background: linear-gradient(45deg, #3d5afe, #5c7cfa);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            max-width: 280px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(61, 90, 254, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .referral-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(61, 90, 254, 0.4);
+        }
+        
         /* Category Tabs Styles */
         .category-tabs {
             display: flex;
@@ -1427,8 +1453,7 @@ async def miniapp():
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
             <div class="tab" onclick="switchTab('my-channels')">Мої канали</div>
-            <div class="tab" onclick="switchTab('referral')">Реферали</div>
-            <div class="tab" onclick="switchTab('profile')">Профіль</div>
+            <div class="tab" onclick="switchTab('profile')">Мій профіль</div>
         </div>
         
         <!-- Нижні кнопки категорій -->
@@ -2048,69 +2073,7 @@ async def miniapp():
             }
         }
         
-        function showReferral() {
-            document.querySelector('.category-tabs').classList.add('hidden');
-            const grid = document.getElementById('giftsGrid');
-            grid.className = 'gifts-grid';
-            
-            // Получаем ID пользователя из Telegram WebApp
-            const user = tg.initDataUnsafe?.user;
-            let userId = user?.id || '123456789';
-            let referralLink = `https://t.me/giftroom_market_bot?start=${userId}`;
-            
-            grid.innerHTML = `
-                <div class="referral-container">
-                    <div class="referral-header">
-                        <div class="referral-title">Реферальна система</div>
-                        <div class="referral-subtitle">Приглашай друзей и получай комиссию от их покупок</div>
-                        <div class="referral-commission">2.5% комиссии</div>
-                    </div>
-                    
-                    <div class="referral-link-section">
-                        <div class="referral-link-title">Твоя реферальна ссылка</div>
-                        <div class="referral-link-container">
-                            <input 
-                                type="text" 
-                                class="referral-link-input" 
-                                value="${referralLink}"
-                                readonly
-                                id="referralLink"
-                            >
-                            <button class="copy-btn" onclick="copyReferralLink()">Копія</button>
-                        </div>
-                    </div>
-                    
-                    <div class="referral-stats">
-                        <div class="referral-stat">
-                            <div class="referral-stat-value">
-                                12
-                                <span style="font-size: 18px;">👥</span>
-                            </div>
-                            <div class="referral-stat-label">Рефералів</div>
-                        </div>
-                        <div class="referral-stat">
-                            <div class="referral-stat-value">
-                                34.8 
-                                <div style="width: 16px; height: 16px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
-                            </div>
-                            <div class="referral-stat-label">Заробили</div>
-                        </div>
-                    </div>
-                    
-                    <div class="referral-balance">
-                        <div class="referral-balance-title">Реферальний баланс</div>
-                        <div class="referral-balance-value">
-                            15.2 
-                            <div style="width: 20px; height: 20px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
-                        </div>
-                        <div class="referral-actions">
-                            <button class="referral-action-btn primary" onclick="withdrawToMarket()">На маркет</button>
-                            <button class="referral-action-btn" onclick="withdrawToWallet()">На гаманець</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+        function showProfile() {
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid profile-grid';
@@ -2145,7 +2108,7 @@ async def miniapp():
                     <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 12px; box-shadow: 0 10px 25px rgba(255, 23, 68, 0.4); border: 2px solid rgba(255,255,255,0.15);">${avatarContent}</div>
                     <div style="font-size: 26px; font-weight: 700; color: white; margin-bottom: 25px; line-height: 1.1;">${username}</div>
                     
-                    <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px;">
+                    <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px; margin-bottom: 30px;">
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 207.5 
@@ -2168,6 +2131,12 @@ async def miniapp():
                             <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">SOLD</div>
                         </div>
                     </div>
+                    
+                    <!-- Кнопка реферальной системы -->
+                    <button class="referral-btn" onclick="openReferralSystem()">
+                        <span style="font-size: 18px;">👥</span>
+                        Реферальна система
+                    </button>
                 </div>
             `;
         }
@@ -2476,11 +2445,8 @@ async def miniapp():
             } else if (tab === 'my-channels') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 showMyChannels();
-            } else if (tab === 'referral') {
-                document.querySelectorAll('.tab')[2].classList.add('active');
-                showReferral();
             } else if (tab === 'profile') {
-                document.querySelectorAll('.tab')[3].classList.add('active');
+                document.querySelectorAll('.tab')[2].classList.add('active');
                 showProfile();
             }
         }
@@ -2497,36 +2463,18 @@ async def miniapp():
             tg.showAlert('Пополнение баланса');
         }
         
-        function copyReferralLink() {
-            const linkInput = document.getElementById('referralLink');
-            linkInput.select();
-            linkInput.setSelectionRange(0, 99999);
-            
-            try {
-                document.execCommand('copy');
-                tg.showAlert('Реферальная ссылка скопирована!');
-            } catch (err) {
-                console.error('Ошибка копирования:', err);
-                tg.showAlert('Ошибка копирования ссылки');
-            }
-        }
-        
-        function withdrawToMarket() {
-            tg.showAlert('Средства переведены на баланс маркета!');
-        }
-        
-        function withdrawToWallet() {
-            tg.showAlert('Вывод средств на TON кошелек...');
-        }
-        
         function withdrawBalance() {
             tg.showAlert('Вывод средств');
+        }
+        
+        function openReferralSystem() {
+            tg.showAlert('Реферальна система - тут буде інформація про рефералів');
         }
         
         // Start loading when page loads
         window.addEventListener('load', startLoading);
         
-        // Убираем главную кнопку Telegram
+        // Start loading when page loads
         tg.MainButton.hide();
         
         // Адаптация к теме
