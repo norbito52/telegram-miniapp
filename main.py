@@ -438,94 +438,65 @@ async def miniapp():
             color: #8b8b8b;
         }
         
-        .gifts-grid.profile-full-screen {
-            position: fixed;
-            top: 140px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 5;
-            background: #0F0F19;
-            height: calc(100vh - 140px);
-            overflow: hidden;
-        }
-        
-        /* Profile Page Styles - ВИПРАВЛЕНО */
+        /* Profile Page Styles - ОНОВЛЕНІ СТИЛІ */
         .profile-container {
             background: #0F0F19;
             padding: 20px;
-            min-height: calc(100vh - 200px);
-            width: 100%;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
             position: relative;
-            margin: 0 auto;
-            max-width: 100%;
-            box-sizing: border-box;
+            margin: -20px;
+            width: calc(100% + 40px);
         }
         
         .profile-avatar-container {
             text-align: center;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
+            max-width: 300px;
+            position: relative;
+            z-index: 2;
         }
         
         .profile-avatar {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0 auto 20px;
+            margin: 0 auto 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-            border: 4px solid rgba(255,255,255,0.1);
+            font-size: 56px;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.5);
+            border: 4px solid rgba(255,255,255,0.15);
             animation: profileFloat 3s ease-in-out infinite;
         }
         
         @keyframes profileFloat {
             0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-5px) scale(1.02); }
+            50% { transform: translateY(-8px) scale(1.03); }
         }
         
         .profile-username {
-            font-size: 28px;
+            font-size: 36px;
             font-weight: 700;
             color: white;
-            margin-bottom: 8px;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            background: linear-gradient(45deg, #ffffff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .profile-id {
-            font-size: 16px;
-            color: rgba(255,255,255,0.6);
-        }
-        
-        .profile-stats {
-            margin-top: 40px;
-            width: 100%;
-            max-width: calc(100% - 40px);
-            background: rgba(42, 42, 62, 0.9);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .profile-stats-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
+            font-size: 20px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            font-weight: 500;
         }
         
         /* Category Tabs Styles */
@@ -2017,7 +1988,7 @@ async def miniapp():
             
             // Создаем URL для аватара пользователя
             let avatarContent = '👤'; // По умолчанию иконка
-            let avatarStyle = 'font-size: 48px;';
+            let avatarStyle = 'font-size: 56px;';
             
             // Если есть фото пользователя, используем его
             if (user?.photo_url) {
@@ -2031,9 +2002,6 @@ async def miniapp():
                         <div class="profile-avatar" style="${avatarStyle}">${avatarContent}</div>
                         <div class="profile-username">${username}</div>
                         <div class="profile-id">ID: ${userId}</div>
-                    </div>
-                    <div class="profile-stats">
-                        <div class="profile-stats-title">Статистика</div>
                     </div>
                 </div>
             `;
@@ -2378,7 +2346,7 @@ async def miniapp():
     </script>
 </body>
 </html>
-    """
+
 
 async def run_bot():
     await dp.start_polling(bot)
