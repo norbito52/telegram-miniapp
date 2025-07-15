@@ -451,14 +451,15 @@ async def miniapp():
         /* Profile Page Styles - ВИПРАВЛЕНО */
         .profile-container {
             background: #0F0F19;
-            padding: 0;
+            padding: 20px;
+            padding-top: 60px;
             height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             width: 100%;
-            transform: translateY(-40px);
+            position: relative;
         }
         
         .profile-avatar-container {
@@ -467,7 +468,8 @@ async def miniapp():
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            margin-bottom: 60px;
         }
         
         .profile-avatar {
@@ -504,13 +506,14 @@ async def miniapp():
         
         .profile-stats {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 20px;
             right: 20px;
-            background: rgba(42, 42, 62, 0.8);
-            border-radius: 12px;
+            background: rgba(42, 42, 62, 0.9);
+            border-radius: 15px;
             padding: 20px;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .profile-stats-title {
