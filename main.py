@@ -441,15 +441,15 @@ async def miniapp():
         /* Profile Page Styles - ОНОВЛЕНІ СТИЛІ */
         .profile-container {
             background: #0F0F19;
-            padding: 20px;
-            min-height: 100vh;
+            padding: 0;
+            min-height: calc(100vh - 160px);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             position: relative;
-            margin: -20px;
-            width: calc(100% + 40px);
+            margin: 0;
+            width: 100%;
         }
         
         .profile-avatar-container {
@@ -462,41 +462,63 @@ async def miniapp():
         }
         
         .profile-avatar {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #ff1744 0%, #8b0000 100%);
-            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 25%, #fbbc04 50%, #ea4335 75%, #9c27b0 100%);
+            margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
-            box-shadow: 0 8px 25px rgba(255, 23, 68, 0.3);
-            border: 2px solid rgba(255,255,255,0.1);
+            font-size: 42px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 15px 35px rgba(66, 133, 244, 0.4);
+            border: 3px solid rgba(255,255,255,0.15);
             animation: profileFloat 3s ease-in-out infinite;
             background-size: cover;
             background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2.5s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(200%) rotate(45deg); }
         }
         
         @keyframes profileFloat {
             0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-5px) scale(1.02); }
+            50% { transform: translateY(-8px) scale(1.05); }
         }
         
         .profile-username {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 700;
             color: white;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
         .profile-stats {
             display: flex;
             justify-content: space-around;
             margin-top: 20px;
-            gap: 20px;
+            gap: 30px;
             width: 100%;
+            max-width: 350px;
         }
         
         .profile-stat {
@@ -505,26 +527,28 @@ async def miniapp():
         }
         
         .profile-stat-value {
-            font-size: 20px;
+            font-size: 28px;
             font-weight: 700;
             color: white;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
         .profile-stat-label {
-            font-size: 10px;
-            color: rgba(255,255,255,0.6);
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
             text-transform: uppercase;
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
         .ton-symbol {
-            width: 14px;
-            height: 14px;
+            width: 18px;
+            height: 18px;
             background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png');
             background-size: cover;
             background-position: center;
@@ -532,7 +556,7 @@ async def miniapp():
         }
         
         .gift-icon-stat {
-            font-size: 14px;
+            font-size: 18px;
         }
         
         /* Category Tabs Styles */
