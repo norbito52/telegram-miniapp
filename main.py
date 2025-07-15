@@ -316,6 +316,7 @@ async def miniapp():
         .header {
             text-align: center;
             margin-bottom: 20px;
+            position: relative;
         }
         
         .header h1 {
@@ -328,6 +329,34 @@ async def miniapp():
             color: #8b8b8b;
             font-size: 14px;
             margin-bottom: 15px;
+        }
+        
+        /* Language Selector Styles */
+        .language-selector {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #2a2a3e;
+            border: 2px solid #3a3a5c;
+            border-radius: 20px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64B5F6;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .language-selector:hover {
+            background: #3a3a5c;
+            border-color: #3d5afe;
+            transform: scale(1.05);
+        }
+        
+        .language-selector:active {
+            transform: scale(0.95);
         }
         
         .wallet-section {
@@ -1437,6 +1466,11 @@ async def miniapp():
             <h1>GiftRoom Market</h1>
             <div class="subtitle">Маркетплейс Telegram каналов с подарками</div>
             
+            <!-- Language Selector -->
+            <div class="language-selector" onclick="toggleLanguage()" id="languageSelector">
+                РУС
+            </div>
+            
             <div class="wallet-section">
                 <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
                 <div class="balance-section">
@@ -1706,11 +1740,105 @@ async def miniapp():
         let selectedGiftFilter = null;
         let selectedGifts = new Set();
         let currentSorting = 'all';
+        let currentLanguage = 'ru'; // Поточна мова: ru або en
         let currentFilters = {
             search: '',
             category: '',
             sort: 'recent'
         };
+        
+        // Мовні пакети
+        const translations = {
+            ru: {
+                appTitle: 'GiftRoom Market',
+                appSubtitle: 'Маркетплейс Telegram каналов с подарками',
+                walletConnect: 'TON кошелек',
+                tabMarket: 'Маркет',
+                tabMyChannels: 'Мої канали',
+                tabProfile: 'Мій профіль',
+                categoryAll: 'Всі',
+                categoryNew: 'Нові',
+                categorySorting: 'Сортування',
+                categoryExtras: 'Доп',
+                referralSystem: 'Реферальна система',
+                totalVolume: 'TOTAL VOLUME',
+                bought: 'BOUGHT',
+                sold: 'SOLD',
+                loading: 'Загрузка каналов...',
+                noChannels: 'Каналы не найдены',
+                tryChangeFilters: 'Попробуйте изменить фильтры',
+                channelGifts: 'Подарки канала',
+                buyChannel: 'Купить канал за'
+            },
+            en: {
+                appTitle: 'GiftRoom Market',
+                appSubtitle: 'Telegram Channels with Gifts Marketplace',
+                walletConnect: 'TON Wallet',
+                tabMarket: 'Market',
+                tabMyChannels: 'My Channels',
+                tabProfile: 'My Profile',
+                categoryAll: 'All',
+                categoryNew: 'New',
+                categorySorting: 'Sorting',
+                categoryExtras: 'Extras',
+                referralSystem: 'Referral System',
+                totalVolume: 'TOTAL VOLUME',
+                bought: 'BOUGHT',
+                sold: 'SOLD',
+                loading: 'Loading channels...',
+                noChannels: 'No channels found',
+                tryChangeFilters: 'Try changing filters',
+                channelGifts: 'Channel Gifts',
+                buyChannel: 'Buy channel for'
+            }
+        };
+        
+        // Функція для отримання перекладу
+        function t(key) {
+            return translations[currentLanguage][key] || key;
+        }
+        
+        // Функція для перемикання мови
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+            const selector = document.getElementById('languageSelector');
+            selector.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
+            
+            // Оновлюємо інтерфейс
+            updateLanguageInterface();
+        }
+        
+        // Функція для оновлення інтерфейсу при зміні мови
+        function updateLanguageInterface() {
+            // Оновлюємо основні елементи
+            document.querySelector('.header h1').textContent = t('appTitle');
+            document.querySelector('.header .subtitle').textContent = t('appSubtitle');
+            document.querySelector('.wallet-connect-btn').textContent = t('walletConnect');
+            
+            // Оновлюємо вкладки
+            const tabs = document.querySelectorAll('.tab');
+            tabs[0].textContent = t('tabMarket');
+            tabs[1].textContent = t('tabMyChannels');
+            tabs[2].textContent = t('tabProfile');
+            
+            // Оновлюємо категорії
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            if (categoryTabs.length >= 4) {
+                categoryTabs[0].textContent = t('categoryAll');
+                categoryTabs[1].textContent = t('categoryNew');
+                categoryTabs[2].textContent = t('categorySorting');
+                categoryTabs[3].textContent = t('categoryExtras');
+            }
+            
+            // Оновлюємо поточний вміст в залежності від активної вкладки
+            if (currentView === 'market') {
+                showMarket();
+            } else if (currentView === 'my-channels') {
+                showMyChannels();
+            } else if (currentView === 'profile') {
+                showProfile();
+            }
+        }
         
         // Loading Screen Logic
         function createParticle() {
@@ -1780,6 +1908,8 @@ async def miniapp():
         }
         
         function initializeApp() {
+            // Встановлюємо початкову мову
+            updateLanguageInterface();
             showMarket();
         }
         
@@ -1979,8 +2109,8 @@ async def miniapp():
             if (channelsToRender.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
-                        <div style="font-size: 18px; margin-bottom: 10px;">Каналы не найдены</div>
-                        <div style="font-size: 14px;">Попробуйте изменить фильтры</div>
+                        <div style="font-size: 18px; margin-bottom: 10px;">${t('noChannels')}</div>
+                        <div style="font-size: 14px;">${t('tryChangeFilters')}</div>
                     </div>
                 `;
                 return;
@@ -2114,28 +2244,28 @@ async def miniapp():
                                 207.5 
                                 <div style="width: 16px; height: 16px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
                             </div>
-                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">TOTAL VOLUME</div>
+                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">${t('totalVolume')}</div>
                         </div>
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 0 
                                 <span style="font-size: 16px;">🎁</span>
                             </div>
-                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">BOUGHT</div>
+                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">${t('bought')}</div>
                         </div>
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 8 
                                 <span style="font-size: 16px;">🎁</span>
                             </div>
-                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">SOLD</div>
+                            <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">${t('sold')}</div>
                         </div>
                     </div>
                     
                     <!-- Кнопка реферальной системы -->
                     <button class="referral-btn" onclick="openReferralSystem()">
                         <span style="font-size: 18px;">👥</span>
-                        Реферальна система
+                        ${t('referralSystem')}
                     </button>
                 </div>
             `;
@@ -2364,14 +2494,14 @@ async def miniapp():
             
             document.getElementById('modalChannelName').innerHTML = `
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <div style="font-size: 18px; font-weight: 600;">Подарки канала</div>
+                    <div style="font-size: 18px; font-weight: 600;">${t('channelGifts')}</div>
                     <div style="font-size: 16px; color: #64B5F6;">${demoChannelName}</div>
                 </div>
             `;
             
             document.getElementById('buyChannelBtn').innerHTML = `
                 <div class="ton-icon"></div>
-                <span>Купить канал за ${channel.price} TON</span>
+                <span>${t('buyChannel')} ${channel.price} TON</span>
             `;
             
             const giftsGrid = document.getElementById('giftsModalGrid');
