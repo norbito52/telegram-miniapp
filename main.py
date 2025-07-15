@@ -1427,7 +1427,8 @@ async def miniapp():
         <div class="tabs">
             <div class="tab active" onclick="switchTab('market')">Маркет</div>
             <div class="tab" onclick="switchTab('my-channels')">Мої канали</div>
-            <div class="tab" onclick="switchTab('profile')">Мій профіль</div>
+            <div class="tab" onclick="switchTab('referral')">Реферали</div>
+            <div class="tab" onclick="switchTab('profile')">Профіль</div>
         </div>
         
         <!-- Нижні кнопки категорій -->
@@ -2047,7 +2048,69 @@ async def miniapp():
             }
         }
         
-        function showProfile() {
+        function showReferral() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
+            
+            // Получаем ID пользователя из Telegram WebApp
+            const user = tg.initDataUnsafe?.user;
+            let userId = user?.id || '123456789';
+            let referralLink = `https://t.me/giftroom_market_bot?start=${userId}`;
+            
+            grid.innerHTML = `
+                <div class="referral-container">
+                    <div class="referral-header">
+                        <div class="referral-title">Реферальна система</div>
+                        <div class="referral-subtitle">Приглашай друзей и получай комиссию от их покупок</div>
+                        <div class="referral-commission">2.5% комиссии</div>
+                    </div>
+                    
+                    <div class="referral-link-section">
+                        <div class="referral-link-title">Твоя реферальна ссылка</div>
+                        <div class="referral-link-container">
+                            <input 
+                                type="text" 
+                                class="referral-link-input" 
+                                value="${referralLink}"
+                                readonly
+                                id="referralLink"
+                            >
+                            <button class="copy-btn" onclick="copyReferralLink()">Копія</button>
+                        </div>
+                    </div>
+                    
+                    <div class="referral-stats">
+                        <div class="referral-stat">
+                            <div class="referral-stat-value">
+                                12
+                                <span style="font-size: 18px;">👥</span>
+                            </div>
+                            <div class="referral-stat-label">Рефералів</div>
+                        </div>
+                        <div class="referral-stat">
+                            <div class="referral-stat-value">
+                                34.8 
+                                <div style="width: 16px; height: 16px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
+                            </div>
+                            <div class="referral-stat-label">Заробили</div>
+                        </div>
+                    </div>
+                    
+                    <div class="referral-balance">
+                        <div class="referral-balance-title">Реферальний баланс</div>
+                        <div class="referral-balance-value">
+                            15.2 
+                            <div style="width: 20px; height: 20px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
+                        </div>
+                        <div class="referral-actions">
+                            <button class="referral-action-btn primary" onclick="withdrawToMarket()">На маркет</button>
+                            <button class="referral-action-btn" onclick="withdrawToWallet()">На гаманець</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid profile-grid';
@@ -2413,8 +2476,11 @@ async def miniapp():
             } else if (tab === 'my-channels') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 showMyChannels();
-            } else if (tab === 'profile') {
+            } else if (tab === 'referral') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
+                showReferral();
+            } else if (tab === 'profile') {
+                document.querySelectorAll('.tab')[3].classList.add('active');
                 showProfile();
             }
         }
@@ -2431,8 +2497,26 @@ async def miniapp():
             tg.showAlert('Пополнение баланса');
         }
         
-        function withdrawBalance() {
-            tg.showAlert('Вывод средств');
+        function copyReferralLink() {
+            const linkInput = document.getElementById('referralLink');
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                tg.showAlert('Реферальная ссылка скопирована!');
+            } catch (err) {
+                console.error('Ошибка копирования:', err);
+                tg.showAlert('Ошибка копирования ссылки');
+            }
+        }
+        
+        function withdrawToMarket() {
+            tg.showAlert('Средства переведены на баланс маркета!');
+        }
+        
+        function withdrawToWallet() {
+            tg.showAlert('Вывод средств на TON кошелек...');
         }
         
         // Start loading when page loads
