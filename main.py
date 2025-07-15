@@ -339,11 +339,11 @@ async def miniapp():
             background: #3a3a5c;
             border: 2px solid #4a4a6a;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: #ffffff;
             display: flex;
