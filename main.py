@@ -2965,12 +2965,6 @@ async def miniapp():
                     </div>
                     
                     <div class="referral-content">
-                        <!-- Информация о системе -->
-                        <div class="referral-info">
-                            <div class="referral-info-title">${t('referralInfoTitle')}</div>
-                            <div class="referral-info-text">${t('referralInfoText')}</div>
-                        </div>
-                        
                         <!-- Статистика -->
                         <div class="referral-stats">
                             <div class="referral-stat-card">
@@ -3008,6 +3002,12 @@ async def miniapp():
                                     ${t('copyLink')}
                                 </button>
                             </div>
+                        </div>
+                        
+                        <!-- Информация о системе под ссылкой -->
+                        <div class="referral-info">
+                            <div class="referral-info-title">${t('referralInfoTitle')}</div>
+                            <div class="referral-info-text">${t('referralInfoText')}</div>
                         </div>
                         
                         <!-- История рефералов -->
