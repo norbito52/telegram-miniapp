@@ -2296,6 +2296,31 @@ async def miniapp():
             `).join('');
         }
         
+        function toggleGiftSelectionNew(giftId) {
+            if (selectedGifts.has(giftId)) {
+                selectedGifts.delete(giftId);
+            } else {
+                selectedGifts.add(giftId);
+            }
+            
+            // Якщо вибрали подарунки, скидаємо "Всі"
+            if (selectedGifts.size > 0) {
+                currentNewCategory = 'selected';
+            } else {
+                currentNewCategory = 'all';
+            }
+            
+            updateClearButton();
+            
+            // Оновлюємо відображення
+            showAllGiftsFilter();
+        }
+        
+        function selectGiftForNewFilter(giftId) {
+            // При натисканні на весь рядок просто вибираємо/скидаємо подарунок
+            toggleGiftSelectionNew(giftId);
+        }
+        
         function toggleGiftSelection(giftId) {
             if (selectedGifts.has(giftId)) {
                 selectedGifts.delete(giftId);
@@ -2380,8 +2405,8 @@ async def miniapp():
                     </div>
                 </div>
                 ${giftsArray.map(gift => `
-                    <div class="gift-filter-item" onclick="selectGiftForFilter(${gift.id})">
-                        <div class="gift-filter-checkbox ${selectedGifts.has(gift.id) ? 'checked' : ''}"></div>
+                    <div class="gift-filter-item" onclick="selectGiftForNewFilter(${gift.id})">
+                        <div class="gift-filter-checkbox ${selectedGifts.has(gift.id) ? 'checked' : ''}" onclick="event.stopPropagation(); toggleGiftSelectionNew(${gift.id})"></div>
                         <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
                         <div class="gift-filter-info">
                             <div class="gift-filter-name">${gift.name}</div>
@@ -2449,14 +2474,14 @@ async def miniapp():
         
         function applyNewFilter(filterType) {
             currentNewCategory = filterType;
-            updateClearButton();
             
             if (filterType === 'all') {
-                showAllGiftsFilter();
-            } else {
-                // Інші фільтри для вкладки "Нові" можна додати пізніше
-                showAllGiftsFilter();
+                // Скидаємо всі вибрані подарунки
+                selectedGifts.clear();
             }
+            
+            updateClearButton();
+            showAllGiftsFilter();
         }
         
         function applyExtrasFilter(extrasType) {
