@@ -774,10 +774,8 @@ async def miniapp():
             color: white;
             font-size: 14px;
             font-family: monospace;
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .copy-btn {
@@ -2941,8 +2939,8 @@ async def miniapp():
             
             // Генеруємо реферальне посилання
             const user = tg.initDataUnsafe?.user;
-            const userId = user?.id || 'demo123';
-            const referralLink = `https://t.me/GiftRoomBot?start=ref_${userId}`;
+            const userId = user?.id || Math.floor(Math.random() * 100000000).toString(16);
+            const referralLink = `t.me/Giftroommarketbot?start=${userId}`;
             
             // Демо дані для рефералів
             const referralData = {
