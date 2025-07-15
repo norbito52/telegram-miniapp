@@ -2040,6 +2040,12 @@ async def miniapp():
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid';
+            grid.style.display = 'flex';
+            grid.style.alignItems = 'center';
+            grid.style.justifyContent = 'center';
+            grid.style.height = '100vh';
+            grid.style.margin = '0';
+            grid.style.padding = '0';
             
             // Получаем данные пользователя из Telegram WebApp
             const user = tg.initDataUnsafe?.user;
@@ -2067,33 +2073,31 @@ async def miniapp():
             }
             
             grid.innerHTML = `
-                <div class="profile-container">
-                    <div class="profile-avatar-container">
-                        <div class="profile-avatar" style="${avatarStyle}">${avatarContent}</div>
-                        <div class="profile-username">${username}</div>
-                        
-                        <div class="profile-stats">
-                            <div class="profile-stat">
-                                <div class="profile-stat-value">
-                                    207.5 
-                                    <div class="ton-symbol"></div>
-                                </div>
-                                <div class="profile-stat-label">Total volume</div>
+                <div style="text-align: center; width: 100%; max-width: 300px;">
+                    <div style="width: 120px; height: 120px; border-radius: 12px; ${avatarStyle} margin: 0 auto 25px; box-shadow: 0 15px 35px rgba(255, 23, 68, 0.4); border: 3px solid rgba(255,255,255,0.15);">${avatarContent}</div>
+                    <div style="font-size: 32px; font-weight: 700; color: white; margin-bottom: 50px;">${username}</div>
+                    
+                    <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px;">
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                207.5 
+                                <div style="width: 18px; height: 18px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
                             </div>
-                            <div class="profile-stat">
-                                <div class="profile-stat-value">
-                                    0 
-                                    <span class="gift-icon-stat">🎁</span>
-                                </div>
-                                <div class="profile-stat-label">Bought</div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">TOTAL VOLUME</div>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                0 
+                                <span style="font-size: 18px;">🎁</span>
                             </div>
-                            <div class="profile-stat">
-                                <div class="profile-stat-value">
-                                    8 
-                                    <span class="gift-icon-stat">🎁</span>
-                                </div>
-                                <div class="profile-stat-label">Sold</div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">BOUGHT</div>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                8 
+                                <span style="font-size: 18px;">🎁</span>
                             </div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">SOLD</div>
                         </div>
                     </div>
                 </div>
