@@ -453,14 +453,17 @@ async def miniapp():
         /* Profile Page Styles - ВИПРАВЛЕНО */
         .profile-container {
             background: #0F0F19;
-            padding: 0;
-            height: 100%;
+            padding: 20px;
+            min-height: calc(100vh - 200px);
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
+            margin: 0 auto;
+            max-width: 100%;
+            box-sizing: border-box;
         }
         
         .profile-avatar-container {
@@ -470,7 +473,7 @@ async def miniapp():
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transform: translateY(-40px);
+            margin: 0 auto;
         }
         
         .profile-avatar {
@@ -506,15 +509,16 @@ async def miniapp():
         }
         
         .profile-stats {
-            position: absolute;
-            bottom: 30px;
-            left: 20px;
-            right: 20px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: calc(100% - 40px);
             background: rgba(42, 42, 62, 0.9);
             border-radius: 15px;
             padding: 20px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .profile-stats-title {
@@ -2004,7 +2008,7 @@ async def miniapp():
         function showProfile() {
             document.querySelector('.category-tabs').classList.add('hidden');
             const grid = document.getElementById('giftsGrid');
-            grid.className = 'gifts-grid profile-full-screen';
+            grid.className = 'gifts-grid';
             
             // Получаем данные пользователя из Telegram WebApp
             const user = tg.initDataUnsafe?.user;
