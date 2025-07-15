@@ -749,6 +749,7 @@ async def miniapp():
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
+            overflow: hidden;
         }
         
         .referral-link-title {
@@ -761,6 +762,7 @@ async def miniapp():
         .referral-link-container {
             display: flex;
             gap: 10px;
+            align-items: stretch;
         }
         
         .referral-link-input {
@@ -772,6 +774,10 @@ async def miniapp():
             color: white;
             font-size: 14px;
             font-family: monospace;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .copy-btn {
@@ -785,6 +791,8 @@ async def miniapp():
             font-weight: 600;
             transition: all 0.3s ease;
             white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 100px;
         }
         
         .copy-btn:hover {
