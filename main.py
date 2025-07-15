@@ -441,15 +441,16 @@ async def miniapp():
         /* Profile Page Styles - ОНОВЛЕНІ СТИЛІ */
         .profile-container {
             background: #0F0F19;
-            padding: 20px;
+            padding: 40px 20px 20px 20px;
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             flex-direction: column;
             position: relative;
             margin: -20px;
             width: calc(100% + 40px);
+            padding-top: 80px;
         }
         
         .profile-avatar-container {
@@ -458,18 +459,19 @@ async def miniapp():
             max-width: 300px;
             position: relative;
             z-index: 2;
+            margin: 0 auto;
         }
         
         .profile-avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 12px;
             background: linear-gradient(135deg, #ff1744 0%, #8b0000 100%);
-            margin: 0 auto 25px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 36px;
             box-shadow: 0 8px 25px rgba(255, 23, 68, 0.3);
             border: 2px solid rgba(255,255,255,0.1);
             animation: profileFloat 3s ease-in-out infinite;
@@ -483,18 +485,19 @@ async def miniapp():
         }
         
         .profile-username {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             color: white;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             line-height: 1.2;
         }
         
         .profile-stats {
             display: flex;
             justify-content: space-around;
-            margin-top: 30px;
+            margin-top: 20px;
             gap: 20px;
+            width: 100%;
         }
         
         .profile-stat {
@@ -503,7 +506,7 @@ async def miniapp():
         }
         
         .profile-stat-value {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             color: white;
             margin-bottom: 5px;
@@ -514,15 +517,15 @@ async def miniapp():
         }
         
         .profile-stat-label {
-            font-size: 12px;
+            font-size: 10px;
             color: rgba(255,255,255,0.6);
             text-transform: uppercase;
             font-weight: 500;
         }
         
         .ton-symbol {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png');
             background-size: cover;
             background-position: center;
@@ -530,7 +533,7 @@ async def miniapp():
         }
         
         .gift-icon-stat {
-            font-size: 16px;
+            font-size: 14px;
         }
         
         /* Category Tabs Styles */
