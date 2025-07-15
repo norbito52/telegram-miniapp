@@ -461,42 +461,76 @@ async def miniapp():
         }
         
         .profile-avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0 auto 30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff1744 0%, #8b0000 100%);
+            margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 56px;
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.5);
-            border: 4px solid rgba(255,255,255,0.15);
+            font-size: 48px;
+            box-shadow: 0 8px 25px rgba(255, 23, 68, 0.3);
+            border: 2px solid rgba(255,255,255,0.1);
             animation: profileFloat 3s ease-in-out infinite;
+            background-size: cover;
+            background-position: center;
         }
         
         @keyframes profileFloat {
             0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-8px) scale(1.03); }
+            50% { transform: translateY(-5px) scale(1.02); }
         }
         
         .profile-username {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: 700;
             color: white;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             line-height: 1.2;
-            background: linear-gradient(45deg, #ffffff, #e3f2fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
-        .profile-id {
-            font-size: 20px;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 40px;
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            gap: 20px;
+        }
+        
+        .profile-stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .profile-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .profile-stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
             font-weight: 500;
+        }
+        
+        .ton-symbol {
+            width: 16px;
+            height: 16px;
+            background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+        }
+        
+        .gift-icon-stat {
+            font-size: 16px;
         }
         
         /* Category Tabs Styles */
@@ -1983,17 +2017,27 @@ async def miniapp():
             
             // Получаем данные пользователя из Telegram WebApp
             const user = tg.initDataUnsafe?.user;
-            let username = user?.username || user?.first_name || 'GiftRoom User';
-            let userId = user?.id || '123456789';
+            let username = user?.username || user?.first_name || 'xr00y';
             
-            // Создаем URL для аватара пользователя
-            let avatarContent = '👤'; // По умолчанию иконка
-            let avatarStyle = 'font-size: 56px;';
+            // Создаем аватар как в концепте
+            let avatarContent = '';
+            let avatarStyle = `
+                background: linear-gradient(135deg, #ff1744 0%, #8b0000 100%);
+                color: white;
+                font-size: 48px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
             
             // Если есть фото пользователя, используем его
             if (user?.photo_url) {
                 avatarContent = '';
                 avatarStyle = `background-image: url('${user.photo_url}'); background-size: cover; background-position: center;`;
+            } else {
+                // Иконка как в концепте 
+                avatarContent = 'LR';
             }
             
             grid.innerHTML = `
@@ -2001,7 +2045,30 @@ async def miniapp():
                     <div class="profile-avatar-container">
                         <div class="profile-avatar" style="${avatarStyle}">${avatarContent}</div>
                         <div class="profile-username">${username}</div>
-                        <div class="profile-id">ID: ${userId}</div>
+                        
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">
+                                    207.5 
+                                    <div class="ton-symbol"></div>
+                                </div>
+                                <div class="profile-stat-label">Total volume</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">
+                                    0 
+                                    <span class="gift-icon-stat">🎁</span>
+                                </div>
+                                <div class="profile-stat-label">Bought</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">
+                                    8 
+                                    <span class="gift-icon-stat">🎁</span>
+                                </div>
+                                <div class="profile-stat-label">Sold</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
