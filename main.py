@@ -334,25 +334,29 @@ async def miniapp():
         /* Language Selector Styles */
         .language-selector {
             position: absolute;
-            top: 0;
-            right: 0;
-            background: #2a2a3e;
-            border: 2px solid #3a3a5c;
-            border-radius: 20px;
-            padding: 8px 12px;
+            top: 10px;
+            right: 10px;
+            background: #3a3a5c;
+            border: 2px solid #4a4a6a;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            color: #64B5F6;
-            min-width: 50px;
-            text-align: center;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
         .language-selector:hover {
-            background: #3a3a5c;
-            border-color: #3d5afe;
+            background: #4a4a6a;
+            border-color: #5a5a7a;
             transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
         
         .language-selector:active {
@@ -1466,11 +1470,6 @@ async def miniapp():
             <h1>GiftRoom Market</h1>
             <div class="subtitle">Маркетплейс Telegram каналов с подарками</div>
             
-            <!-- Language Selector -->
-            <div class="language-selector" onclick="toggleLanguage()" id="languageSelector">
-                РУС
-            </div>
-            
             <div class="wallet-section">
                 <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
                 <div class="balance-section">
@@ -1802,7 +1801,9 @@ async def miniapp():
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
             const selector = document.getElementById('languageSelector');
-            selector.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
+            if (selector) {
+                selector.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
+            }
             
             // Оновлюємо інтерфейс
             updateLanguageInterface();
@@ -2234,7 +2235,12 @@ async def miniapp():
             }
             
             grid.innerHTML = `
-                <div style="text-align: center; width: 100%; max-width: 300px;">
+                <div style="text-align: center; width: 100%; max-width: 300px; position: relative;">
+                    <!-- Language Selector рядом с аватаром -->
+                    <div class="language-selector" onclick="toggleLanguage()" id="languageSelector" style="position: absolute; top: 0; right: 40px; z-index: 5;">
+                        ${currentLanguage === 'ru' ? 'РУС' : 'ENG'}
+                    </div>
+                    
                     <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 12px; box-shadow: 0 10px 25px rgba(255, 23, 68, 0.4); border: 2px solid rgba(255,255,255,0.15);">${avatarContent}</div>
                     <div style="font-size: 26px; font-weight: 700; color: white; margin-bottom: 25px; line-height: 1.1;">${username}</div>
                     
