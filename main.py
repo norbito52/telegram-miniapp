@@ -597,6 +597,8 @@ async def miniapp():
             background: #0F0F19;
             padding: 0;
             min-height: 100vh;
+            overflow-x: hidden;
+            touch-action: pan-y;
         }
         
         .referral-header {
@@ -2427,6 +2429,8 @@ async def miniapp():
         
         function showMarket() {
             document.querySelector('.category-tabs').classList.remove('hidden');
+            // Показуємо основні вкладки
+            document.querySelector('.tabs').style.display = 'flex';
             selectedGiftFilter = null;
             
             // Відновлюємо поточну категорію без зміни стану
@@ -2447,6 +2451,8 @@ async def miniapp():
         
         function showMyChannels() {
             document.querySelector('.category-tabs').classList.add('hidden');
+            // Показуємо основні вкладки
+            document.querySelector('.tabs').style.display = 'flex';
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
             
@@ -2480,6 +2486,8 @@ async def miniapp():
         
         function showProfile() {
             document.querySelector('.category-tabs').classList.add('hidden');
+            // Показуємо основні вкладки
+            document.querySelector('.tabs').style.display = 'flex';
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid profile-grid';
             
@@ -2845,6 +2853,17 @@ async def miniapp():
         }
         
         function switchTab(tab) {
+            // Блокуємо переходи між вкладками якщо відкрита реферальна система
+            if (currentView === 'referral' && tab !== 'profile') {
+                return;
+            }
+            
+            // Відновлюємо свайпи якщо виходимо з реферальної системи
+            if (currentView === 'referral' && tab === 'profile') {
+                document.body.style.overflowX = '';
+                document.body.style.touchAction = '';
+            }
+            
             currentView = tab;
             
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -2879,11 +2898,16 @@ async def miniapp():
         
         function openReferralSystem() {
             currentView = 'referral';
+            // Блокуємо свайпи для всього додатка
+            document.body.style.overflowX = 'hidden';
+            document.body.style.touchAction = 'pan-y';
             showReferralSystem();
         }
         
         function showReferralSystem() {
             document.querySelector('.category-tabs').classList.add('hidden');
+            // Приховуємо основні вкладки
+            document.querySelector('.tabs').style.display = 'none';
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid';
             
