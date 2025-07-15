@@ -1157,14 +1157,14 @@ async def miniapp():
         }
         
         .gift-image-main {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            margin: 5px auto 10px;
+            border-radius: 12px;
+            margin: 8px auto 12px;
             background-size: cover;
             background-position: center;
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 3px solid rgba(255,255,255,0.2);
             position: relative;
         }
         
