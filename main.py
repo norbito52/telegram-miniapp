@@ -5,7 +5,7 @@ function showSortingOptions() {
             grid.innerHTML = `
                 <div class="gift-filter-item" onclick="applySorting('all')">
                     <div class="gift-filter-checkbox ${currentSorting === 'all' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">📋</div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#128203;</div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">Всі</div>
                         <div class="gift-filter-stats">
@@ -16,7 +16,7 @@ function showSortingOptions() {
                 
                 <div class="gift-filter-item" onclick="applySorting('expensive')">
                     <div class="gift-filter-checkbox ${currentSorting === 'expensive' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">💰</div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#128176;</div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">Дорогі → Дешеві</div>
                         <div class="gift-filter-stats">
@@ -27,7 +27,7 @@ function showSortingOptions() {
                 
                 <div class="gift-filter-item" onclick="applySorting('cheap')">
                     <div class="gift-filter-checkbox ${currentSorting === 'cheap' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">💸</div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#128184;</div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">Дешеві → Дорогі</div>
                         <div class="gift-filter-stats">
@@ -107,7 +107,7 @@ function showSortingOptions() {
                         </div>
                         
                         <div class="important-info">
-                            <div class="info-icon">ℹ️</div>
+                            <div class="info-icon">&#8505;</div>
                             <div class="info-content">
                                 <div class="info-title">Важная информация для продажи канала</div>
                                 <div class="info-text">Перед добавлением канала на маркет, сначала добавьте в него бота @Giftroom_market_bot и назначьте его администратором.</div>
@@ -157,19 +157,19 @@ function showSortingOptions() {
                         <div class="table-row">
                             <div class="col-model">
                                 <div class="channel-info">
-                                    <div class="channel-icon">🔥</div>
+                                    <div class="channel-icon">&#128293;</div>
                                     <div class="channel-details">
                                         <div class="channel-name">35 факел...</div>
                                         <div class="channel-type">Канал</div>
-                                        <div class="channel-title">🔥 Torch of freedom</div>
+                                        <div class="channel-title">&#128293; Torch of freedom</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-price">💎 64,8 TON</div>
+                            <div class="col-price">&#128142; 64,8 TON</div>
                             <div class="col-count">38</div>
                             <div class="col-actions">
-                                <button class="edit-btn" onclick="editChannel()">✏️</button>
-                                <button class="delete-btn" onclick="deleteChannel()">🗑️</button>
+                                <button class="edit-btn" onclick="editChannel()">&#9998;</button>
+                                <button class="delete-btn" onclick="deleteChannel()">&#128465;</button>
                             </div>
                         </div>
                     </div>
@@ -393,7 +393,7 @@ function showSortingOptions() {
                         <!-- Заработки -->
                         <div class="referral-earnings">
                             <div class="referral-earnings-title">
-                                💰 ${t('myEarnings')}
+                                &#128176; ${t('myEarnings')}
                             </div>
                             <div class="referral-earnings-amount">
                                 <div class="referral-earnings-value">
@@ -725,7 +725,7 @@ async def miniapp():
             grid.innerHTML = `
                 <div class="gift-filter-item" onclick="applyNewFilter('all')">
                     <div class="gift-filter-checkbox ${currentNewCategory === 'all' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎁</div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#127873;</div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">Всі</div>
                         <div class="gift-filter-stats">
@@ -779,7 +779,7 @@ async def miniapp():
                 
                 <div class="gift-filter-item" onclick="applyExtrasFilter('with-extras')">
                     <div class="gift-filter-checkbox ${currentExtrasCategory === 'with-extras' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎈</div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#127880;</div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">З доп подарунками</div>
                         <div class="gift-filter-stats">
@@ -790,7 +790,7 @@ async def miniapp():
                 
                 <div class="gift-filter-item" onclick="applyExtrasFilter('without-extras')">
                     <div class="gift-filter-checkbox ${currentExtrasCategory === 'without-extras' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e); display: flex; align-items: center; justify-content: center; font-size: 20px;">📦</div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#128230;</div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">Без доп подарунків</div>
                         <div class="gift-filter-stats">
@@ -1018,14 +1018,14 @@ async def miniapp():
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 0 
-                                <span style="font-size: 16px;">🎁</span>
+                                <span style="font-size: 16px;">&#127873;</span>
                             </div>
                             <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">${t('bought')}</div>
                         </div>
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                                 8 
-                                <span style="font-size: 16px;">🎁</span>
+                                <span style="font-size: 16px;">&#127873;</span>
                             </div>
                             <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">${t('sold')}</div>
                         </div>
@@ -1033,7 +1033,7 @@ async def miniapp():
                     
                     <!-- Кнопка реферальной системы -->
                     <button class="referral-btn" onclick="openReferralSystem()">
-                        <span style="font-size: 18px;">👥</span>
+                        <span style="font-size: 18px;">&#128101;</span>
                         ${t('referralSystem')}
                     </button>
                     
@@ -2821,7 +2821,7 @@ async def miniapp():
     <div class="loading-screen" id="loadingScreen">
         <div class="logo-container">
             <div class="logo-bg">
-                <div class="rocket">🚀</div>
+                <div class="rocket">&#128640;</div>
             </div>
         </div>
         
@@ -2829,9 +2829,9 @@ async def miniapp():
         <div class="app-subtitle">Маркетплейс Telegram каналов с подарками</div>
         
         <div class="gift-icons">
-            <div class="gift-icon">🎁</div>
-            <div class="gift-icon">💎</div>
-            <div class="gift-icon">🏆</div>
+            <div class="gift-icon">&#127873;</div>
+            <div class="gift-icon">&#128142;</div>
+            <div class="gift-icon">&#127942;</div>
         </div>
         
         <div class="progress-container">
