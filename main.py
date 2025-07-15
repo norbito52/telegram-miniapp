@@ -761,12 +761,12 @@ async def miniapp():
         
         .referral-link-container {
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            align-items: stretch;
         }
         
         .referral-link-input {
-            flex: 1;
+            width: 100%;
             background: #1a1a2e;
             border: 2px solid #3a3a5c;
             border-radius: 8px;
@@ -774,8 +774,11 @@ async def miniapp():
             color: white;
             font-size: 14px;
             font-family: monospace;
-            width: 100%;
             box-sizing: border-box;
+            word-break: break-all;
+            white-space: normal;
+            resize: none;
+            overflow: visible;
         }
         
         .copy-btn {
@@ -789,7 +792,7 @@ async def miniapp():
             font-weight: 600;
             transition: all 0.3s ease;
             white-space: nowrap;
-            flex-shrink: 0;
+            align-self: flex-end;
             min-width: 100px;
         }
         
