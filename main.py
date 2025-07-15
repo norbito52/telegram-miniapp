@@ -2072,6 +2072,7 @@ async def miniapp():
         let currentView = 'market';
         let currentCategory = 'all';
         let currentExtrasCategory = 'all'; // Для вкладки "Доп"
+        let currentNewCategory = 'all'; // Для вкладки "Нові"
         let currentChannelModal = null;
         let selectedGiftFilter = null;
         let selectedGifts = new Set();
@@ -2365,7 +2366,31 @@ async def miniapp():
             // Конвертуємо в масив і сортуємо за ID від 37 до 1
             const giftsArray = Array.from(allGifts.values()).sort((a, b) => b.id - a.id);
             
-            renderGiftsFilterList(giftsArray);
+            // Додаємо опцію "Всі" на початок
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="gift-filter-item" onclick="applyNewFilter('all')">
+                    <div class="gift-filter-checkbox ${currentNewCategory === 'all' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎁</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Всі</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Всі подарунки</span>
+                        </div>
+                    </div>
+                </div>
+                ${giftsArray.map(gift => `
+                    <div class="gift-filter-item" onclick="selectGiftForFilter(${gift.id})">
+                        <div class="gift-filter-checkbox ${selectedGifts.has(gift.id) ? 'checked' : ''}"></div>
+                        <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
+                        <div class="gift-filter-info">
+                            <div class="gift-filter-name">${gift.name}</div>
+                            <div class="gift-filter-count">${gift.totalCount} шт</div>
+                        </div>
+                        <div class="gift-filter-price">${(Math.random() * 50 + 5).toFixed(1)} TON</div>
+                    </div>
+                `).join('')}
+            `;
         }
         
         function showChannelsWithGift(giftId) {
@@ -2422,6 +2447,18 @@ async def miniapp():
             `;
         }
         
+        function applyNewFilter(filterType) {
+            currentNewCategory = filterType;
+            updateClearButton();
+            
+            if (filterType === 'all') {
+                showAllGiftsFilter();
+            } else {
+                // Інші фільтри для вкладки "Нові" можна додати пізніше
+                showAllGiftsFilter();
+            }
+        }
+        
         function applyExtrasFilter(extrasType) {
             currentExtrasCategory = extrasType;
             updateClearButton();
@@ -2454,6 +2491,7 @@ async def miniapp():
             selectedGifts.clear();
             currentSorting = 'all';
             currentExtrasCategory = 'all';
+            currentNewCategory = 'all';
             
             updateClearButton();
             
