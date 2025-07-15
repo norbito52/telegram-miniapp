@@ -745,13 +745,11 @@ async def miniapp():
         }
         
         .referral-link-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 16px;
-            padding: 25px;
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
-            position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
         }
         
         .referral-link-section::before {
@@ -773,11 +771,10 @@ async def miniapp():
         
         .referral-link-title {
             color: white;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-align: center;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: left;
             position: relative;
             z-index: 2;
         }
@@ -792,47 +789,44 @@ async def miniapp():
         
         .referral-link-input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 15px;
+            background: #1a1a2e;
+            border: 2px solid #3a3a5c;
+            border-radius: 8px;
+            padding: 12px;
             color: white;
-            font-size: 16px;
+            font-size: 12px;
             font-family: 'Courier New', monospace;
-            font-weight: 600;
+            font-weight: 500;
             box-sizing: border-box;
             word-break: break-all;
             white-space: normal;
             resize: none;
             overflow: visible;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+            text-align: left;
             transition: all 0.3s ease;
+            line-height: 1.4;
         }
         
         .referral-link-input:focus {
             outline: none;
-            border-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+            border-color: #3d5afe;
+            box-shadow: 0 0 0 3px rgba(61, 90, 254, 0.1);
         }
         
         .copy-btn {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
+            background: #3d5afe;
             color: white;
             border: none;
-            padding: 15px 25px;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             transition: all 0.3s ease;
             white-space: nowrap;
             align-self: center;
-            min-width: 140px;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            min-width: 120px;
+            box-shadow: 0 4px 12px rgba(61, 90, 254, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -853,8 +847,9 @@ async def miniapp():
         }
         
         .copy-btn:hover {
+            background: #5c7cfa;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 6px 16px rgba(61, 90, 254, 0.4);
         }
         
         .copy-btn:active {
@@ -862,8 +857,8 @@ async def miniapp():
         }
         
         .copy-btn.copied {
-            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            background: #4CAF50;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
             animation: copySuccess 0.6s ease;
         }
         
