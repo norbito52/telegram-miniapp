@@ -18,7 +18,7 @@ function showSortingOptions() {
                     <div class="gift-filter-checkbox ${currentSorting === 'expensive' ? 'checked' : ''}"></div>
                     <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#128176;</div>
                     <div class="gift-filter-info">
-                        <div class="gift-filter-name">Дорогі → Дешеві</div>
+                        <div class="gift-filter-name">Дорогі - Дешеві</div>
                         <div class="gift-filter-stats">
                             <span class="gift-filter-count">Спочатку дорожчі</span>
                         </div>
@@ -29,7 +29,7 @@ function showSortingOptions() {
                     <div class="gift-filter-checkbox ${currentSorting === 'cheap' ? 'checked' : ''}"></div>
                     <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#128184;</div>
                     <div class="gift-filter-info">
-                        <div class="gift-filter-name">Дешеві → Дорогі</div>
+                        <div class="gift-filter-name">Дешеві - Дорогі</div>
                         <div class="gift-filter-stats">
                             <span class="gift-filter-count">Спочатку дешевші</span>
                         </div>
@@ -89,7 +89,7 @@ function showSortingOptions() {
             grid.innerHTML = `
                 <div class="create-ad-container">
                     <div class="create-ad-header">
-                        <button class="back-btn" onclick="showMyChannels()">←</button>
+                        <button class="back-btn" onclick="showMyChannels()">&#8592;</button>
                         <div class="create-ad-title">Новое объявление</div>
                         <div style="width: 32px;"></div>
                     </div>
@@ -372,7 +372,7 @@ function showSortingOptions() {
             grid.innerHTML = `
                 <div class="referral-container">
                     <div class="referral-header">
-                        <button class="back-btn" onclick="switchTab('profile')">←</button>
+                        <button class="back-btn" onclick="switchTab('profile')">&#8592;</button>
                         <div class="referral-title">${t('referralTitle')}</div>
                         <div style="width: 32px;"></div>
                     </div>
@@ -768,7 +768,7 @@ async def miniapp():
             grid.innerHTML = `
                 <div class="gift-filter-item" onclick="applyExtrasFilter('all')">
                     <div class="gift-filter-checkbox ${currentExtrasCategory === 'all' ? 'checked' : ''}"></div>
-                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎁</div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">&#127873;</div>
                     <div class="gift-filter-info">
                         <div class="gift-filter-name">Всі</div>
                         <div class="gift-filter-stats">
@@ -2112,7 +2112,7 @@ async def miniapp():
         }
         
         .gift-filter-checkbox.checked::after {
-            content: '✓';
+            content: '&#10003;';
             position: absolute;
             top: 50%;
             left: 50%;
@@ -2874,7 +2874,7 @@ async def miniapp():
             <div class="category-tab" onclick="switchCategory('new')">Нові</div>
             <div class="category-tab" onclick="switchCategory('sorting')">Сортування</div>
             <div class="category-tab" onclick="switchCategory('extras')">Доп</div>
-            <div class="clear-selection-btn" onclick="clearAllSelections()">✕</div>
+            <div class="clear-selection-btn" onclick="clearAllSelections()">&#10005;</div>
         </div>
         
         <div class="gifts-grid" id="giftsGrid">
@@ -2886,7 +2886,7 @@ async def miniapp():
             <div class="gifts-modal-content">
                 <div class="gifts-modal-header">
                     <div class="gifts-modal-title" id="modalChannelName">Подарки канала</div>
-                    <button class="gifts-modal-close" onclick="closeGiftsModal()">✕</button>
+                    <button class="gifts-modal-close" onclick="closeGiftsModal()">&#10005;</button>
                 </div>
                 
                 <div class="gifts-modal-body">
