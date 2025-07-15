@@ -2732,6 +2732,12 @@ async def miniapp():
                         <span style="font-size: 18px;">👥</span>
                         ${t('referralSystem')}
                     </button>
+                    
+                    <!-- Информационный блок под кнопкой -->
+                    <div style="background: rgba(61, 90, 254, 0.15); border: 2px solid rgba(61, 90, 254, 0.3); border-radius: 20px; padding: 25px 20px; margin-top: 30px; text-align: center;">
+                        <div style="color: #5c7cfa; font-size: 18px; font-weight: 700; margin-bottom: 15px; line-height: 1.3;">Приглашай друзей и получай 2.5% комиссии</div>
+                        <div style="color: rgba(255,255,255,0.95); font-size: 15px; line-height: 1.5; font-weight: 400;">Получай 2.5% от всех покупок твоих рефералов! Чем больше друзей пригласишь, тем больше заработаешь.</div>
+                    </div>
                 </div>
             `;
         }
