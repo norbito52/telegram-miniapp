@@ -2650,7 +2650,7 @@ async def miniapp():
             // Создаем аватар как в концепте
             let avatarContent = '';
             let avatarStyle = `
-                background: linear-gradient(135deg, #ff1744 0%, #8b0000 100%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
                 font-size: 48px;
                 font-weight: 700;
@@ -2675,7 +2675,7 @@ async def miniapp():
                         ${currentLanguage === 'ru' ? 'РУС' : 'ENG'}
                     </div>
                     
-                    <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 12px; box-shadow: 0 10px 25px rgba(255, 23, 68, 0.4); border: 2px solid rgba(255,255,255,0.15);">${avatarContent}</div>
+                    <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 12px; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4); border: 2px solid rgba(255,255,255,0.15);">${avatarContent}</div>
                     <div style="font-size: 26px; font-weight: 700; color: white; margin-bottom: 25px; line-height: 1.1;">${username}</div>
                     
                     <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px; margin-bottom: 30px;">
