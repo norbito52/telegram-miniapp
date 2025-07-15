@@ -599,6 +599,8 @@ async def miniapp():
             min-height: 100vh;
             overflow-x: hidden;
             touch-action: pan-y;
+            width: 100%;
+            position: relative;
         }
         
         .referral-header {
@@ -611,16 +613,22 @@ async def miniapp():
             position: sticky;
             top: 0;
             z-index: 10;
+            width: 100%;
         }
         
         .referral-title {
             color: white;
             font-size: 18px;
             font-weight: 600;
+            flex: 1;
+            text-align: center;
+            margin: 0 20px;
         }
         
         .referral-content {
             padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .referral-info {
@@ -924,6 +932,16 @@ async def miniapp():
         .clear-selection-btn:hover {
             background: #ff3742;
             transform: scale(1.1);
+        }
+        
+        .gifts-grid.referral-grid {
+            display: block !important;
+            grid-template-columns: none !important;
+            gap: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
         
         .gifts-grid.profile-grid {
@@ -2909,7 +2927,7 @@ async def miniapp():
             // Приховуємо основні вкладки
             document.querySelector('.tabs').style.display = 'none';
             const grid = document.getElementById('giftsGrid');
-            grid.className = 'gifts-grid';
+            grid.className = 'gifts-grid referral-grid';
             
             // Генеруємо реферальне посилання
             const user = tg.initDataUnsafe?.user;
