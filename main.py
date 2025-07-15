@@ -621,11 +621,11 @@ async def miniapp():
         
         .gifts-grid.profile-grid {
             display: flex !important;
-            align-items: center !important;
+            align-items: flex-start !important;
             justify-content: center !important;
             height: 100vh !important;
             margin: 0 !important;
-            padding: 0 !important;
+            padding: 60px 0 0 0 !important;
             grid-template-columns: none !important;
             gap: 0 !important;
         }
@@ -2079,8 +2079,8 @@ async def miniapp():
             
             grid.innerHTML = `
                 <div style="text-align: center; width: 100%; max-width: 300px;">
-                    <div style="width: 120px; height: 120px; border-radius: 12px; ${avatarStyle} margin: 0 auto 25px; box-shadow: 0 15px 35px rgba(255, 23, 68, 0.4); border: 3px solid rgba(255,255,255,0.15);">${avatarContent}</div>
-                    <div style="font-size: 32px; font-weight: 700; color: white; margin-bottom: 50px;">${username}</div>
+                    <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 15px; box-shadow: 0 10px 25px rgba(255, 23, 68, 0.4); border: 2px solid rgba(255,255,255,0.15);">${avatarContent}</div>
+                    <div style="font-size: 26px; font-weight: 700; color: white; margin-bottom: 35px; line-height: 1.2;">${username}</div>
                     
                     <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px;">
                         <div style="text-align: center; flex: 1;">
