@@ -441,16 +441,15 @@ async def miniapp():
         /* Profile Page Styles - ОНОВЛЕНІ СТИЛІ */
         .profile-container {
             background: #0F0F19;
-            padding: 40px 20px 20px 20px;
+            padding: 20px;
             min-height: 100vh;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
             flex-direction: column;
             position: relative;
             margin: -20px;
             width: calc(100% + 40px);
-            padding-top: 80px;
         }
         
         .profile-avatar-container {
