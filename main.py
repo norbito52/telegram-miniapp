@@ -1344,8 +1344,8 @@ async def miniapp():
         
         /* Important Info Styles */
         .important-info {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
+            background: rgba(61, 90, 254, 0.1);
+            border: 1px solid rgba(61, 90, 254, 0.3);
             border-radius: 12px;
             padding: 15px;
             margin: 20px 0;
@@ -1356,6 +1356,7 @@ async def miniapp():
         .info-icon {
             font-size: 20px;
             flex-shrink: 0;
+            color: #3d5afe;
         }
         
         .info-content {
@@ -1363,7 +1364,7 @@ async def miniapp():
         }
         
         .info-title {
-            color: #ffc107;
+            color: #3d5afe;
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 8px;
@@ -1373,6 +1374,7 @@ async def miniapp():
             color: rgba(255,255,255,0.9);
             font-size: 14px;
             margin-bottom: 8px;
+            line-height: 1.4;
         }
         
         .info-list {
@@ -1386,7 +1388,7 @@ async def miniapp():
         }
         
         .req-title {
-            color: rgba(255,255,255,0.9);
+            color: #3d5afe;
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 6px;
@@ -2692,7 +2694,7 @@ async def miniapp():
                         </div>
                         
                         <div class="important-info">
-                            <div class="info-icon">⚠️</div>
+                            <div class="info-icon">ℹ️</div>
                             <div class="info-content">
                                 <div class="info-title">Важная информация для продажи канала</div>
                                 <div class="info-text">Перед добавлением канала на маркет, сначала добавьте в него бота @Giftroom_market_bot и назначьте его администратором.</div>
