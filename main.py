@@ -446,19 +446,20 @@ async def miniapp():
             bottom: 0;
             z-index: 5;
             background: #0F0F19;
+            height: calc(100vh - 140px);
+            overflow: hidden;
         }
         
         /* Profile Page Styles - ВИПРАВЛЕНО */
         .profile-container {
             background: #0F0F19;
-            padding: 20px;
-            padding-top: 60px;
+            padding: 0;
             height: 100%;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            width: 100%;
+            justify-content: center;
             position: relative;
         }
         
@@ -468,8 +469,8 @@ async def miniapp():
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 60px;
+            justify-content: center;
+            transform: translateY(-40px);
         }
         
         .profile-avatar {
