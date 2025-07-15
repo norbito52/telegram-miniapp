@@ -592,6 +592,252 @@ async def miniapp():
             font-size: 18px;
         }
         
+        /* Referral System Styles */
+        .referral-container {
+            background: #0F0F19;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .referral-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            background: #0F0F19;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .referral-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .referral-content {
+            padding: 20px;
+        }
+        
+        .referral-info {
+            background: rgba(61, 90, 254, 0.1);
+            border: 1px solid rgba(61, 90, 254, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .referral-info-title {
+            color: #3d5afe;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .referral-info-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-stat-card {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .referral-stat-card:hover {
+            border-color: #3d5afe;
+            transform: translateY(-2px);
+        }
+        
+        .referral-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .referral-stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .referral-earnings {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-earnings-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .referral-earnings-amount {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .referral-earnings-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #4CAF50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .withdraw-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .withdraw-btn:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+        }
+        
+        .withdraw-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .referral-link-section {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-link-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .referral-link-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .referral-link-input {
+            flex: 1;
+            background: #1a1a2e;
+            border: 2px solid #3a3a5c;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 14px;
+            font-family: monospace;
+        }
+        
+        .copy-btn {
+            background: #3d5afe;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .copy-btn:hover {
+            background: #5c7cfa;
+        }
+        
+        .copy-btn.copied {
+            background: #4CAF50;
+        }
+        
+        .referral-history {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .referral-history-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .referral-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #3a3a5c;
+        }
+        
+        .referral-history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .referral-history-info {
+            flex: 1;
+        }
+        
+        .referral-history-name {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .referral-history-date {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+        
+        .referral-history-earning {
+            color: #4CAF50;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .referral-empty {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            padding: 20px;
+        }
+        
         /* Referral Button Styles */
         .referral-btn {
             background: linear-gradient(45deg, #3d5afe, #5c7cfa);
@@ -1767,7 +2013,21 @@ async def miniapp():
                 noChannels: 'Каналы не найдены',
                 tryChangeFilters: 'Попробуйте изменить фильтры',
                 channelGifts: 'Подарки канала',
-                buyChannel: 'Купить канал за'
+                buyChannel: 'Купить канал за',
+                // Referral System
+                referralTitle: 'Реферальна система',
+                referralInfoTitle: 'Приглашай друзей и получай 2.5% комиссии',
+                referralInfoText: 'Получай 2.5% от всех покупок твоих рефералов! Чем больше друзей пригласишь, тем больше заработаешь.',
+                invitedFriends: 'Запрошено друзей',
+                totalEarnings: 'Всего заработано',
+                myEarnings: 'Мои заработки',
+                withdrawToBalance: 'Вывести на баланс',
+                referralLink: 'Реферальное ссылка',
+                copyLink: 'Копировать',
+                linkCopied: 'Скопировано!',
+                recentReferrals: 'Последние рефералы',
+                noReferrals: 'У вас пока нет рефералов',
+                joinedDate: 'Присоединился'
             },
             en: {
                 appTitle: 'GiftRoom Market',
@@ -1788,7 +2048,21 @@ async def miniapp():
                 noChannels: 'No channels found',
                 tryChangeFilters: 'Try changing filters',
                 channelGifts: 'Channel Gifts',
-                buyChannel: 'Buy channel for'
+                buyChannel: 'Buy channel for',
+                // Referral System
+                referralTitle: 'Referral System',
+                referralInfoTitle: 'Invite friends and get 2.5% commission',
+                referralInfoText: 'Get 2.5% from all purchases of your referrals! The more friends you invite, the more you earn.',
+                invitedFriends: 'Invited Friends',
+                totalEarnings: 'Total Earnings',
+                myEarnings: 'My Earnings',
+                withdrawToBalance: 'Withdraw to Balance',
+                referralLink: 'Referral Link',
+                copyLink: 'Copy',
+                linkCopied: 'Copied!',
+                recentReferrals: 'Recent Referrals',
+                noReferrals: 'You have no referrals yet',
+                joinedDate: 'Joined'
             }
         };
         
@@ -2604,7 +2878,131 @@ async def miniapp():
         }
         
         function openReferralSystem() {
-            tg.showAlert('Реферальна система - тут буде інформація про рефералів');
+            currentView = 'referral';
+            showReferralSystem();
+        }
+        
+        function showReferralSystem() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
+            
+            // Генеруємо реферальне посилання
+            const user = tg.initDataUnsafe?.user;
+            const userId = user?.id || 'demo123';
+            const referralLink = `https://t.me/GiftRoomBot?start=ref_${userId}`;
+            
+            // Демо дані для рефералів
+            const referralData = {
+                invitedFriends: 12,
+                totalEarnings: 3.75,
+                recentReferrals: [
+                    { name: 'Андрій М.', date: '15.07.2025', earning: 0.25 },
+                    { name: 'Марія К.', date: '14.07.2025', earning: 0.15 },
+                    { name: 'Олег П.', date: '13.07.2025', earning: 0.35 },
+                    { name: 'Анна С.', date: '12.07.2025', earning: 0.18 }
+                ]
+            };
+            
+            grid.innerHTML = `
+                <div class="referral-container">
+                    <div class="referral-header">
+                        <button class="back-btn" onclick="switchTab('profile')">←</button>
+                        <div class="referral-title">${t('referralTitle')}</div>
+                        <div style="width: 32px;"></div>
+                    </div>
+                    
+                    <div class="referral-content">
+                        <!-- Информация о системе -->
+                        <div class="referral-info">
+                            <div class="referral-info-title">${t('referralInfoTitle')}</div>
+                            <div class="referral-info-text">${t('referralInfoText')}</div>
+                        </div>
+                        
+                        <!-- Статистика -->
+                        <div class="referral-stats">
+                            <div class="referral-stat-card">
+                                <div class="referral-stat-value">${referralData.invitedFriends}</div>
+                                <div class="referral-stat-label">${t('invitedFriends')}</div>
+                            </div>
+                            <div class="referral-stat-card">
+                                <div class="referral-stat-value">${referralData.totalEarnings} TON</div>
+                                <div class="referral-stat-label">${t('totalEarnings')}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Заработки -->
+                        <div class="referral-earnings">
+                            <div class="referral-earnings-title">
+                                💰 ${t('myEarnings')}
+                            </div>
+                            <div class="referral-earnings-amount">
+                                <div class="referral-earnings-value">
+                                    <div class="ton-icon"></div>
+                                    ${referralData.totalEarnings} TON
+                                </div>
+                                <button class="withdraw-btn" onclick="withdrawReferralEarnings()" ${referralData.totalEarnings < 0.1 ? 'disabled' : ''}>
+                                    ${t('withdrawToBalance')}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Реферальное ссылка -->
+                        <div class="referral-link-section">
+                            <div class="referral-link-title">${t('referralLink')}</div>
+                            <div class="referral-link-container">
+                                <input type="text" class="referral-link-input" value="${referralLink}" readonly id="referralLinkInput">
+                                <button class="copy-btn" onclick="copyReferralLink()" id="copyBtn">
+                                    ${t('copyLink')}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- История рефералов -->
+                        <div class="referral-history">
+                            <div class="referral-history-title">${t('recentReferrals')}</div>
+                            ${referralData.recentReferrals.length > 0 ? 
+                                referralData.recentReferrals.map(ref => `
+                                    <div class="referral-history-item">
+                                        <div class="referral-history-info">
+                                            <div class="referral-history-name">${ref.name}</div>
+                                            <div class="referral-history-date">${t('joinedDate')}: ${ref.date}</div>
+                                        </div>
+                                        <div class="referral-history-earning">+${ref.earning} TON</div>
+                                    </div>
+                                `).join('') : 
+                                `<div class="referral-empty">${t('noReferrals')}</div>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function copyReferralLink() {
+            const input = document.getElementById('referralLinkInput');
+            const button = document.getElementById('copyBtn');
+            
+            input.select();
+            input.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                button.textContent = t('linkCopied');
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = t('copyLink');
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Помилка копіювання:', err);
+            }
+        }
+        
+        function withdrawReferralEarnings() {
+            tg.showAlert('Заработки успешно выведены на баланс маркета!');
+            // Тут буде логіка для виведення коштів на баланс
         }
         
         // Start loading when page loads
