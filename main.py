@@ -502,6 +502,24 @@ async def miniapp():
             color: rgba(255,255,255,0.6);
         }
         
+        .profile-stats {
+            position: absolute;
+            bottom: 40px;
+            left: 20px;
+            right: 20px;
+            background: rgba(42, 42, 62, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .profile-stats-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
         /* Category Tabs Styles */
         .category-tabs {
             display: flex;
@@ -2005,6 +2023,9 @@ async def miniapp():
                         <div class="profile-avatar" style="${avatarStyle}">${avatarContent}</div>
                         <div class="profile-username">${username}</div>
                         <div class="profile-id">ID: ${userId}</div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="profile-stats-title">Статистика</div>
                     </div>
                 </div>
             `;
