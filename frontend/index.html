@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftRoom Market</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0F0F19;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: gradientShift 6s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%); }
+            33% { background: linear-gradient(135deg, #2a5298 0%, #3d5afe 50%, #2a5298 100%); }
+            66% { background: linear-gradient(135deg, #3d5afe 0%, #667eea 50%, #3d5afe 100%); }
+        }
+        
+        .logo-container {
+            position: relative;
+            margin-bottom: 50px;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+        
+        .logo-bg {
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500, #4ecdc4, #45b7d1);
+            background-size: 400% 400%;
+            border-radius: 30px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: gradientRotate 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .rocket {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            animation: rocketBounce 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes rocketBounce {
+            0%, 100% { transform: translate(-50%, -50%) rotate(-5deg); }
+            50% { transform: translate(-50%, -55%) rotate(5deg); }
+        }
+        
+        .app-name {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1, #96c93d, #ffa500);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            animation: textGradient 3s ease-in-out infinite;
+            text-align: center;
+        }
+        
+        @keyframes textGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .app-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 60px;
+            text-align: center;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        .gift-icons {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 45px;
+            animation: iconsFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes iconsFloat {
+            0%, 100% { transform: translateY(0px); }
+            33% { transform: translateY(-6px); }
+            66% { transform: translateY(3px); }
+        }
+        
+        .gift-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+        
+        .gift-icon:nth-child(1) {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            animation-delay: 0s;
+        }
+        
+        .gift-icon:nth-child(2) {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            animation-delay: 0.3s;
+        }
+        
+        .gift-icon:nth-child(3) {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1) rotateY(0deg); }
+            50% { transform: scale(1.1) rotateY(180deg); }
+        }
+        
+        .progress-container {
+            width: 260px;
+            height: 5px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #45b7d1, #96c93d, #ffa500);
+            background-size: 400% 100%;
+            border-radius: 8px;
+            animation: progressGradient 2s linear infinite, progressFill 4s ease-in-out forwards;
+            position: relative;
+        }
+        
+        @keyframes progressGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        @keyframes progressFill {
+            0% { width: 0%; }
+            25% { width: 30%; }
+            50% { width: 60%; }
+            75% { width: 85%; }
+            100% { width: 100%; }
+        }
+        
+        .loading-text {
+            font-size: 15px;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            animation: textPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        /* Main App Styles */
+        .main-app {
+            display: none;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        
+        .header .subtitle {
+            color: #8b8b8b;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .wallet-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        
+        .wallet-connect-btn {
+            background: transparent;
+            color: #0088ff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .wallet-connect-btn:hover {
+            color: #006dd9;
+        }
+        
+        .balance-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .balance-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .balance-btn:hover {
+            background: #1976D2;
+            transform: scale(1.1);
+        }
+        
+        .balance-btn.minus {
+            background: #ff4757;
+        }
+        
+        .balance-btn.minus:hover {
+            background: #ff3742;
+        }
+        
+        .balance-display {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .ton-icon {
+            width: 18px;
+            height: 18px;
+            background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #2a2a3e;
+            border-radius: 10px;
+            padding: 4px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .tab.active {
+            background: #3d5afe;
+            color: white;
+        }
+        
+        .tab:not(.active) {
+            color: #8b8b8b;
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .category-tabs.hidden {
+            display: none;
+        }
+        
+        .category-tab {
+            background: #2a2a3e;
+            color: #8b8b8b;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .category-tab.active {
+            background: #3d5afe;
+            color: white;
+            border-color: #3d5afe;
+        }
+        
+        .category-tab:hover:not(.active) {
+            background: #3a3a5c;
+            color: white;
+        }
+        
+        .clear-selection-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .clear-selection-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
+        }
+        
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .gift-card-main {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            min-height: 160px;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .gift-card-main:hover {
+            transform: translateY(-3px);
+            border-color: #3d5afe;
+            box-shadow: 0 8px 25px rgba(61, 90, 254, 0.3);
+        }
+        
+        .gift-image-main {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            margin: 8px auto 12px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 3px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        
+        .gift-name-main {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+        
+        .gift-channel-name {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .gift-price-main {
+            background: #2196F3;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 6px;
+        }
+        
+        .gift-price-main .ton-icon {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .gift-count-main {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
+        }
+        
+        .loading {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 40px;
+            color: #8b8b8b;
+        }
+        
+        .empty-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 40px;
+            color: #8b8b8b;
+        }
+        
+        .error-message {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 40px;
+            color: #ff4757;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        /* Profile Styles */
+        .profile-container {
+            background: #0F0F19;
+            padding: 0;
+            height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            margin: 0;
+            width: 100%;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            border: 2px solid rgba(255,255,255,0.15);
+        }
+        
+        .profile-username {
+            font-size: 26px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 25px;
+            line-height: 1.1;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            width: 100%;
+            max-width: 350px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .profile-stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .profile-stat-label {
+            font-size: 9px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        /* My Channels Styles */
+        .my-ads-container {
+            background: #0F0F19;
+            padding: 20px;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .my-ads-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #2a2a3e;
+            padding-bottom: 15px;
+        }
+        
+        .my-ads-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .add-ad-btn {
+            background: #3d5afe;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .add-ad-btn:hover {
+            background: #5c7cfa;
+            transform: scale(1.05);
+        }
+        
+        .empty-ads-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-ads-title {
+            font-size: 22px;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .empty-ads-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 30px;
+        }
+        
+        .create-ad-btn {
+            background: #3d5afe;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .create-ad-btn:hover {
+            background: #5c7cfa;
+            transform: translateY(-2px);
+        }
+        
+        /* Gifts Modal */
+        .gifts-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .gifts-modal.show {
+            display: block;
+        }
+        
+        .gifts-modal-content {
+            background: #0F0F19;
+            margin: 0;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .gifts-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            position: sticky;
+            top: 0;
+            background: #0F0F19;
+            z-index: 10;
+        }
+        
+        .gifts-modal-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .gifts-modal-close {
+            background: none;
+            border: none;
+            color: #8b8b8b;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .gifts-modal-grid {
+            padding: 20px;
+        }
+        
+        .gift-card {
+            background: #2a2a3e;
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .gift-image {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px;
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #3a3a5c;
+            flex-shrink: 0;
+        }
+        
+        .gift-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .gift-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+        }
+        
+        .gift-count {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+        }
+        
+        .buy-channel-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            width: calc(100% - 40px);
+            margin: 15px 20px 20px 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .buy-channel-btn:hover {
+            background: #1976D2;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+        }
+        
+        .buy-channel-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="logo-container">
+            <div class="logo-bg">
+                <div class="rocket">🚀</div>
+            </div>
+        </div>
+        
+        <div class="app-name">GiftRoom</div>
+        <div class="app-subtitle">Маркетплейс Telegram каналов с подарками</div>
+        
+        <div class="gift-icons">
+            <div class="gift-icon">🎁</div>
+            <div class="gift-icon">💎</div>
+            <div class="gift-icon">🏆</div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="loading-text">
+            <span class="loading-dots">Загрузка подарков</span>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="main-app" id="mainApp">
+        <div class="header">
+            <h1>GiftRoom Market</h1>
+            <div class="subtitle">Маркетплейс Telegram каналов с подарками</div>
+            
+            <div class="wallet-section">
+                <button class="wallet-connect-btn" onclick="connectWallet()">TON кошелек</button>
+                <div class="balance-section">
+                    <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
+                    <div class="balance-display">
+                        <div class="ton-icon"></div>
+                        <span id="balanceAmount">0.00 TON</span>
+                    </div>
+                    <button class="balance-btn" onclick="addBalance()">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('market')">Маркет</div>
+            <div class="tab" onclick="switchTab('my-channels')">Мої канали</div>
+            <div class="tab" onclick="switchTab('profile')">Мій профіль</div>
+        </div>
+        
+        <div class="category-tabs">
+            <div class="category-tab active" onclick="switchCategory('all')">Всі</div>
+            <div class="category-tab" onclick="switchCategory('new')">Нові</div>
+            <div class="category-tab" onclick="switchCategory('sorting')">Сортування</div>
+            <div class="category-tab" onclick="switchCategory('extras')">Доп</div>
+            <div class="clear-selection-btn" onclick="clearAllSelections()">✕</div>
+        </div>
+        
+        <div class="gifts-grid" id="giftsGrid">
+            <div class="loading">Загрузка каналов...</div>
+        </div>
+        
+        <!-- Gifts Modal -->
+        <div class="gifts-modal" id="giftsModal">
+            <div class="gifts-modal-content">
+                <div class="gifts-modal-header">
+                    <div class="gifts-modal-title" id="modalChannelName">Подарки канала</div>
+                    <button class="gifts-modal-close" onclick="closeGiftsModal()">✕</button>
+                </div>
+                
+                <div class="gifts-modal-body">
+                    <div class="gifts-modal-grid" id="giftsModalGrid">
+                        <!-- Подарки будут загружены здесь -->
+                    </div>
+                    
+                    <button class="buy-channel-btn" id="buyChannelBtn" onclick="buyChannelFromModal()">
+                        <div class="ton-icon"></div>
+                        <span>Купить канал за 0.00 TON</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Глобальные переменные
+        let currentView = 'market';
+        let currentCategory = 'all';
+        let currentLanguage = 'ru';
+        let currentUser = null;
+        let authToken = null;
+        let selectedGifts = new Set();
+        let currentChannelModal = null;
+        
+        // API базовый URL
+        const API_BASE = '/api/v1';
+        
+        // Утилиты для работы с API
+        async function apiRequest(endpoint, options = {}) {
+            const url = `${API_BASE}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
+            
+            if (authToken) {
+                headers['Authorization'] = `Bearer ${authToken}`;
+            }
+            
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    headers
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'API request failed');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('API request failed:', error);
+                throw error;
+            }
+        }
+        
+        // Авторизация через Telegram
+        async function authenticateUser() {
+            try {
+                const initData = tg.initData;
+                if (!initData) {
+                    throw new Error('No Telegram Web App data');
+                }
+                
+                const response = await apiRequest('/auth/telegram-auth', {
+                    method: 'POST',
+                    body: JSON.stringify(initData)
+                });
+                
+                authToken = response.access_token;
+                currentUser = response.user;
+                
+                // Обновляем UI
+                updateUserInterface();
+                
+                return true;
+            } catch (error) {
+                console.error('Authentication failed:', error);
+                showError('Ошибка авторизации');
+                return false;
+            }
+        }
+        
+        // Обновление интерфейса пользователя
+        function updateUserInterface() {
+            if (currentUser) {
+                const balanceElement = document.getElementById('balanceAmount');
+                balanceElement.textContent = `${currentUser.balance || 0} TON`;
+            }
+        }
+        
+        // Загрузка каналов
+        async function loadChannels(filters = {}) {
+            try {
+                showLoading();
+                
+                const params = new URLSearchParams();
+                if (filters.category) params.append('category', filters.category);
+                if (filters.min_price) params.append('min_price', filters.min_price);
+                if (filters.max_price) params.append('max_price', filters.max_price);
+                if (filters.gift_ids) params.append('gift_ids', filters.gift_ids.join(','));
+                if (filters.search) params.append('search', filters.search);
+                
+                const response = await apiRequest(`/channels/?${params}`);
+                
+                if (response.success && response.data) {
+                    renderChannels(response.data);
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Failed to load channels:', error);
+                showError('Не удалось загрузить каналы');
+            }
+        }
+        
+        // Отображение каналов
+        function renderChannels(channels) {
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid';
+            
+            if (channels.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            grid.innerHTML = channels.map(channel => `
+                <div class="gift-card-main" onclick="openChannelDetails(${channel.id})">
+                    <div class="gift-image-main" style="background-image: url('${channel.main_gift?.gift_image_url || ''}')"></div>
+                    <div class="gift-name-main">${channel.main_gift?.gift_name || 'NO GIFTS'}</div>
+                    <div class="gift-channel-name">${channel.display_name}</div>
+                    <div class="gift-price-main">
+                        <div class="ton-icon"></div>
+                        <span>${channel.price} TON</span>
+                    </div>
+                    <div class="gift-count-main">${channel.total_gifts} шт</div>
+                </div>
+            `).join('');
+        }
+        
+        // Загрузка профиля
+        async function loadProfile() {
+            try {
+                const response = await apiRequest('/auth/me');
+                currentUser = response;
+                updateUserInterface();
+                showProfile();
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+                showError('Не удалось загрузить профиль');
+            }
+        }
+        
+        // Загрузка моих каналов
+        async function loadMyChannels() {
+            try {
+                const response = await apiRequest('/channels/my/channels');
+                
+                if (response.length === 0) {
+                    showEmptyChannelsState();
+                } else {
+                    renderMyChannels(response);
+                }
+            } catch (error) {
+                console.error('Failed to load my channels:', error);
+                showError('Не удалось загрузить ваши каналы');
+            }
+        }
+        
+        // Открытие деталей канала
+        async function openChannelDetails(channelId) {
+            try {
+                const response = await apiRequest(`/channels/${channelId}`);
+                currentChannelModal = response;
+                
+                // Заполняем модальное окно
+                document.getElementById('modalChannelName').innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <div style="font-size: 18px; font-weight: 600;">Подарки канала</div>
+                        <div style="font-size: 16px; color: #64B5F6;">${response.display_name}</div>
+                    </div>
+                `;
+                
+                document.getElementById('buyChannelBtn').innerHTML = `
+                    <div class="ton-icon"></div>
+                    <span>Купить канал за ${response.price} TON</span>
+                `;
+                
+                const giftsGrid = document.getElementById('giftsModalGrid');
+                giftsGrid.innerHTML = response.gifts.map(gift => `
+                    <div class="gift-card">
+                        <div class="gift-image" style="background-image: url('${gift.gift_image_url}')"></div>
+                        <div class="gift-info">
+                            <div class="gift-title">${gift.gift_name}</div>
+                            <div class="gift-count">${gift.count} шт</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Показываем модальное окно
+                document.getElementById('giftsModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+                
+            } catch (error) {
+                console.error('Failed to load channel details:', error);
+                showError('Не удалось загрузить детали канала');
+            }
+        }
+        
+        // Покупка канала
+        async function buyChannelFromModal() {
+            if (!currentChannelModal) return;
+            
+            try {
+                const response = await apiRequest('/transactions/', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        channel_id: currentChannelModal.id,
+                        amount: currentChannelModal.price
+                    })
+                });
+                
+                if (response.success) {
+                    tg.showAlert('Транзакция создана! Проверьте баланс TON.');
+                    closeGiftsModal();
+                    loadProfile(); // Обновляем баланс
+                } else {
+                    throw new Error(response.message || 'Transaction failed');
+                }
+            } catch (error) {
+                console.error('Failed to buy channel:', error);
+                tg.showAlert('Ошибка при покупке канала: ' + error.message);
+            }
+        }
+        
+        // Состояния интерфейса
+        function showLoading() {
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = '<div class="loading">Загрузка...</div>';
+        }
+        
+        function showEmptyState() {
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = '<div class="empty-state">Каналы не найдены</div>';
+        }
+        
+        function showError(message) {
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+        
+        function showEmptyChannelsState() {
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid my-channel-grid';
+            grid.innerHTML = `
+                <div class="my-ads-container">
+                    <div class="my-ads-header">
+                        <div class="my-ads-title">Мои объявления</div>
+                        <button class="add-ad-btn" onclick="createChannel()">+</button>
+                    </div>
+                    <div class="empty-ads-state">
+                        <div class="empty-ads-title">Нет объявлений</div>
+                        <div class="empty-ads-subtitle">Создайте ваше первое объявление</div>
+                        <button class="create-ad-btn" onclick="createChannel()">Добавить объявление</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showProfile() {
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid profile-grid';
+            
+            const user = currentUser || {};
+            const username = user.username || user.first_name || 'Пользователь';
+            
+            grid.innerHTML = `
+                <div style="text-align: center; width: 100%; max-width: 300px;">
+                    <div class="profile-avatar">
+                        ${username.charAt(0).toUpperCase()}
+                    </div>
+                    <div class="profile-username">${username}</div>
+                    
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">
+                                ${user.total_volume || 0}
+                                <div class="ton-icon"></div>
+                            </div>
+                            <div class="profile-stat-label">TOTAL VOLUME</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">
+                                ${user.total_bought || 0}
+                                <span>🎁</span>
+                            </div>
+                            <div class="profile-stat-label">BOUGHT</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">
+                                ${user.total_sold || 0}
+                                <span>🎁</span>
+                            </div>
+                            <div class="profile-stat-label">SOLD</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Навигация
+        function switchTab(tab) {
+            currentView = tab;
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'market') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.querySelector('.category-tabs').classList.remove('hidden');
+                loadChannels();
+            } else if (tab === 'my-channels') {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.querySelector('.category-tabs').classList.add('hidden');
+                loadMyChannels();
+            } else if (tab === 'profile') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
+                document.querySelector('.category-tabs').classList.add('hidden');
+                loadProfile();
+            }
+        }
+        
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            
+            if (category === 'all') {
+                document.querySelectorAll('.category-tab')[0].classList.add('active');
+                loadChannels();
+            } else if (category === 'new') {
+                document.querySelectorAll('.category-tab')[1].classList.add('active');
+                loadChannels({ sort_by: 'created_at', sort_order: 'desc' });
+            } else if (category === 'sorting') {
+                document.querySelectorAll('.category-tab')[2].classList.add('active');
+                loadChannels({ sort_by: 'price', sort_order: 'desc' });
+            } else if (category === 'extras') {
+                document.querySelectorAll('.category-tab')[3].classList.add('active');
+                loadChannels();
+            }
+        }
+        
+        function clearAllSelections() {
+            selectedGifts.clear();
+            switchCategory('all');
+        }
+        
+        // Модальное окно
+        function closeGiftsModal() {
+            document.getElementById('giftsModal').classList.remove('show');
+            document.body.style.overflow = '';
+            currentChannelModal = null;
+        }
+        
+        // Кнопки действий
+        async function connectWallet() {
+            tg.showAlert('Подключение TON кошелька...');
+            // TODO: Реализовать подключение кошелька
+        }
+        
+        async function addBalance() {
+            tg.showAlert('Пополнение баланса');
+            // TODO: Реализовать пополнение баланса
+        }
+        
+        async function withdrawBalance() {
+            tg.showAlert('Вывод средств');
+            // TODO: Реализовать вывод средств
+        }
+        
+        async function createChannel() {
+            tg.showAlert('Создание канала через бота @giftroom_market_bot');
+            // TODO: Реализовать создание канала
+        }
+        
+        // Экран загрузки
+        function startLoading() {
+            const loadingTexts = [
+                'Загрузка подарков',
+                'Подключение к TON',
+                'Синхронизация данных',
+                'Подготовка интерфейса',
+                'Почти готово'
+            ];
+            
+            let textIndex = 0;
+            const textInterval = setInterval(() => {
+                if (textIndex < loadingTexts.length) {
+                    document.querySelector('.loading-dots').textContent = loadingTexts[textIndex];
+                    textIndex++;
+                } else {
+                    clearInterval(textInterval);
+                }
+            }, 800);
+            
+            setTimeout(async () => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                
+                // Попытка авторизации
+                const authSuccess = await authenticateUser();
+                
+                if (authSuccess) {
+                    loadChannels();
+                } else {
+                    showError('Необходима авторизация через Telegram');
+                }
+            }, 4000);
+        }
+        
+        // Запуск приложения
+        window.addEventListener('load', startLoading);
+        
+        // Адаптация к теме Telegram
+        if (tg.colorScheme === 'dark') {
+            document.body.style.background = '#0F0F19';
+        }
+        
+        // Скрыть главную кнопку Telegram
+        tg.MainButton.hide();
+    </script>
+</body>
+</html>
