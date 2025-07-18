@@ -1,6 +1,5 @@
-# Dockerfile для GiftRoom Marketplace
+# Dockerfile для GiftRoom Marketplace на Render
 
-# Використовуємо офіційний Python образ
 FROM python:3.11-slim
 
 # Встановлюємо робочу директорію
@@ -20,21 +19,19 @@ COPY requirements.txt .
 # Встановлюємо Python залежності
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копіюємо код додатка
+# Копіюємо весь код
 COPY . .
 
-# Створюємо папку для логів
+# Створюємо папки
 RUN mkdir -p logs
-
-# Встановлюємо права на виконання
-RUN chmod +x startup.sh 2>/dev/null || true
+RUN mkdir -p frontend
 
 # Встановлюємо змінні середовища
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
 # Відкриваємо порт
-EXPOSE 8000
+EXPOSE $PORT
 
 # Команда для запуску
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port $PORT"]
