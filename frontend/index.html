@@ -250,6 +250,31 @@
             80%, 100% { content: '...'; }
         }
         
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
         /* Main App Styles */
         .main-app {
             display: none;
@@ -424,7 +449,7 @@
             color: #8b8b8b;
         }
         
-        /* Profile Page Styles - ОНОВЛЕНІ СТИЛІ */
+        /* Profile Page Styles */
         .profile-container {
             background: #0F0F19;
             padding: 0;
@@ -477,11 +502,6 @@
             bottom: -50%;
             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
             animation: shimmer 2.5s linear infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(200%) rotate(45deg); }
         }
         
         @keyframes profileFloat {
@@ -570,6 +590,260 @@
             font-weight: 400;
         }
         
+        /* Referral System Styles */
+        .referral-container {
+            background: #0F0F19;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            touch-action: pan-y;
+            width: 100%;
+            position: relative;
+        }
+        
+        .referral-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            background: #0F0F19;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+        }
+        
+        .referral-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            flex: 1;
+            text-align: center;
+            margin: 0 20px;
+        }
+        
+        .referral-content {
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .referral-info {
+            background: rgba(61, 90, 254, 0.1);
+            border: 1px solid rgba(61, 90, 254, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .referral-info-title {
+            color: #3d5afe;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .referral-info-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-stat-card {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .referral-stat-card:hover {
+            border-color: #3d5afe;
+            transform: translateY(-2px);
+        }
+        
+        .referral-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .referral-stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .referral-earnings {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-earnings-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .referral-earnings-amount {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .referral-earnings-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #4CAF50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .withdraw-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .withdraw-btn:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+        }
+        
+        .withdraw-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .referral-link-section {
+            background: #2a2a3e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .referral-link-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .referral-link-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .referral-link-input {
+            width: 100%;
+            background: #1a1a2e;
+            border: 2px solid #3a3a5c;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+            box-sizing: border-box;
+            word-break: break-all;
+            white-space: normal;
+            resize: none;
+            overflow: visible;
+            text-align: left;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+        }
+        
+        .referral-link-input:focus {
+            outline: none;
+            border-color: #3d5afe;
+            box-shadow: 0 0 0 3px rgba(61, 90, 254, 0.1);
+        }
+        
+        .copy-btn {
+            background: #3d5afe;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            align-self: center;
+            min-width: 120px;
+            box-shadow: 0 4px 12px rgba(61, 90, 254, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .copy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .copy-btn:hover::before {
+            left: 100%;
+        }
+        
+        .copy-btn:hover {
+            background: #5c7cfa;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(61, 90, 254, 0.4);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .copy-btn.copied {
+            background: #4CAF50;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+            animation: copySuccess 0.6s ease;
+        }
+        
+        @keyframes copySuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
         /* Category Tabs Styles */
         .category-tabs {
             display: flex;
@@ -630,32 +904,84 @@
             transform: scale(1.1);
         }
         
-        .gifts-grid.referral-grid {
-            display: block !important;
-            grid-template-columns: none !important;
-            gap: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-        }
-        
-        .gifts-grid.profile-grid {
-            display: flex !important;
-            align-items: flex-start !important;
-            justify-content: center !important;
-            height: 100vh !important;
-            margin: 0 !important;
-            padding: 40px 0 0 0 !important;
-            grid-template-columns: none !important;
-            gap: 0 !important;
-        }
-        
         .gifts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin-bottom: 20px;
+        }
+        
+        /* Gift card main styles for Market */
+        .gift-card-main {
+            background: #2a2a3e;
+            border-radius: 15px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            min-height: 160px;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .gift-card-main:hover {
+            transform: translateY(-3px);
+            border-color: #3d5afe;
+            box-shadow: 0 8px 25px rgba(61, 90, 254, 0.3);
+        }
+        
+        .gift-image-main {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            margin: 8px auto 12px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 3px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        
+        .gift-name-main {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+        
+        .gift-channel-name {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .gift-price-main {
+            background: #2196F3;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 6px;
+        }
+        
+        .gift-price-main .ton-icon {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .gift-count-main {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
         }
         
         /* Gifts Filter List Styles */
@@ -749,95 +1075,6 @@
         .gift-filter-count {
             color: rgba(255,255,255,0.7);
             font-size: 14px;
-        }
-        
-        .gift-filter-badge {
-            background: #4CAF50;
-            color: white;
-            font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        
-        .gifts-grid.my-channel-grid {
-            display: block;
-            margin: -20px -20px 0 -20px;
-            padding: 0;
-        }
-        
-        /* Gift card main styles for Market */
-        .gift-card-main {
-            background: #2a2a3e;
-            border-radius: 15px;
-            padding: 12px;
-            text-align: center;
-            transition: all 0.3s ease;
-            min-height: 160px;
-            position: relative;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        
-        .gift-card-main:hover {
-            transform: translateY(-3px);
-            border-color: #3d5afe;
-            box-shadow: 0 8px 25px rgba(61, 90, 254, 0.3);
-        }
-        
-        .gift-image-main {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            margin: 8px auto 12px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            border: 3px solid rgba(255,255,255,0.3);
-            position: relative;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-        
-        .gift-name-main {
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            line-height: 1.1;
-            margin-bottom: 4px;
-        }
-        
-        .gift-channel-name {
-            color: rgba(255,255,255,0.7);
-            font-size: 10px;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-        
-        .gift-price-main {
-            background: #2196F3;
-            color: white;
-            padding: 5px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            margin-bottom: 6px;
-        }
-        
-        .gift-price-main .ton-icon {
-            width: 12px;
-            height: 12px;
-        }
-        
-        .gift-count-main {
-            color: rgba(255,255,255,0.7);
-            font-size: 10px;
         }
         
         /* My Ads Container Styles */
@@ -945,41 +1182,189 @@
             transform: translateY(-2px);
         }
         
-        .loading {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 40px;
-            color: #8b8b8b;
+        /* Create Ad Form Styles */
+        .create-ad-container {
+            background: #0F0F19;
+            padding: 0;
+            min-height: 100vh;
         }
         
-        .empty-state {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 40px;
-            color: #8b8b8b;
+        .create-ad-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            background: #0F0F19;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         
-        .error-message {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 40px;
-            color: #ff4757;
-            background: rgba(255, 71, 87, 0.1);
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #2a2a3e;
+        }
+        
+        .create-ad-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .create-ad-form {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: #2a2a3e;
+            border: 2px solid #3a3a5c;
             border-radius: 12px;
+            padding: 12px 15px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3d5afe;
+            box-shadow: 0 0 0 3px rgba(61, 90, 254, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .form-help {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        
+        /* Important Info Styles */
+        .important-info {
+            background: rgba(61, 90, 254, 0.1);
+            border: 1px solid rgba(61, 90, 254, 0.3);
+            border-radius: 12px;
+            padding: 15px;
             margin: 20px 0;
+            display: flex;
+            gap: 12px;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .info-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            color: #3d5afe;
         }
         
-        .channel-listing-card {
-            animation: fadeIn 0.6s ease-out;
+        .info-content {
+            flex: 1;
         }
         
-        .filters-hidden {
-            display: none;
+        .info-title {
+            color: #3d5afe;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .info-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .info-requirements {
+            margin-bottom: 12px;
+        }
+        
+        .req-title {
+            color: #3d5afe;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .req-item {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .create-btn {
+            width: 100%;
+            background: #3d5afe;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .create-btn:hover {
+            background: #5c7cfa;
+            transform: translateY(-1px);
+        }
+        
+        /* Referral Button Styles */
+        .referral-btn {
+            background: linear-gradient(45deg, #3d5afe, #5c7cfa);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            max-width: 280px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(61, 90, 254, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .referral-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(61, 90, 254, 0.4);
         }
         
         /* Gifts Modal */
@@ -1147,7 +1532,7 @@
                     <button class="balance-btn minus" onclick="withdrawBalance()">−</button>
                     <div class="balance-display">
                         <div class="ton-icon"></div>
-                        <span id="balanceAmount">0.00 TON</span>
+                        <span>0.00 TON</span>
                     </div>
                     <button class="balance-btn" onclick="addBalance()">+</button>
                 </div>
@@ -1199,339 +1584,565 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Глобальные переменные
+        // ПОВНА БАЗА ДАННЫХ з усіма 37 подарунками в правильному порядку
+        const ALL_GIFTS = {
+            37: {id: 37, name: "SNOOP DOGG", desc: "Legendary rapper", image: "https://i.postimg.cc/vmG9dxbL/Gifts-Gifts-Gifts-Ag-ADdn-MAAj-Jye-Es.png"},
+            36: {id: 36, name: "SWAG BAG", desc: "Stylish bag", image: "https://i.postimg.cc/d1cwkrNg/Gifts-Gifts-Gifts-Ag-AD5-XMAAmjze-Us.png"},
+            35: {id: 35, name: "SNOOP CIGAR", desc: "Smoking cigar", image: "https://i.postimg.cc/FKMsy2zW/Gifts-Gifts-Gifts-Ag-ADi38-AAg-7c-Es.png"},
+            34: {id: 34, name: "LOW RIDER", desc: "Cool car", image: "https://i.postimg.cc/7Y96Fsth/Gifts-Gifts-Gifts-Ag-ADNWw-AAg5ze-Es.png"},
+            33: {id: 33, name: "WESTSIDE SIGN", desc: "West coast sign", image: "https://i.postimg.cc/GtkBTbjx/Gifts-Gifts-Gifts-Ag-ADV4-QAAiibe-Us.png"},
+            32: {id: 32, name: "TORCH", desc: "Olympic torch", image: "https://i.postimg.cc/wv1LMKPw/Gifts-Gifts-Gifts-Ag-AD2-XQAAk-VPSEs.png"},
+            31: {id: 31, name: "STATUE", desc: "Ancient statue", image: "https://i.postimg.cc/V6hvVdKR/Gifts-Gifts-Gifts-Ag-ADi-IYAAqf-LQEs.png"},
+            30: {id: 30, name: "EAGLE", desc: "Majestic eagle", image: "https://i.postimg.cc/0QXK1ty7/Gifts-Gifts-Gifts-Ag-ADzn-IAAl-Gn-QEs.png"},
+            29: {id: 29, name: "NIPPLE", desc: "Baby nipple", image: "https://i.postimg.cc/BQrDvwcg/Gifts-Gifts-Gifts-Ag-ADD3-IAAm-RNKUo.png"},
+            28: {id: 28, name: "PLUMBER", desc: "Mario plumber", image: "https://i.postimg.cc/85pLSJBg/Gifts-Gifts-Gifts-Ag-ADKX4-AAuw-O2-Ek.png"},
+            27: {id: 27, name: "ESKIMO", desc: "Cold eskimo", image: "https://i.postimg.cc/L4y3mTbC/Gifts-Gifts-Gifts-Ag-ADy-XEAAky04-Ek.png"},
+            26: {id: 26, name: "CREAMY ICE CREAM", desc: "Creamy ice cream", image: "https://i.postimg.cc/ydjXgXYN/Gifts-Gifts-Gifts-Ag-AD0-Ww-AAs4-T4-Ek.png"},
+            25: {id: 25, name: "STAR", desc: "Shining star", image: "https://i.postimg.cc/3Nr1nfbp/Gifts-Gifts-Gifts-Ag-ADbn-UAAl-XNEUk.png"},
+            24: {id: 24, name: "PIGEON", desc: "City pigeon", image: "https://i.postimg.cc/QxJsBFcy/Gifts-Gifts-Gifts-Ag-ADa3-QAAtw-JEEk.png"},
+            23: {id: 23, name: "MEDAL", desc: "Gold medal", image: "https://i.postimg.cc/N0zQgZRG/Gifts-Gifts-Gifts-Ag-ADO3c-AAqb-DEEk.png"},
+            22: {id: 22, name: "1 MAY", desc: "Labor day", image: "https://i.postimg.cc/gJxk8GG6/Gifts-Gifts-Gifts-Ag-ADMm4-AAj-Ll6-Ug.png"},
+            21: {id: 21, name: "RABBIT", desc: "Fluffy rabbit", image: "https://i.postimg.cc/WtLRDv4j/Gifts-Gifts-Gifts-Ag-ADh-HUAAg-O6-IUg.png"},
+            20: {id: 20, name: "KULICH", desc: "Easter cake", image: "https://i.postimg.cc/tTJGwkf0/Gifts-Gifts-Gifts-Ag-ADBa-UAAk8-WKEg.png"},
+            19: {id: 19, name: "ROCKET", desc: "Space rocket", image: "https://i.postimg.cc/nhfZrvs7/Gifts-Gifts-Gifts-Ag-ADIo-UAAk3-J2-Es.png"},
+            18: {id: 18, name: "BRICK", desc: "Building brick", image: "https://i.postimg.cc/c1jdyq0F/Gifts-Gifts-Gifts-Ag-ADg2o-AAg-R5g-Us.png"},
+            17: {id: 17, name: "MONKEY", desc: "Playful monkey", image: "https://i.postimg.cc/bN7Yn75Z/Gifts-Gifts-Gifts-Ag-AEZAACV66-BSw.png"},
+            16: {id: 16, name: "POOP", desc: "Funny poop", image: "https://i.postimg.cc/05HykMdd/Gifts-Gifts-Gifts-Ag-AD82w-AAk-FZg-Es.png"},
+            15: {id: 15, name: "DOSHIK", desc: "Instant noodles", image: "https://i.postimg.cc/k5F5qTfB/Gifts-Gifts-Gifts-Ag-AD4-GQAAq8-Xg-Us.png"},
+            14: {id: 14, name: "MOSQUE", desc: "Beautiful mosque", image: "https://i.postimg.cc/pr1T3ykC/Gifts-Gifts-Gifts-Ag-ADV3-MAAnv-We-Us.png"},
+            13: {id: 13, name: "AMULET", desc: "Protection amulet", image: "https://i.postimg.cc/hGFJSzn3/Gifts-Gifts-Gifts-Ag-AD-HEAAq-9c-Us.png"},
+            12: {id: 12, name: "CLOVER", desc: "Lucky clover", image: "https://i.postimg.cc/NfJmwjLW/Gifts-Gifts-Gifts-Ag-ADf-GYAAjfaw-Uo.png"},
+            11: {id: 11, name: "BOILER", desc: "Hot boiler", image: "https://i.postimg.cc/Dfc1Bghf/Gifts-Gifts-Gifts-Ag-ADe-WMAAp-Rw-IUs.png"},
+            10: {id: 10, name: "DYSON", desc: "Powerful vacuum", image: "https://i.postimg.cc/3NZjGj8R/Gifts-Gifts-Gifts-Ag-ADhmw-AAl1-Zc-Uo.png"},
+            9: {id: 9, name: "MARCH 8", desc: "Women's day", image: "https://i.postimg.cc/d1y4hTZk/Gifts-Gifts-Gifts-Ag-ADh2o-AAoa-Dc-Eo.png"},
+            8: {id: 8, name: "CUPCAKE", desc: "Sweet cupcake", image: "https://i.postimg.cc/gkqtyRS3/Gifts-Gifts-Gifts-Ag-ADB3-AAAr-Pqc-Eo.png"},
+            7: {id: 7, name: "BOUQUET", desc: "Beautiful bouquet", image: "https://i.postimg.cc/TY8BJTRv/Gifts-Gifts-Gifts-Ag-ADk3-AAAiy-WGEs.png"},
+            6: {id: 6, name: "LAMP", desc: "Table lamp", image: "https://i.postimg.cc/hjfNpjzc/Gifts-Gifts-Gifts-Ag-ADj-Gw-AAkl0c-Eo.png"},
+            5: {id: 5, name: "BICEPS", desc: "Strong muscles", image: "https://i.postimg.cc/K4Xf7cLq/Gifts-Gifts-Gifts-Ag-ADB3-UAAp5-V0-Uk.png"},
+            4: {id: 4, name: "SOCKS", desc: "Warm socks", image: "https://i.postimg.cc/bwxCTnmQ/Gifts-Gifts-Gifts-Ag-ADKmk-AAt0-L2-Ek.png"},
+            3: {id: 3, name: "CATS", desc: "Cute cats", image: "https://i.postimg.cc/rmnY4LQ3/Gifts-Gifts-Gifts-Ag-ADCWc-AAk-LAe-Uk.png"},
+            2: {id: 2, name: "BUTTON", desc: "Simple button", image: "https://i.postimg.cc/XqDSnCRZ/Gifts-Gifts-Gifts-Ag-ADWWg-AAhwgi-Uk.png"},
+            1: {id: 1, name: "HEELS", desc: "High heels", image: "https://i.postimg.cc/jdsL20Gt/Gifts-Gifts-Gifts-Ag-ADBmg-AAnz-Oe-Ek.png"}
+        };
+        
+        // Глобальні змінні
         let currentView = 'market';
         let currentCategory = 'all';
-        let currentLanguage = 'ru';
-        let currentUser = null;
-        let authToken = null;
-        let selectedGifts = new Set();
         let currentChannelModal = null;
+        let selectedGifts = new Set();
+        let currentSorting = 'all';
+        let currentLanguage = 'ru';
         
-        // API базовый URL
-        const API_BASE = '/api/v1';
-        
-        // Утилиты для работы с API
-        async function apiRequest(endpoint, options = {}) {
-            const url = `${API_BASE}${endpoint}`;
-            const headers = {
-                'Content-Type': 'application/json',
-                ...options.headers
-            };
-            
-            if (authToken) {
-                headers['Authorization'] = `Bearer ${authToken}`;
-            }
-            
-            try {
-                const response = await fetch(url, {
-                    ...options,
-                    headers
-                });
-                
-                if (!response.ok) {
-                    const error = await response.json().catch(() => ({ message: 'API request failed' }));
-                    throw new Error(error.message || 'API request failed');
-                }
-                
-                return await response.json();
-            } catch (error) {
-                console.error('API request failed:', error);
-                throw error;
-            }
-        }
-        
-        // Авторизация через Telegram
-        async function authenticateUser() {
-            try {
-                const initData = tg.initData || 'demo_data';
-                
-                const response = await apiRequest('/auth/telegram-auth', {
-                    method: 'POST',
-                    body: JSON.stringify(initData)
-                });
-                
-                authToken = response.access_token;
-                currentUser = response.user;
-                
-                // Обновляем UI
-                updateUserInterface();
-                
-                return true;
-            } catch (error) {
-                console.error('Authentication failed:', error);
-                // Для демо режима продолжаем работу
-                currentUser = {
-                    id: 1,
-                    username: 'demo_user',
-                    first_name: 'Demo User',
-                    balance: 50.0,
-                    total_bought: 3,
-                    total_sold: 8,
-                    total_volume: 207.5
-                };
-                updateUserInterface();
-                return true;
-            }
-        }
-        
-        // Обновление интерфейса пользователя
-        function updateUserInterface() {
-            if (currentUser) {
-                const balanceElement = document.getElementById('balanceAmount');
-                balanceElement.textContent = `${currentUser.balance || 0} TON`;
-            }
-        }
-        
-        // Загрузка каналов
+        // Завантаження каналів з API
         async function loadChannels(filters = {}) {
             try {
-                showLoading();
-                
                 const params = new URLSearchParams();
-                if (filters.category) params.append('category', filters.category);
+                
+                if (filters.search) params.append('search', filters.search);
                 if (filters.min_price) params.append('min_price', filters.min_price);
                 if (filters.max_price) params.append('max_price', filters.max_price);
-                if (filters.search) params.append('search', filters.search);
+                if (filters.sort_by) params.append('sort_by', filters.sort_by);
+                if (filters.sort_order) params.append('sort_order', filters.sort_order);
+                if (filters.gift_ids) params.append('gift_ids', filters.gift_ids);
                 
-                const response = await apiRequest(`/channels/?${params}`);
+                const response = await fetch(`/api/v1/channels/?${params}`);
+                const data = await response.json();
                 
-                if (response.success && response.data) {
-                    renderChannels(response.data);
+                if (data.success) {
+                    return data.data;
                 } else {
-                    showEmptyState();
+                    console.error('Error loading channels:', data);
+                    return [];
                 }
             } catch (error) {
-                console.error('Failed to load channels:', error);
-                showError('Не удалось загрузить каналы');
+                console.error('Network error:', error);
+                return [];
             }
         }
         
-        // Отображение каналов
-        function renderChannels(channels) {
+        // Завантаження подарунків з API
+        async function loadGifts() {
+            try {
+                const response = await fetch('/api/v1/gifts/');
+                const data = await response.json();
+                
+                if (data.success) {
+                    return data.data;
+                } else {
+                    console.error('Error loading gifts:', data);
+                    return [];
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                return [];
+            }
+        }
+        
+        // Показати маркет
+        async function showMarket() {
+            document.querySelector('.category-tabs').classList.remove('hidden');
+            document.querySelector('.tabs').style.display = 'flex';
+            
+            const giftsGrid = document.getElementById('giftsGrid');
+            giftsGrid.className = 'gifts-grid';
+            giftsGrid.innerHTML = '<div class="loading">Завантаження каналів...</div>';
+            
+            try {
+                const channels = await loadChannels();
+                renderChannelListings(channels);
+            } catch (error) {
+                giftsGrid.innerHTML = '<div class="empty-state">Помилка завантаження каналів</div>';
+            }
+        }
+        
+        // Відображення списку каналів
+        function renderChannelListings(channelsToRender) {
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid';
             
-            if (channels.length === 0) {
-                showEmptyState();
+            if (channelsToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 18px; margin-bottom: 10px;">Канали не знайдені</div>
+                        <div style="font-size: 14px;">Спробуйте змінити фільтри</div>
+                    </div>
+                `;
                 return;
             }
             
-            grid.innerHTML = channels.map(channel => `
-                <div class="gift-card-main" onclick="openChannelDetails(${channel.id})">
-                    <div class="gift-image-main" style="background-image: url('${channel.main_gift?.gift_image_url || ''}')"></div>
-                    <div class="gift-name-main">${channel.main_gift?.gift_name || 'NO GIFTS'}</div>
-                    <div class="gift-channel-name">${channel.display_name}</div>
-                    <div class="gift-price-main">
-                        <div class="ton-icon"></div>
-                        <span>${channel.price} TON</span>
+            grid.innerHTML = channelsToRender.map(channel => {
+                const mainGift = channel.gifts[0];
+                const correctGift = ALL_GIFTS[mainGift.id];
+                
+                return `
+                    <div class="gift-card-main" onclick="openGiftsModal(${channel.id})">
+                        <div class="gift-image-main" style="background-image: url('${correctGift.image}')"></div>
+                        <div class="gift-name-main">${correctGift.name}</div>
+                        <div class="gift-channel-name">${channel.display_name}</div>
+                        <div class="gift-price-main">
+                            <div class="ton-icon"></div>
+                            <span>${channel.price} TON</span>
+                        </div>
+                        <div class="gift-count-main">${mainGift.count} шт</div>
                     </div>
-                    <div class="gift-count-main">${channel.total_gifts} шт</div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
-        // Загрузка профиля
-        async function loadProfile() {
+        // Відкриття модального вікна з подарунками
+        async function openGiftsModal(channelId) {
             try {
-                const response = await apiRequest('/auth/me');
-                currentUser = response;
-                updateUserInterface();
-                showProfile();
-            } catch (error) {
-                console.error('Failed to load profile:', error);
-                // Показываем профиль с демо данными
-                showProfile();
-            }
-        }
-        
-        // Загрузка моих каналов
-        async function loadMyChannels() {
-            try {
-                const response = await apiRequest('/channels/my/channels');
+                const response = await fetch(`/api/v1/channels/${channelId}`);
+                const data = await response.json();
                 
-                if (response.length === 0) {
-                    showEmptyChannelsState();
-                } else {
-                    renderMyChannels(response);
+                if (!data.success) {
+                    tg.showAlert('Помилка завантаження каналу');
+                    return;
                 }
-            } catch (error) {
-                console.error('Failed to load my channels:', error);
-                showEmptyChannelsState();
-            }
-        }
-        
-        // Открытие деталей канала
-        async function openChannelDetails(channelId) {
-            try {
-                const response = await apiRequest(`/channels/${channelId}`);
-                currentChannelModal = response;
                 
-                // Заполняем модальное окно
+                const channel = data.data;
+                currentChannelModal = channel;
+                
                 document.getElementById('modalChannelName').innerHTML = `
                     <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                        <div style="font-size: 18px; font-weight: 600;">Подарки канала</div>
-                        <div style="font-size: 16px; color: #64B5F6;">${response.display_name}</div>
+                        <div style="font-size: 18px; font-weight: 600;">Подарунки каналу</div>
+                        <div style="font-size: 16px; color: #64B5F6;">${channel.display_name}</div>
                     </div>
                 `;
                 
                 document.getElementById('buyChannelBtn').innerHTML = `
                     <div class="ton-icon"></div>
-                    <span>Купить канал за ${response.price} TON</span>
+                    <span>Купити канал за ${channel.price} TON</span>
                 `;
                 
                 const giftsGrid = document.getElementById('giftsModalGrid');
-                giftsGrid.innerHTML = response.gifts.map(gift => `
-                    <div class="gift-card">
-                        <div class="gift-image" style="background-image: url('${gift.gift_image_url}')"></div>
-                        <div class="gift-info">
-                            <div class="gift-title">${gift.gift_name}</div>
-                            <div class="gift-count">${gift.count} шт</div>
+                giftsGrid.innerHTML = channel.gifts.map(gift => {
+                    const correctGift = ALL_GIFTS[gift.id];
+                    return `
+                        <div class="gift-card">
+                            <div class="gift-image" style="background-image: url('${correctGift.image}')"></div>
+                            <div class="gift-info">
+                                <div class="gift-title">${correctGift.name}</div>
+                                <div class="gift-count">${gift.count} шт</div>
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
                 
-                // Показываем модальное окно
-                document.getElementById('giftsModal').classList.add('show');
+                // Показуємо модальне вікно
                 document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+                document.body.style.top = '0';
+                document.body.style.left = '0';
+                
+                const modal = document.getElementById('giftsModal');
+                modal.classList.add('show');
+                
+                setTimeout(() => {
+                    const modalGrid = document.getElementById('giftsModalGrid');
+                    if (modalGrid) {
+                        modalGrid.scrollTop = 0;
+                    }
+                }, 100);
                 
             } catch (error) {
-                console.error('Failed to load channel details:', error);
-                showError('Не удалось загрузить детали канала');
+                console.error('Error opening gifts modal:', error);
+                tg.showAlert('Помилка завантаження даних каналу');
             }
         }
         
-        // Покупка канала
+        // Закриття модального вікна
+        function closeGiftsModal() {
+            const modal = document.getElementById('giftsModal');
+            modal.style.animation = 'modalSlideOut 0.3s ease-in forwards';
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+                modal.style.animation = '';
+                currentChannelModal = null;
+                
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                document.body.style.top = '';
+                document.body.style.left = '';
+            }, 300);
+        }
+        
+        // Покупка каналу
         async function buyChannelFromModal() {
             if (!currentChannelModal) return;
             
             try {
-                const response = await apiRequest('/transactions/', {
+                const user = tg.initDataUnsafe?.user;
+                const buyerTelegramId = user?.id || 123456789;
+                
+                const response = await fetch('/api/v1/transactions/', {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({
                         channel_id: currentChannelModal.id,
+                        buyer_telegram_id: buyerTelegramId,
                         amount: currentChannelModal.price
                     })
                 });
                 
-                if (response.success) {
-                    tg.showAlert('Транзакция создана! (демо режим)');
+                const data = await response.json();
+                
+                if (data.success) {
+                    tg.showAlert(`${data.message}`);
                     closeGiftsModal();
-                    loadProfile(); // Обновляем баланс
                 } else {
-                    throw new Error(response.message || 'Transaction failed');
+                    tg.showAlert('Помилка створення транзакції');
                 }
+                
             } catch (error) {
-                console.error('Failed to buy channel:', error);
-                tg.showAlert('Ошибка при покупке канала: ' + error.message);
+                console.error('Error creating transaction:', error);
+                tg.showAlert('Помилка мережі при створенні транзакції');
             }
         }
         
-        // Состояния интерфейса
-        function showLoading() {
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = '<div class="loading">Загрузка...</div>';
-        }
-        
-        function showEmptyState() {
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = '<div class="empty-state">Каналы не найдены</div>';
-        }
-        
-        function showError(message) {
-            const grid = document.getElementById('giftsGrid');
-            grid.innerHTML = `<div class="error-message">${message}</div>`;
-        }
-        
-        function showEmptyChannelsState() {
+        // Показати "Мої канали"
+        function showMyChannels() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            document.querySelector('.tabs').style.display = 'flex';
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid my-channel-grid';
+            
             grid.innerHTML = `
                 <div class="my-ads-container">
                     <div class="my-ads-header">
-                        <div class="my-ads-title">Мои объявления</div>
-                        <button class="add-ad-btn" onclick="createChannel()">+</button>
+                        <div class="my-ads-title">Мої оголошення</div>
+                        <button class="add-ad-btn" onclick="showCreateAdForm()">+</button>
                     </div>
+                    
                     <div class="empty-ads-state">
-                        <div class="empty-ads-title">Нет объявлений</div>
-                        <div class="empty-ads-subtitle">Создайте ваше первое объявление</div>
-                        <button class="create-ad-btn" onclick="createChannel()">Добавить объявление</button>
+                        <div class="empty-ads-icon">
+                            <img src="https://i.postimg.cc/ncnSj3rD/1752485903244.png" alt="Gift" style="width: 120px; height: 120px; object-fit: contain; background: transparent;">
+                        </div>
+                        <div class="empty-ads-title">Немає оголошень</div>
+                        <div class="empty-ads-subtitle">Створіть ваше перше оголошення</div>
+                        <button class="create-ad-btn" onclick="showCreateAdForm()">Додати оголошення</button>
                     </div>
                 </div>
             `;
         }
         
+        // Показати профіль
         function showProfile() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            document.querySelector('.tabs').style.display = 'flex';
             const grid = document.getElementById('giftsGrid');
             grid.className = 'gifts-grid profile-grid';
             
-            const user = currentUser || {};
-            const username = user.username || user.first_name || 'Пользователь';
+            const user = tg.initDataUnsafe?.user;
+            let username = user?.username || user?.first_name || 'Demo User';
+            
+            let avatarContent = '';
+            let avatarStyle = `
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                font-size: 48px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            if (user?.photo_url) {
+                avatarContent = '';
+                avatarStyle = `background-image: url('${user.photo_url}'); background-size: cover; background-position: center;`;
+            } else {
+                avatarContent = username.substring(0, 2).toUpperCase();
+            }
             
             grid.innerHTML = `
                 <div style="text-align: center; width: 100%; max-width: 300px; position: relative;">
-                    <!-- Language Selector рядом с аватаром -->
-                    <div class="language-selector" onclick="toggleLanguage()" id="languageSelector" style="position: absolute; top: 0; right: 40px; z-index: 5;">
-                        РУС
-                    </div>
-                    
-                    <div style="width: 100px; height: 100px; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0 auto 12px; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4); border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: white;">${username.charAt(0).toUpperCase()}</div>
+                    <div style="width: 100px; height: 100px; border-radius: 12px; ${avatarStyle} margin: 0 auto 12px; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4); border: 2px solid rgba(255,255,255,0.15);">${avatarContent}</div>
                     <div style="font-size: 26px; font-weight: 700; color: white; margin-bottom: 25px; line-height: 1.1;">${username}</div>
                     
                     <div style="display: flex; justify-content: space-around; gap: 30px; width: 100%; max-width: 350px; margin-bottom: 30px;">
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                ${user.total_volume || 207.5}
+                                207.5 
                                 <div style="width: 16px; height: 16px; background-image: url('https://i.postimg.cc/kX2nWB4M/121-20250711185549.png'); background-size: cover; background-position: center; border-radius: 50%;"></div>
                             </div>
                             <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">TOTAL VOLUME</div>
                         </div>
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                ${user.total_bought || 0}
+                                0 
                                 <span style="font-size: 16px;">🎁</span>
                             </div>
                             <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">BOUGHT</div>
                         </div>
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                ${user.total_sold || 8}
+                                8 
                                 <span style="font-size: 16px;">🎁</span>
                             </div>
                             <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 600;">SOLD</div>
                         </div>
                     </div>
                     
-                    <!-- Информационный блок под статистикой -->
+                    <button class="referral-btn" onclick="openReferralSystem()">
+                        <span style="font-size: 18px;">👥</span>
+                        Реферальна система
+                    </button>
+                    
                     <div style="background: rgba(61, 90, 254, 0.15); border: 2px solid rgba(61, 90, 254, 0.3); border-radius: 20px; padding: 25px 20px; margin-top: 30px; text-align: center;">
-                        <div style="color: #5c7cfa; font-size: 18px; font-weight: 700; margin-bottom: 15px; line-height: 1.3;">Приглашай друзей и получай 2.5% комиссии</div>
-                        <div style="color: rgba(255,255,255,0.95); font-size: 15px; line-height: 1.5; font-weight: 400;">Получай 2.5% от всех покупок твоих рефералов! Чем больше друзей пригласишь, тем больше заработаешь.</div>
+                        <div style="color: #5c7cfa; font-size: 18px; font-weight: 700; margin-bottom: 15px; line-height: 1.3;">Запрошуй друзів і отримуй 2.5% комісії</div>
+                        <div style="color: rgba(255,255,255,0.95); font-size: 15px; line-height: 1.5; font-weight: 400;">Отримуй 2.5% від усіх покупок твоїх рефералів! Чим більше друзів запросиш, тим більше заробиш.</div>
                     </div>
                 </div>
             `;
         }
         
-        // Навигация
+        // Відкрити реферальну систему
+        function openReferralSystem() {
+            currentView = 'referral';
+            document.body.style.overflowX = 'hidden';
+            document.body.style.touchAction = 'pan-y';
+            showReferralSystem();
+        }
+        
+        // Показати реферальну систему
+        function showReferralSystem() {
+            document.querySelector('.category-tabs').classList.add('hidden');
+            document.querySelector('.tabs').style.display = 'none';
+            const grid = document.getElementById('giftsGrid');
+            grid.className = 'gifts-grid referral-grid';
+            
+            const user = tg.initDataUnsafe?.user;
+            const userId = user?.id || '5272691353';
+            const referralLink = `http://t.me/Giftroom_market_bot?start=${userId}`;
+            
+            const referralData = {
+                invitedFriends: 12,
+                totalEarnings: 3.75,
+                recentReferrals: [
+                    { name: 'Андрій М.', date: '15.07.2025', earning: 0.25 },
+                    { name: 'Марія К.', date: '14.07.2025', earning: 0.15 },
+                    { name: 'Олег П.', date: '13.07.2025', earning: 0.35 },
+                    { name: 'Анна С.', date: '12.07.2025', earning: 0.18 }
+                ]
+            };
+            
+            grid.innerHTML = `
+                <div class="referral-container">
+                    <div class="referral-header">
+                        <button class="back-btn" onclick="switchTab('profile')">←</button>
+                        <div class="referral-title">Реферальна система</div>
+                        <div style="width: 32px;"></div>
+                    </div>
+                    
+                    <div class="referral-content">
+                        <div class="referral-stats">
+                            <div class="referral-stat-card">
+                                <div class="referral-stat-value">${referralData.invitedFriends}</div>
+                                <div class="referral-stat-label">Запрошено друзів</div>
+                            </div>
+                            <div class="referral-stat-card">
+                                <div class="referral-stat-value">${referralData.totalEarnings} TON</div>
+                                <div class="referral-stat-label">Всього заробано</div>
+                            </div>
+                        </div>
+                        
+                        <div class="referral-earnings">
+                            <div class="referral-earnings-title">
+                                💰 Мої заробітки
+                            </div>
+                            <div class="referral-earnings-amount">
+                                <div class="referral-earnings-value">
+                                    <div class="ton-icon"></div>
+                                    ${referralData.totalEarnings} TON
+                                </div>
+                                <button class="withdraw-btn" onclick="withdrawReferralEarnings()" ${referralData.totalEarnings < 0.1 ? 'disabled' : ''}>
+                                    Вивести на баланс
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="referral-link-section">
+                            <div class="referral-link-title">Реферальне посилання</div>
+                            <div class="referral-link-container">
+                                <input type="text" class="referral-link-input" value="${referralLink}" readonly id="referralLinkInput">
+                                <button class="copy-btn" onclick="copyReferralLink()" id="copyBtn">
+                                    Копіювати
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Копіювання реферального посилання
+        function copyReferralLink() {
+            const input = document.getElementById('referralLinkInput');
+            const button = document.getElementById('copyBtn');
+            
+            input.select();
+            input.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                button.textContent = 'Скопійовано!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = 'Копіювати';
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Помилка копіювання:', err);
+            }
+        }
+        
+        // Вивід реферальних заробітків
+        function withdrawReferralEarnings() {
+            tg.showAlert('Заробітки успішно виведені на баланс маркета!');
+        }
+        
+        // Показати форму створення оголошення
+        function showCreateAdForm() {
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="create-ad-container">
+                    <div class="create-ad-header">
+                        <button class="back-btn" onclick="showMyChannels()">←</button>
+                        <div class="create-ad-title">Нове оголошення</div>
+                        <div style="width: 32px;"></div>
+                    </div>
+                    
+                    <div class="create-ad-form">
+                        <div class="form-group">
+                            <label class="form-label">Посилання на канал *</label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                placeholder="@channel_name або https://t.me/channel"
+                                id="channelLink"
+                            >
+                            <div class="form-help">Введіть посилання на канал, який продаєте</div>
+                        </div>
+                        
+                        <div class="important-info">
+                            <div class="info-icon">ℹ️</div>
+                            <div class="info-content">
+                                <div class="info-title">Важлива інформація для продажу каналу</div>
+                                <div class="info-text">Перед додаванням каналу на маркет, спочатку додайте в нього бота @Giftroom_market_bot і призначте його адміністратором.</div>
+                                <div class="info-requirements">
+                                    <div class="req-title">Увага:</div>
+                                    <div class="req-item">— канал повинен бути публічним</div>
+                                    <div class="req-item">— подарунки в ньому повинні бути видимими (не прихованими)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Ціна (TON) *</label>
+                            <input 
+                                type="number" 
+                                class="form-input" 
+                                placeholder="0.00"
+                                id="channelPrice"
+                                step="0.01"
+                                min="0"
+                            >
+                        </div>
+                        
+                        <button class="create-btn" onclick="createChannelAd()">СТВОРИТИ</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Створення оголошення каналу
+        function createChannelAd() {
+            const channelLink = document.getElementById('channelLink').value;
+            const channelPrice = document.getElementById('channelPrice').value;
+            
+            if (!channelLink || !channelPrice) {
+                tg.showAlert('Заповніть всі обов\'язкові поля');
+                return;
+            }
+            
+            tg.showAlert(`Канал ${channelLink} створено за ${channelPrice} TON!`);
+            showMyChannels();
+        }
+        
+        // Перемикання вкладок
         function switchTab(tab) {
+            if (currentView === 'referral' && tab !== 'profile') {
+                return;
+            }
+            
+            if (currentView === 'referral' && tab === 'profile') {
+                document.body.style.overflowX = '';
+                document.body.style.touchAction = '';
+            }
+            
             currentView = tab;
             
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             
             if (tab === 'market') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
-                document.querySelector('.category-tabs').classList.remove('hidden');
-                loadChannels();
+                showMarket();
             } else if (tab === 'my-channels') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
-                document.querySelector('.category-tabs').classList.add('hidden');
-                loadMyChannels();
+                showMyChannels();
             } else if (tab === 'profile') {
                 document.querySelectorAll('.tab')[2].classList.add('active');
-                document.querySelector('.category-tabs').classList.add('hidden');
-                loadProfile();
+                showProfile();
             }
         }
         
+        // Перемикання категорій
         function switchCategory(category) {
             currentCategory = category;
             
@@ -1539,73 +2150,271 @@
             
             if (category === 'all') {
                 document.querySelectorAll('.category-tab')[0].classList.add('active');
-                loadChannels();
+                if (currentView === 'market') {
+                    showMarket();
+                }
             } else if (category === 'new') {
                 document.querySelectorAll('.category-tab')[1].classList.add('active');
-                loadChannels({ sort_by: 'created_at', sort_order: 'desc' });
+                if (currentView === 'market') {
+                    showAllGiftsFilter();
+                }
             } else if (category === 'sorting') {
                 document.querySelectorAll('.category-tab')[2].classList.add('active');
-                loadChannels({ sort_by: 'price', sort_order: 'desc' });
+                if (currentView === 'market') {
+                    showSortingOptions();
+                }
             } else if (category === 'extras') {
                 document.querySelectorAll('.category-tab')[3].classList.add('active');
-                loadChannels();
+                if (currentView === 'market') {
+                    showExtrasOptions();
+                }
             }
         }
         
+        // Показати всі подарунки для фільтрування
+        async function showAllGiftsFilter() {
+            document.getElementById('giftsGrid').className = 'gifts-filter-grid';
+            
+            try {
+                const gifts = await loadGifts();
+                
+                const grid = document.getElementById('giftsGrid');
+                grid.innerHTML = `
+                    <div class="gift-filter-item" onclick="applyNewFilter('all')">
+                        <div class="gift-filter-checkbox checked"></div>
+                        <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎁</div>
+                        <div class="gift-filter-info">
+                            <div class="gift-filter-name">Всі</div>
+                            <div class="gift-filter-stats">
+                                <span class="gift-filter-count">Всі подарунки</span>
+                            </div>
+                        </div>
+                    </div>
+                    ${gifts.map(gift => `
+                        <div class="gift-filter-item" onclick="selectGiftForNewFilter(${gift.id})">
+                            <div class="gift-filter-checkbox ${selectedGifts.has(gift.id) ? 'checked' : ''}" onclick="event.stopPropagation(); toggleGiftSelection(${gift.id})"></div>
+                            <div class="gift-filter-image" style="background-image: url('${gift.image}')"></div>
+                            <div class="gift-filter-info">
+                                <div class="gift-filter-name">${gift.name}</div>
+                                <div class="gift-filter-count">${gift.totalCount} шт</div>
+                            </div>
+                            <div class="gift-filter-price">${(Math.random() * 50 + 5).toFixed(1)} TON</div>
+                        </div>
+                    `).join('')}
+                `;
+            } catch (error) {
+                console.error('Error loading gifts:', error);
+                document.getElementById('giftsGrid').innerHTML = '<div class="loading">Помилка завантаження подарунків</div>';
+            }
+        }
+        
+        // Показати опції сортування
+        function showSortingOptions() {
+            document.getElementById('giftsGrid').className = 'gifts-filter-grid';
+            
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="gift-filter-item" onclick="applySorting('all')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'all' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">📋</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Всі</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Показати всі канали</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="applySorting('expensive')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'expensive' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; font-size: 20px;">💰</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Дорогі → Дешеві</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Спочатку дорожчі</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="applySorting('cheap')">
+                    <div class="gift-filter-checkbox ${currentSorting === 'cheap' ? 'checked' : ''}"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">💸</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Дешеві → Дорогі</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Спочатку дешевші</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Показати додаткові опції
+        function showExtrasOptions() {
+            document.getElementById('giftsGrid').className = 'gifts-filter-grid';
+            
+            const grid = document.getElementById('giftsGrid');
+            grid.innerHTML = `
+                <div class="gift-filter-item" onclick="applyExtrasFilter('all')">
+                    <div class="gift-filter-checkbox checked"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎁</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Всі</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Всі канали з подарунками</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="applyExtrasFilter('with-extras')">
+                    <div class="gift-filter-checkbox"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 20px;">🎈</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">З доп подарунками</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Канали з різними подарунками</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gift-filter-item" onclick="applyExtrasFilter('without-extras')">
+                    <div class="gift-filter-checkbox"></div>
+                    <div class="gift-filter-image" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e); display: flex; align-items: center; justify-content: center; font-size: 20px;">📦</div>
+                    <div class="gift-filter-info">
+                        <div class="gift-filter-name">Без доп подарунків</div>
+                        <div class="gift-filter-stats">
+                            <span class="gift-filter-count">Канали тільки одного виду</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Застосувати сортування
+        async function applySorting(sortType) {
+            currentSorting = sortType;
+            
+            let sortBy = '';
+            let sortOrder = '';
+            
+            if (sortType === 'expensive') {
+                sortBy = 'price';
+                sortOrder = 'desc';
+            } else if (sortType === 'cheap') {
+                sortBy = 'price';
+                sortOrder = 'asc';
+            }
+            
+            const channels = await loadChannels({ sort_by: sortBy, sort_order: sortOrder });
+            renderChannelListings(channels);
+        }
+        
+        // Застосувати фільтр подарунків
+        function selectGiftForNewFilter(giftId) {
+            toggleGiftSelection(giftId);
+        }
+        
+        // Перемикання вибору подарунка
+        async function toggleGiftSelection(giftId) {
+            if (selectedGifts.has(giftId)) {
+                selectedGifts.delete(giftId);
+            } else {
+                selectedGifts.add(giftId);
+            }
+            
+            if (selectedGifts.size > 0) {
+                const giftIds = Array.from(selectedGifts).join(',');
+                const channels = await loadChannels({ gift_ids: giftIds });
+                renderChannelListings(channels);
+            } else {
+                showMarket();
+            }
+        }
+        
+        // Застосувати новий фільтр
+        function applyNewFilter(filterType) {
+            if (filterType === 'all') {
+                selectedGifts.clear();
+                showMarket();
+            }
+        }
+        
+        // Застосувати фільтр екстра
+        async function applyExtrasFilter(extrasType) {
+            const channels = await loadChannels();
+            let filteredChannels = channels;
+            
+            if (extrasType === 'with-extras') {
+                filteredChannels = channels.filter(channel => channel.unique_gifts > 3);
+            } else if (extrasType === 'without-extras') {
+                filteredChannels = channels.filter(channel => channel.unique_gifts <= 2);
+            }
+            
+            renderChannelListings(filteredChannels);
+        }
+        
+        // Очистити всі вибори
         function clearAllSelections() {
             selectedGifts.clear();
-            switchCategory('all');
-        }
-        
-        function toggleLanguage() {
-            const selector = document.getElementById('languageSelector');
-            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
-            selector.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
-        }
-        
-        // Модальное окно
-        function closeGiftsModal() {
-            document.getElementById('giftsModal').classList.remove('show');
-            document.body.style.overflow = '';
-            currentChannelModal = null;
-        }
-        
-        // Кнопки действий
-        async function connectWallet() {
-            try {
-                await apiRequest('/wallet/connect', { method: 'POST' });
-                tg.showAlert('Кошелек подключен! (демо режим)');
-            } catch (error) {
-                tg.showAlert('Подключение TON кошелька...');
+            currentSorting = 'all';
+            
+            if (currentCategory === 'all') {
+                showMarket();
+            } else if (currentCategory === 'new') {
+                showAllGiftsFilter();
+            } else if (currentCategory === 'sorting') {
+                showSortingOptions();
+            } else if (currentCategory === 'extras') {
+                showExtrasOptions();
             }
         }
         
-        async function addBalance() {
-            try {
-                await apiRequest('/wallet/top-up', { method: 'POST' });
-                tg.showAlert('Баланс пополнен! (демо режим)');
-                loadProfile();
-            } catch (error) {
-                tg.showAlert('Пополнение баланса');
-            }
+        // Функції для кнопок гаманця
+        function connectWallet() {
+            tg.showAlert('Підключення до TON гаманця...');
         }
         
-        async function withdrawBalance() {
-            tg.showAlert('Вывод средств');
+        function addBalance() {
+            tg.showAlert('Поповнення балансу');
         }
         
-        async function createChannel() {
-            tg.showAlert('Создание канала через бота @giftroom_market_bot');
+        function withdrawBalance() {
+            tg.showAlert('Виведення коштів');
         }
         
-        // Экран загрузки
+        // Логіка завантаження
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.width = particle.style.height = Math.random() * 4 + 2 + 'px';
+            particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.querySelector('.loading-screen').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 6000);
+        }
+        
+        function startParticles() {
+            const particleInterval = setInterval(() => {
+                if (document.getElementById('loadingScreen').style.display !== 'none') {
+                    createParticle();
+                } else {
+                    clearInterval(particleInterval);
+                }
+            }, 300);
+        }
+        
         function startLoading() {
+            startParticles();
+            
             const loadingTexts = [
-                'Загрузка подарков',
-                'Подключение к TON',
-                'Синхронизация данных',
-                'Подготовка интерфейса',
-                'Почти готово'
+                'Завантаження подарунків',
+                'Підключення до TON',
+                'Синхронізація даних',
+                'Підготовка інтерфейсу',
+                'Майже готово'
             ];
             
             let textIndex = 0;
@@ -1618,31 +2427,43 @@
                 }
             }, 800);
             
-            setTimeout(async () => {
-                document.getElementById('loadingScreen').style.display = 'none';
-                document.getElementById('mainApp').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                document.getElementById('loadingScreen').style.transform = 'scale(0.95)';
+                document.getElementById('loadingScreen').style.transition = 'all 0.5s ease-in-out';
                 
-                // Попытка авторизации
-                const authSuccess = await authenticateUser();
-                
-                if (authSuccess) {
-                    loadChannels();
-                } else {
-                    showError('Необходима авторизация через Telegram');
-                }
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'block';
+                    document.getElementById('mainApp').style.opacity = '0';
+                    document.getElementById('mainApp').style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        document.getElementById('mainApp').style.transition = 'all 0.5s ease-out';
+                        document.getElementById('mainApp').style.opacity = '1';
+                        document.getElementById('mainApp').style.transform = 'translateY(0)';
+                        
+                        initializeApp();
+                    }, 50);
+                }, 500);
             }, 4000);
         }
         
-        // Запуск приложения
+        function initializeApp() {
+            showMarket();
+        }
+        
+        // Запуск при завантаженні сторінки
         window.addEventListener('load', startLoading);
         
-        // Адаптация к теме Telegram
+        // Налаштування Telegram WebApp
+        tg.MainButton.hide();
+        
         if (tg.colorScheme === 'dark') {
             document.body.style.background = '#0F0F19';
         }
         
-        // Скрыть главную кнопку Telegram
-        tg.MainButton.hide();
+        console.log('🎁 GiftRoom Market готовий до роботи!');
     </script>
 </body>
 </html>
